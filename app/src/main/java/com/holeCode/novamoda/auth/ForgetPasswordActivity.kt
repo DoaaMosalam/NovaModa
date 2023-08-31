@@ -2,11 +2,30 @@ package com.holeCode.novamoda.auth
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.holeCode.novamoda.R
+import android.text.Editable
+import android.text.TextWatcher
 
-class ForgetPasswordActivity : AppCompatActivity() {
+import com.holeCode.novamoda.databinding.ActivityForgetPasswordBinding
+
+class ForgetPasswordActivity : AppCompatActivity(), TextWatcher {
+    private lateinit var bindingForgetPasswordActivity: ActivityForgetPasswordBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_forget_password)
+        bindingForgetPasswordActivity = ActivityForgetPasswordBinding.inflate(layoutInflater)
+        setContentView(bindingForgetPasswordActivity.root)
+        //================================================================================================
+        bindingForgetPasswordActivity.edEmailforget.addTextChangedListener(this@ForgetPasswordActivity)
+
+    }
+
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+    }
+
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+    }
+
+    override fun afterTextChanged(p0: Editable?) {
+        bindingForgetPasswordActivity.btnSend.isEnabled =
+            bindingForgetPasswordActivity.edEmailforget.text!!.trim().toString().isNotEmpty()
     }
 }
