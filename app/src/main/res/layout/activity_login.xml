@@ -29,22 +29,30 @@
             app:layout_constraintVertical_bias="0.086" />
 
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/ed_emailLogin"
-            android:layout_width="343dp"
-            android:layout_height="64dp"
-            android:background="@drawable/desgin_edittext"
-            android:backgroundTint="@color/white"
-            android:drawableStart="@drawable/baseline_email_24"
-            android:hint="@string/email"
-            android:padding="5dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailTilLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="300dp"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.263" />
+            app:layout_constraintVertical_bias="0.483">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ed_emailLogin"
+                android:layout_width="343dp"
+                android:layout_height="64dp"
+                android:background="@drawable/desgin_edittext"
+                android:backgroundTint="@color/white"
+                android:drawableStart="@drawable/baseline_email_24"
+                android:hint="@string/email"
+                android:padding="5dp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passworrdTilLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -60,6 +68,7 @@
                 android:layout_height="64dp"
                 android:autofillHints="Password"
                 android:background="@drawable/desgin_edittext"
+                android:backgroundTint="@color/white"
                 android:drawableStart="@drawable/baseline_lock_24"
                 android:ems="10"
                 android:hint="@string/password"
@@ -76,7 +85,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_forgetPasswrod"
             android:layout_width="207dp"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:background="@drawable/desgin_edittext"
             android:drawableEnd="@drawable/baseline_arrow_right_alt_24"
             android:text="@string/forgot_your_password"

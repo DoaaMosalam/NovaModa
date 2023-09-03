@@ -5,6 +5,9 @@
 <!--    <color name="light_gray">#E8E7E7</color>-->
     <color name="light_gray">#E3E3E3</color>
     <color name="m_gray">#BBB5B5</color>
+    // required
+    <color name="red">#FF0000</color>
+    <color name="green">#05FB0F</color>
     //primaryColor
     <color name="primary_color">#DB3022</color>
 </resources>
