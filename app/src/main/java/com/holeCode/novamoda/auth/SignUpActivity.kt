@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -11,9 +12,6 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Patterns
-import android.view.KeyEvent
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -24,35 +22,40 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
 
-class SignUpActivity : AppCompatActivity(), TextWatcher,View.OnClickListener,View.OnKeyListener,View.OnFocusChangeListener {
+class SignUpActivity : AppCompatActivity(), TextWatcher {
     private lateinit var bindingSingUpActivity: ActivitySignupBinding
     private var selectedImageUri: Uri? = null
+    private lateinit var checkIcon: Drawable
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingSingUpActivity = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(bindingSingUpActivity.root)
+        checkIcon = ContextCompat.getDrawable(this, R.drawable.baseline_check_24)!!
         //================================================================================================
         // this when text watcher button not clickable when full all edit tet
         bindingSingUpActivity.edNameSign.addTextChangedListener(this@SignUpActivity)
+        bindingSingUpActivity.edPhoneSign.addTextChangedListener(this@SignUpActivity)
         bindingSingUpActivity.edEmailSign.addTextChangedListener(this@SignUpActivity)
         bindingSingUpActivity.edPasswordSing.addTextChangedListener(this@SignUpActivity)
-        bindingSingUpActivity.edPhoneSign.addTextChangedListener(this@SignUpActivity)
+
 //        //================================================================================================
-        bindingSingUpActivity.edNameSign.onFocusChangeListener = this
-        bindingSingUpActivity.edPhoneSign.onFocusChangeListener = this
-        bindingSingUpActivity.edEmailSign.onFocusChangeListener = this
-        bindingSingUpActivity.edPasswordSing.onFocusChangeListener = this
+        nameFocusListener()
+        phoneFocusListener()
+        emailFocusListener()
+        passwordFocusListener()
 
-//            nameFocusedListener()
+        bindingSingUpActivity.apply {
+            btnLoginAccount.setOnClickListener {
+                navigationToLoginPage()
+            }
+            btnSignUp.setOnClickListener {
 
-        bindingSingUpActivity.btnLoginAccount.setOnClickListener {
-            navigationToLoginPage()
+            }
+            imagePerson.setOnClickListener {
+                openGallery()
+
+            }
         }
-
-        bindingSingUpActivity.imagePerson.setOnClickListener {
-            openGallery()
-        }
-
     }
 
     //This method go to Login page.
@@ -74,156 +77,147 @@ class SignUpActivity : AppCompatActivity(), TextWatcher,View.OnClickListener,Vie
                     && bindingSingUpActivity.edPhoneSign.text.toString().isNotEmpty()
                     && bindingSingUpActivity.edEmailSign.text!!.trim().isNotEmpty()
                     && bindingSingUpActivity.edPasswordSing.text!!.trim().isNotEmpty()
+
+                    && validateName()
+                    && validatePhone()
+                    && validateEmail()
+                    && validatePassword()
+
     }
+
     //==============================================================================================
-//    private fun nameFocusedListener(){
-//        bindingSingUpActivity.edNameSign.setOnFocusChangeListener{_,focused->
-//            if (!focused){
-//                bindingSingUpActivity.nameTil.helperText = validateFullName()
-//            }
-//        }
-//
-//    }
+    // this method on Focus Listener appear  (name,phone,email,password)
+    private fun nameFocusListener() {
+        val nameValue = bindingSingUpActivity.edNameSign
+        nameValue.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                validateName()
 
-    private fun isValid(): Boolean {
-        return validateFullName() && validatePhone() && validateEmail() && validatePassword()
-    }
-    private fun validateFullName(): Boolean {
-        var errorMessage: String? = null
-        val value = bindingSingUpActivity.edNameSign.text.toString()
-        if (value.isEmpty()) {
-            errorMessage = "Name is required"
-        }
-        if (errorMessage != null) {
-            bindingSingUpActivity.nameTil.apply {
-                isErrorEnabled = true
-                error == errorMessage
             }
         }
-        return  errorMessage==null
     }
 
+    private fun phoneFocusListener() {
+        val phoneValue = bindingSingUpActivity.edPhoneSign
+        phoneValue.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+
+                validatePhone()
+
+            }
+        }
+    }
+
+    private fun emailFocusListener() {
+        val emailValue = bindingSingUpActivity.edEmailSign
+        emailValue.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+
+                validateEmail()
+
+            }
+        }
+    }
+
+    private fun passwordFocusListener() {
+        val passwordValue = bindingSingUpActivity.edPasswordSing
+        passwordValue.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+
+                validatePassword()
+
+            }
+        }
+    }
+    //=============================================================================================
+
+    //this method to validate name when user register
+    private fun validateName(): Boolean {
+        val name = bindingSingUpActivity.edNameSign.text.toString().trim()
+        if (name.isEmpty()) {
+            bindingSingUpActivity.nameTil.error = "Name is required"
+            bindingSingUpActivity.nameTil.endIconDrawable = null
+        } else {
+            bindingSingUpActivity.nameTil.error = null
+            bindingSingUpActivity.nameTil.endIconDrawable = checkIcon
+        }
+        return bindingSingUpActivity.nameTil.error == null
+    }
+
+    //this method to validate phone when user register
     private fun validatePhone(): Boolean {
-        var errorMessage: String? = null
-        val value = bindingSingUpActivity.edPhoneSign.text?.trim().toString()
-        if (value.length < 12) {
-            errorMessage = "The Phone numbers less than 12 digit"
-        } else if (value.length > 12) {
-            errorMessage = "The Phone numbers more than 12 digit"
+        val phone = bindingSingUpActivity.edPhoneSign.text.toString().trim()
+
+        if (phone.isEmpty()) {
+            bindingSingUpActivity.phoneTil.error = "Phone number is required"
+            bindingSingUpActivity.phoneTil.endIconDrawable = null
+        } else {
+            bindingSingUpActivity.phoneTil.error = null
+            bindingSingUpActivity.phoneTil.endIconDrawable = checkIcon
         }
-        if (errorMessage != null) {
-            bindingSingUpActivity.phoneTil.apply {
-                isErrorEnabled = true
-                error == errorMessage
-            }
-        }
-        return errorMessage == null
+        return bindingSingUpActivity.phoneTil.error == null
     }
 
+    //this method to validate email when user register
     private fun validateEmail(): Boolean {
-        var errorMessage: String? = null
-        val value = bindingSingUpActivity.edEmailSign.text.toString()
-        if (value.isEmpty()){
-            errorMessage = "Email is required"
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(value).matches()) {
-            errorMessage = "Email is invalid"
+        val email = bindingSingUpActivity.edEmailSign.text.toString().trim()
+
+        if (email.isEmpty()) {
+            bindingSingUpActivity.emailTil.error = "Email is required"
+            bindingSingUpActivity.emailTil.endIconDrawable = null
+        } else if (!isValidEmail(email)) {
+            bindingSingUpActivity.emailTil.error = "Invalid email address"
+            bindingSingUpActivity.emailTil.endIconDrawable = null
+        } else {
+            bindingSingUpActivity.emailTil.error = null
+            bindingSingUpActivity.emailTil.endIconDrawable = checkIcon
         }
-        if (errorMessage != null) {
-            bindingSingUpActivity.emailTil.apply {
-                isErrorEnabled = true
-                error == errorMessage
-            }
-        }
-        return errorMessage == null
+        return bindingSingUpActivity.emailTil.error == null
     }
 
+    //this method to validate password when user register
     private fun validatePassword(): Boolean {
-        var errorMessage: String? = null
-        val value = bindingSingUpActivity.edPasswordSing.text.toString()
-        if (value.length < 8) {
-            errorMessage = "Password must be at least 6 characters long"
-        }
-        if (!value.matches(".*[A-Z].*".toRegex())) {
-            errorMessage = "Password must contain 1 upper-case character"
-        }
-        if (!value.matches(".*[a-z].*".toRegex())) {
-            errorMessage = "Password must contain 1 lower-case character"
-        }
-        if (!value.matches(".*[@#\$%^&+=].*".toRegex())) {
-            errorMessage = "Password must contain special "
-        }
+        val password = bindingSingUpActivity.edPasswordSing.text.toString().trim()
 
-        if (errorMessage != null) {
-            bindingSingUpActivity.passwordTil.apply {
-                isErrorEnabled = true
-                error == errorMessage
-            }
+        if (password.isEmpty()) {
+            bindingSingUpActivity.passwordTil.error = "Password is required"
+            bindingSingUpActivity.passwordTil.endIconDrawable = null
+        } else if (password.length < 6) {
+            bindingSingUpActivity.passwordTil.error = "Password must be at least 6 characters"
+            bindingSingUpActivity.passwordTil.endIconDrawable = null
+        } else if (!password.matches(".*[A-Z].*".toRegex())) {
+            bindingSingUpActivity.passwordTil.error =
+                "Password must contain 1 upper-case character"
+            bindingSingUpActivity.passwordTil.endIconDrawable = null
+        } else if (!password.matches(".*[a-z].*".toRegex())) {
+            bindingSingUpActivity.passwordTil.error =
+                "Password must contain 1 lower-case character"
+        } else if (!password.matches(".*[@#\$%^&+=].*".toRegex())) {
+            bindingSingUpActivity.passwordTil.error =
+                "Password must contain special[@#\$%^&+=] "
+        } else {
+            bindingSingUpActivity.passwordTil.error = null
+            bindingSingUpActivity.passwordTil.endIconDrawable = checkIcon
         }
-        return errorMessage == null
+        return bindingSingUpActivity.passwordTil.error == null
     }
 
-
-    override fun onClick(view: View?) {
+    private fun isValidPassword(password: String): Boolean {
+        val pattern = "[A-Z]+@[a-z]+\\.+[@#\$%^&+=]+"
+        return password.matches(pattern.toRegex())
     }
 
-    override fun onFocusChange(view: View?, hasFocuse: Boolean) {
-        if (view != null) {
-            when (view.id) {
-                R.id.ed_nameSign -> {
-                    if (!hasFocuse) {
-                        if (bindingSingUpActivity.nameTil.isErrorEnabled) {
-                            bindingSingUpActivity.nameTil.isErrorEnabled = false
-                        }
-                    } else {
-                        validateFullName()
-                    }
-
-                }
-
-                R.id.ed_phoneSign -> {
-                    if (hasFocuse) {
-                        if (bindingSingUpActivity.phoneTil.isErrorEnabled) {
-                            bindingSingUpActivity.phoneTil.isErrorEnabled = false
-                        }
-
-                    } else {
-                        validatePhone()
-                    }
-                }
-
-                R.id.ed_emailSign -> {
-                    if (hasFocuse) {
-                        if (bindingSingUpActivity.emailTil.isErrorEnabled) {
-                            bindingSingUpActivity.emailTil.isErrorEnabled = false
-                        }
-                    } else {
-                        validateEmail()
-                    }
-                }
-
-                R.id.ed_PasswordSing -> {
-                    if (hasFocuse) {
-                        if (bindingSingUpActivity.passwordTil.isErrorEnabled) {
-                            bindingSingUpActivity.passwordTil.isErrorEnabled = false
-                        }
-                    } else {
-                        validatePassword()
-                    }
-                }
-            }
-        }
-    }
-    override fun onKey(view: View?, event: Int, keyEvent: KeyEvent?): Boolean {
-        return false
+    private fun isValidEmail(email: String): Boolean {
+        val pattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+        return email.matches(pattern.toRegex())
     }
 
-
-
-//===============================================================================================
-private fun openGallery() {
-    val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-    startActivityForResult(intent, GALLERY_REQUEST_CODE)
-}
+    //===============================================================================================
+    /*This method open gallery and choose image then save in icon image. */
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, GALLERY_REQUEST_CODE)
+    }
 
     private fun saveImageToStorage(imageUri: Uri) {
         if (isStoragePermissionGranted()) {
