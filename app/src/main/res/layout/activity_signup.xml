@@ -26,7 +26,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="20dp"
-                android:fontFamily="@font/archivo_black"
+                android:fontFamily="@font/metrophobic"
                 android:text="@string/sign_up"
                 android:textSize="35sp"
                 android:textStyle="bold|normal" />
@@ -43,7 +43,6 @@
                 android:id="@+id/nameTil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
                 app:boxBackgroundMode="outline"
                 app:boxStrokeColor="@color/red"
                 app:helperText="*"
@@ -57,7 +56,6 @@
                     android:background="@drawable/desgin_edittext"
                     android:backgroundTint="@color/white"
                     android:drawableStart="@drawable/baseline_person_24"
-
                     android:hint="@string/name"
                     android:lines="1"
                     android:padding="5dp" />
@@ -146,7 +144,6 @@
                 android:drawableEnd="@drawable/baseline_arrow_right_alt_24"
                 android:text="@string/already_have_an_account"
                 android:textAllCaps="false" />
-
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_signUp"
                 android:layout_width="wrap_content"

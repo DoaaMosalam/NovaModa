@@ -3,7 +3,9 @@ package com.holeCode.novamoda.auth
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
@@ -12,15 +14,26 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.holeCode.novamoda.HomeScreenActivity
 import com.holeCode.novamoda.R
+import com.holeCode.novamoda.util.SetUpService
+import com.holeCode.novamoda.pojo.User
 import com.holeCode.novamoda.databinding.ActivitySignupBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.io.OutputStream
 
 class SignUpActivity : AppCompatActivity(), TextWatcher {
     private lateinit var bindingSingUpActivity: ActivitySignupBinding
@@ -33,23 +46,31 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
         checkIcon = ContextCompat.getDrawable(this, R.drawable.baseline_check_24)!!
         //================================================================================================
         // this when text watcher button not clickable when full all edit tet
-        bindingSingUpActivity.edNameSign.addTextChangedListener(this@SignUpActivity)
-        bindingSingUpActivity.edPhoneSign.addTextChangedListener(this@SignUpActivity)
-        bindingSingUpActivity.edEmailSign.addTextChangedListener(this@SignUpActivity)
-        bindingSingUpActivity.edPasswordSing.addTextChangedListener(this@SignUpActivity)
+        bindingSingUpActivity.apply {
+            edNameSign.addTextChangedListener(this@SignUpActivity)
+            edPhoneSign.addTextChangedListener(this@SignUpActivity)
+            edEmailSign.addTextChangedListener(this@SignUpActivity)
+            edPasswordSing.addTextChangedListener(this@SignUpActivity)
+        }
 
 //        //================================================================================================
         nameFocusListener()
         phoneFocusListener()
         emailFocusListener()
         passwordFocusListener()
-
+// handle on click button
         bindingSingUpActivity.apply {
             btnLoginAccount.setOnClickListener {
                 navigationToLoginPage()
             }
             btnSignUp.setOnClickListener {
-
+              registerUSer(
+                    bindingSingUpActivity.edNameSign.text.toString()
+                    ,bindingSingUpActivity.edPhoneSign.text.toString()
+                    ,bindingSingUpActivity.edEmailSign.text.toString().trim()
+                    ,bindingSingUpActivity.edPasswordSing.text.toString().trim()
+                    ,bindingSingUpActivity.imagePerson.toString()
+                )
             }
             imagePerson.setOnClickListener {
                 openGallery()
@@ -62,8 +83,32 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
     private fun navigationToLoginPage() {
         startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
     }
+    private fun  navigateToHomeScreen(){
+//        val intent = Intent(this@SignUpActivity,HomeScreenActivity::class.java)
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//        startActivity(intent)
+        startActivity(Intent(this@SignUpActivity, HomeScreenActivity::class.java))
+    }
+// This method register user by api(name,phone,email,password)
+  private fun registerUSer(name:String,phone:String,email: String,password:String,image:String){
+    GlobalScope.launch(Dispatchers.IO) {
+        val call = SetUpService.registerUSer(name, phone, email, password, image)
+        call.enqueue(object : Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                val user = response.body()
+                if (user != null) {
+                    // Registration successful, handle the response as needed
+                    navigateToHomeScreen()
+                }
+            }
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Toast.makeText(this@SignUpActivity, t.message, Toast.LENGTH_SHORT).show()
+                Log.i("TAG", "onFailure: " + t.message)
+            }
+        })
+    }
+  }
 
-    //================================================================================================
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
     }
@@ -101,9 +146,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
         val phoneValue = bindingSingUpActivity.edPhoneSign
         phoneValue.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
-
                 validatePhone()
-
             }
         }
     }
@@ -112,9 +155,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
         val emailValue = bindingSingUpActivity.edEmailSign
         emailValue.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
-
                 validateEmail()
-
             }
         }
     }
@@ -123,9 +164,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
         val passwordValue = bindingSingUpActivity.edPasswordSing
         passwordValue.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
-
                 validatePassword()
-
             }
         }
     }
@@ -138,8 +177,13 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
             bindingSingUpActivity.nameTil.error = "Name is required"
             bindingSingUpActivity.nameTil.endIconDrawable = null
         } else {
-            bindingSingUpActivity.nameTil.error = null
-            bindingSingUpActivity.nameTil.endIconDrawable = checkIcon
+            bindingSingUpActivity.nameTil.apply {
+                error = null
+                endIconDrawable = checkIcon
+                setStartIconDrawable(R.drawable.baseline_check_24)
+                setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
+            }
+
         }
         return bindingSingUpActivity.nameTil.error == null
     }
@@ -152,8 +196,12 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
             bindingSingUpActivity.phoneTil.error = "Phone number is required"
             bindingSingUpActivity.phoneTil.endIconDrawable = null
         } else {
-            bindingSingUpActivity.phoneTil.error = null
-            bindingSingUpActivity.phoneTil.endIconDrawable = checkIcon
+            bindingSingUpActivity.phoneTil.apply {
+                error=null
+                endIconDrawable = checkIcon
+                setStartIconDrawable(R.drawable.baseline_check_24)
+                setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
+            }
         }
         return bindingSingUpActivity.phoneTil.error == null
     }
@@ -169,8 +217,12 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
             bindingSingUpActivity.emailTil.error = "Invalid email address"
             bindingSingUpActivity.emailTil.endIconDrawable = null
         } else {
-            bindingSingUpActivity.emailTil.error = null
-            bindingSingUpActivity.emailTil.endIconDrawable = checkIcon
+            bindingSingUpActivity.emailTil.apply {
+                error=null
+//                endIconDrawable=checkIcon
+                setStartIconDrawable(R.drawable.baseline_check_24)
+                setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
+            }
         }
         return bindingSingUpActivity.emailTil.error == null
     }
@@ -196,8 +248,12 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
             bindingSingUpActivity.passwordTil.error =
                 "Password must contain special[@#\$%^&+=] "
         } else {
-            bindingSingUpActivity.passwordTil.error = null
-            bindingSingUpActivity.passwordTil.endIconDrawable = checkIcon
+            bindingSingUpActivity.passwordTil.apply {
+                error = null
+                endIconDrawable = checkIcon
+                setStartIconDrawable(R.drawable.baseline_check_24)
+              setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
+            }
         }
         return bindingSingUpActivity.passwordTil.error == null
     }
@@ -206,7 +262,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
         val pattern = "[A-Z]+@[a-z]+\\.+[@#\$%^&+=]+"
         return password.matches(pattern.toRegex())
     }
-
+//method pattern email
     private fun isValidEmail(email: String): Boolean {
         val pattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
         return email.matches(pattern.toRegex())
@@ -218,22 +274,29 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, GALLERY_REQUEST_CODE)
     }
-
     private fun saveImageToStorage(imageUri: Uri) {
-        if (isStoragePermissionGranted()) {
+        GlobalScope.launch(Dispatchers.IO) {
             val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
-            val outputStream: OutputStream?
             val file = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "my_image.jpg")
+            var success = false
+
             try {
-                outputStream = FileOutputStream(file)
+                val outputStream = FileOutputStream(file)
                 imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
                 outputStream.flush()
                 outputStream.close()
-                // Image saved successfully
-                bindingSingUpActivity.imagePerson.setImageURI(imageUri)
+                success = true
             } catch (e: IOException) {
                 e.printStackTrace()
-                // Error saving image
+            }
+
+            withContext(Dispatchers.Main) {
+                if (success) {
+                    // Image saved successfully
+                    bindingSingUpActivity.imagePerson.setImageURI(imageUri)
+                } else {
+                    // Error saving image
+                }
             }
         }
     }
