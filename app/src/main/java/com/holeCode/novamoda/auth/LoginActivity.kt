@@ -17,9 +17,11 @@ class LoginActivity : AppCompatActivity() ,TextWatcher{
         bindingLogActivity.edEmailLogin.addTextChangedListener(this@LoginActivity)
         bindingLogActivity.edPasswordLogin.addTextChangedListener(this@LoginActivity)
         //================================================================================================
-        bindingLogActivity.btnLogin.setOnClickListener {
-            navigationToForgetPage()
+        bindingLogActivity.apply {
+            btnForgetPasswrod.setOnClickListener {
+                navigationToForgetPage()
 
+            }
         }
     }
 

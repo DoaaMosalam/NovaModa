@@ -21,9 +21,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.holeCode.novamoda.HomeScreenActivity
 import com.holeCode.novamoda.R
-import com.holeCode.novamoda.util.SetUpService
 import com.holeCode.novamoda.pojo.User
 import com.holeCode.novamoda.databinding.ActivitySignupBinding
+import com.holeCode.novamoda.util.APIService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -64,13 +64,13 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
                 navigationToLoginPage()
             }
             btnSignUp.setOnClickListener {
-              registerUSer(
-                    bindingSingUpActivity.edNameSign.text.toString()
-                    ,bindingSingUpActivity.edPhoneSign.text.toString()
-                    ,bindingSingUpActivity.edEmailSign.text.toString().trim()
-                    ,bindingSingUpActivity.edPasswordSing.text.toString().trim()
-                    ,bindingSingUpActivity.imagePerson.toString()
-                )
+//              registerUSer(
+//                    bindingSingUpActivity.edNameSign.text.toString()
+//                    ,bindingSingUpActivity.edPhoneSign.text.toString()
+//                    ,bindingSingUpActivity.edEmailSign.text.toString().trim()
+//                    ,bindingSingUpActivity.edPasswordSing.text.toString().trim()
+//                    ,bindingSingUpActivity.imagePerson.toString()
+//                )
             }
             imagePerson.setOnClickListener {
                 openGallery()
@@ -90,24 +90,24 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
         startActivity(Intent(this@SignUpActivity, HomeScreenActivity::class.java))
     }
 // This method register user by api(name,phone,email,password)
-  private fun registerUSer(name:String,phone:String,email: String,password:String,image:String){
-    GlobalScope.launch(Dispatchers.IO) {
-        val call = SetUpService.registerUSer(name, phone, email, password, image)
-        call.enqueue(object : Callback<User> {
-            override fun onResponse(call: Call<User>, response: Response<User>) {
-                val user = response.body()
-                if (user != null) {
-                    // Registration successful, handle the response as needed
-                    navigateToHomeScreen()
-                }
-            }
-            override fun onFailure(call: Call<User>, t: Throwable) {
-                Toast.makeText(this@SignUpActivity, t.message, Toast.LENGTH_SHORT).show()
-                Log.i("TAG", "onFailure: " + t.message)
-            }
-        })
-    }
-  }
+//  private fun registerUSer(name:String,phone:String,email: String,password:String,image:String){
+//    GlobalScope.launch(Dispatchers.IO) {
+//        val call = APIService.registerService(name, phone, email, password, image)
+//        call.enqueue(object : Callback<User> {
+//            override fun onResponse(call: Call<User>, response: Response<User>) {
+//                val user = response.body()
+//                if (user != null) {
+//                    // Registration successful, handle the response as needed
+//                    navigateToHomeScreen()
+//                }
+//            }
+//            override fun onFailure(call: Call<User>, t: Throwable) {
+//                Toast.makeText(this@SignUpActivity, t.message, Toast.LENGTH_SHORT).show()
+//                Log.i("TAG", "onFailure: " + t.message)
+//            }
+//        })
+//    }
+//  }
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
