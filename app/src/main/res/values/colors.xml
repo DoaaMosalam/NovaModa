@@ -2,7 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-<!--    <color name="light_gray">#E8E7E7</color>-->
+    <!--    <color name="light_gray">#E8E7E7</color>-->
     <color name="light_gray">#E3E3E3</color>
     <color name="m_gray">#BBB5B5</color>
     // required

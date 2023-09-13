@@ -1,10 +1,9 @@
 package com.holeCode.novamoda.auth
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-
+import androidx.appcompat.app.AppCompatActivity
 import com.holeCode.novamoda.databinding.ActivityForgetPasswordBinding
 
 class ForgetPasswordActivity : AppCompatActivity(), TextWatcher {

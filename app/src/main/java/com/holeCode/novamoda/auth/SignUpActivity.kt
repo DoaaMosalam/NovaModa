@@ -1,6 +1,7 @@
 package com.holeCode.novamoda.auth
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
@@ -14,23 +15,23 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import com.holeCode.novamoda.HomeScreenActivity
 import com.holeCode.novamoda.R
-import com.holeCode.novamoda.pojo.User
+import com.holeCode.novamoda.data.ValidateEmailBody
 import com.holeCode.novamoda.databinding.ActivitySignupBinding
+import com.holeCode.novamoda.repository.AuthRepository
 import com.holeCode.novamoda.util.APIService
+import com.holeCode.novamoda.view_model.RegisterActivityViewModel
+import com.holeCode.novamoda.view_model.RegisterActivityViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -39,11 +40,15 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
     private lateinit var bindingSingUpActivity: ActivitySignupBinding
     private var selectedImageUri: Uri? = null
     private lateinit var checkIcon: Drawable
+    private lateinit var mViewModel:RegisterActivityViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingSingUpActivity = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(bindingSingUpActivity.root)
         checkIcon = ContextCompat.getDrawable(this, R.drawable.baseline_check_24)!!
+        mViewModel = ViewModelProvider(this,RegisterActivityViewModelFactory(AuthRepository(APIService.getService()),application)).get(RegisterActivityViewModel::class.java)
+        setUpObserver()
+
         //================================================================================================
         // this when text watcher button not clickable when full all edit tet
         bindingSingUpActivity.apply {
@@ -61,9 +66,13 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
 // handle on click button
         bindingSingUpActivity.apply {
             btnLoginAccount.setOnClickListener {
-                navigationToLoginPage()
+
+                navigateGoToOtherPage()
             }
             btnSignUp.setOnClickListener {
+//                bindingSingUpActivity.progressbar.visibility = View.VISIBLE
+                navigateGoToOtherPage()
+
 //              registerUSer(
 //                    bindingSingUpActivity.edNameSign.text.toString()
 //                    ,bindingSingUpActivity.edPhoneSign.text.toString()
@@ -78,17 +87,94 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
             }
         }
     }
-
-    //This method go to Login page.
-    private fun navigationToLoginPage() {
-        startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
+//==================================================================================================
+private fun setUpObserver() {
+    mViewModel.getIsLoading().observe(this) {
+            bindingSingUpActivity.progressbar.isVisible = it
     }
-    private fun  navigateToHomeScreen(){
-//        val intent = Intent(this@SignUpActivity,HomeScreenActivity::class.java)
+    mViewModel.getIsUniqueEmail().observe(this){
+//        if (validateEmail(shouldUpdateView = false)){
+//            if (it){
+//                bindingSingUpActivity.emailTil.apply {
+//                    if (isErrorEnabled)isErrorEnabled=false
+//                    setStartIconDrawable(R.drawable.baseline_check_24)
+//                    setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
+//                }
+//            }else{
+//                bindingSingUpActivity.emailTil.apply {
+//                    if (startIconDrawable!= null)startIconDrawable =null
+//                    isErrorEnabled =true
+//                    error("Email is already taken")
+//                }
+//            }
+//        }
+    }
+    mViewModel.getErrorMessage().observe(this) {
+        //Name,Phone,Email,Password
+        val formErrorKey = arrayOf("name","phone","email","password")
+        val message = StringBuilder()
+        it.map{ entry->
+            if (formErrorKey.contains(entry.key)){
+                when(entry.key){
+                    "name"->{
+                        bindingSingUpActivity.nameTil.apply {
+                            isErrorEnabled=true
+                            error=entry.value
+                        }
+
+                    }
+                    "phone"->{
+                        bindingSingUpActivity.phoneTil.apply {
+                            isErrorEnabled=true
+                            error=entry.value
+                        }
+                    }
+                    "email"->{
+                        bindingSingUpActivity.emailTil.apply {
+                            isErrorEnabled=true
+                            error=entry.value
+                        }
+                    }
+                    "password"->{
+                        bindingSingUpActivity.passwordTil.apply {
+                            isErrorEnabled=true
+                            error=entry.value
+                        }
+                    }
+                }
+            }else{
+                message.append(entry.value).append("\n")
+            }
+            if (message.isNotEmpty()){
+                AlertDialog.Builder(this)
+                    .setIcon(R.drawable.baseline_info_24)
+                    .setTitle("INFORMATION")
+                    .setMessage(message)
+                    .setPositiveButton("OK"){dialog,_ ->dialog.dismiss()}
+                    .show()
+
+            }
+        }
+
+    }
+    mViewModel.getUser().observe(this){
+    }
+}
+
+    private fun navigateGoToOtherPage(){
+        bindingSingUpActivity.apply {
+            btnLoginAccount.setOnClickListener {
+                startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
+            }
+            btnSignUp.setOnClickListener {
+                //        val intent = Intent(this@SignUpActivity,HomeScreenActivity::class.java)
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
 //        startActivity(intent)
-        startActivity(Intent(this@SignUpActivity, HomeScreenActivity::class.java))
+                startActivity(Intent(this@SignUpActivity, HomeScreenActivity::class.java))
+            }
+        }
     }
+
 // This method register user by api(name,phone,email,password)
 //  private fun registerUSer(name:String,phone:String,email: String,password:String,image:String){
 //    GlobalScope.launch(Dispatchers.IO) {
@@ -137,7 +223,6 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
         nameValue.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 validateName()
-
             }
         }
     }
@@ -156,8 +241,10 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
         emailValue.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 validateEmail()
+                mViewModel.validateEmailAddress(ValidateEmailBody(emailValue.toString()))
             }
-        }
+
+            }
     }
 
     private fun passwordFocusListener() {
@@ -183,7 +270,6 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
                 setStartIconDrawable(R.drawable.baseline_check_24)
                 setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
             }
-
         }
         return bindingSingUpActivity.nameTil.error == null
     }
@@ -197,7 +283,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
             bindingSingUpActivity.phoneTil.endIconDrawable = null
         } else {
             bindingSingUpActivity.phoneTil.apply {
-                error=null
+                error = null
                 endIconDrawable = checkIcon
                 setStartIconDrawable(R.drawable.baseline_check_24)
                 setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
@@ -207,7 +293,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
     }
 
     //this method to validate email when user register
-    private fun validateEmail(): Boolean {
+    private fun validateEmail(shouldUpdateView:Boolean=true): Boolean {
         val email = bindingSingUpActivity.edEmailSign.text.toString().trim()
 
         if (email.isEmpty()) {
@@ -218,11 +304,13 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
             bindingSingUpActivity.emailTil.endIconDrawable = null
         } else {
             bindingSingUpActivity.emailTil.apply {
-                error=null
+                error = null
 //                endIconDrawable=checkIcon
                 setStartIconDrawable(R.drawable.baseline_check_24)
                 setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
             }
+
+
         }
         return bindingSingUpActivity.emailTil.error == null
     }
@@ -252,7 +340,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
                 error = null
                 endIconDrawable = checkIcon
                 setStartIconDrawable(R.drawable.baseline_check_24)
-              setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
+                setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
             }
         }
         return bindingSingUpActivity.passwordTil.error == null
@@ -262,7 +350,8 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
         val pattern = "[A-Z]+@[a-z]+\\.+[@#\$%^&+=]+"
         return password.matches(pattern.toRegex())
     }
-//method pattern email
+
+    //method pattern email
     private fun isValidEmail(email: String): Boolean {
         val pattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
         return email.matches(pattern.toRegex())
@@ -274,6 +363,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, GALLERY_REQUEST_CODE)
     }
+
     private fun saveImageToStorage(imageUri: Uri) {
         GlobalScope.launch(Dispatchers.IO) {
             val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)

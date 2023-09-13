@@ -1,8 +1,8 @@
 package com.holeCode.novamoda.splashScreen
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
 import com.holeCode.novamoda.auth.SignUpActivity
 import com.holeCode.novamoda.databinding.ActivitySplashBinding
@@ -13,7 +13,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         splashBinding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(splashBinding.root)
-        splashBinding.motionLayout.addTransitionListener(object :MotionLayout.TransitionListener{
+        splashBinding.motionLayout.addTransitionListener(object : MotionLayout.TransitionListener {
             override fun onTransitionStarted(
                 motionLayout: MotionLayout?,
                 startId: Int,

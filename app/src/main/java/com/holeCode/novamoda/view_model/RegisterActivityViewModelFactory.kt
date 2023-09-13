@@ -11,12 +11,12 @@ class RegisterActivityViewModelFactory(
     private val application: Application
 ) : ViewModelProvider.Factory {
 
-@Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(RegisterActivityViewModel::class.java)){
+        if (modelClass.isAssignableFrom(RegisterActivityViewModel::class.java)) {
             return RegisterActivityViewModel(authRepository, application) as T
         }
-       throw InvalidParameterException("Unable to constructor Register Activity View Model")
+        throw InvalidParameterException("Unable to constructor Register Activity View Model")
     }
 
 

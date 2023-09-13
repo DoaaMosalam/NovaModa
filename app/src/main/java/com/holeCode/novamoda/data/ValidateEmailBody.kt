@@ -1,5 +1,5 @@
 package com.holeCode.novamoda.data
 
 data class ValidateEmailBody(
-    val email:String
+    val email: String
 )
