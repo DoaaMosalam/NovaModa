@@ -15,6 +15,8 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -22,8 +24,8 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.holeCode.novamoda.HomeScreenActivity
 import com.holeCode.novamoda.R
-import com.holeCode.novamoda.data.ValidateEmailBody
 import com.holeCode.novamoda.databinding.ActivitySignupBinding
+import com.holeCode.novamoda.pojo.RegisterBody
 import com.holeCode.novamoda.repository.AuthRepository
 import com.holeCode.novamoda.util.APIService
 import com.holeCode.novamoda.view_model.RegisterActivityViewModel
@@ -36,17 +38,26 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-class SignUpActivity : AppCompatActivity(), TextWatcher {
+class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, View.OnKeyListener {
     private lateinit var bindingSingUpActivity: ActivitySignupBinding
     private var selectedImageUri: Uri? = null
     private lateinit var checkIcon: Drawable
-    private lateinit var mViewModel:RegisterActivityViewModel
+    private lateinit var mViewModel: RegisterActivityViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingSingUpActivity = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(bindingSingUpActivity.root)
+
         checkIcon = ContextCompat.getDrawable(this, R.drawable.baseline_check_24)!!
-        mViewModel = ViewModelProvider(this,RegisterActivityViewModelFactory(AuthRepository(APIService.getService()),application)).get(RegisterActivityViewModel::class.java)
+        bindingSingUpActivity.btnLoginAccount.setOnClickListener(this)
+        bindingSingUpActivity.btnSignUp.setOnClickListener(this)
+        bindingSingUpActivity.imagePerson.setOnClickListener(this)
+        mViewModel = ViewModelProvider(
+            this,
+            RegisterActivityViewModelFactory(AuthRepository(APIService.getService()), application)
+        )
+            .get(RegisterActivityViewModel::class.java)
+
         setUpObserver()
 
         //================================================================================================
@@ -63,138 +74,12 @@ class SignUpActivity : AppCompatActivity(), TextWatcher {
         phoneFocusListener()
         emailFocusListener()
         passwordFocusListener()
-// handle on click button
-        bindingSingUpActivity.apply {
-            btnLoginAccount.setOnClickListener {
+    }//end onCreate
 
-                navigateGoToOtherPage()
-            }
-            btnSignUp.setOnClickListener {
-//                bindingSingUpActivity.progressbar.visibility = View.VISIBLE
-                navigateGoToOtherPage()
-
-//              registerUSer(
-//                    bindingSingUpActivity.edNameSign.text.toString()
-//                    ,bindingSingUpActivity.edPhoneSign.text.toString()
-//                    ,bindingSingUpActivity.edEmailSign.text.toString().trim()
-//                    ,bindingSingUpActivity.edPasswordSing.text.toString().trim()
-//                    ,bindingSingUpActivity.imagePerson.toString()
-//                )
-            }
-            imagePerson.setOnClickListener {
-                openGallery()
-
-            }
-        }
-    }
-//==================================================================================================
-private fun setUpObserver() {
-    mViewModel.getIsLoading().observe(this) {
-            bindingSingUpActivity.progressbar.isVisible = it
-    }
-    mViewModel.getIsUniqueEmail().observe(this){
-//        if (validateEmail(shouldUpdateView = false)){
-//            if (it){
-//                bindingSingUpActivity.emailTil.apply {
-//                    if (isErrorEnabled)isErrorEnabled=false
-//                    setStartIconDrawable(R.drawable.baseline_check_24)
-//                    setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
-//                }
-//            }else{
-//                bindingSingUpActivity.emailTil.apply {
-//                    if (startIconDrawable!= null)startIconDrawable =null
-//                    isErrorEnabled =true
-//                    error("Email is already taken")
-//                }
-//            }
-//        }
-    }
-    mViewModel.getErrorMessage().observe(this) {
-        //Name,Phone,Email,Password
-        val formErrorKey = arrayOf("name","phone","email","password")
-        val message = StringBuilder()
-        it.map{ entry->
-            if (formErrorKey.contains(entry.key)){
-                when(entry.key){
-                    "name"->{
-                        bindingSingUpActivity.nameTil.apply {
-                            isErrorEnabled=true
-                            error=entry.value
-                        }
-
-                    }
-                    "phone"->{
-                        bindingSingUpActivity.phoneTil.apply {
-                            isErrorEnabled=true
-                            error=entry.value
-                        }
-                    }
-                    "email"->{
-                        bindingSingUpActivity.emailTil.apply {
-                            isErrorEnabled=true
-                            error=entry.value
-                        }
-                    }
-                    "password"->{
-                        bindingSingUpActivity.passwordTil.apply {
-                            isErrorEnabled=true
-                            error=entry.value
-                        }
-                    }
-                }
-            }else{
-                message.append(entry.value).append("\n")
-            }
-            if (message.isNotEmpty()){
-                AlertDialog.Builder(this)
-                    .setIcon(R.drawable.baseline_info_24)
-                    .setTitle("INFORMATION")
-                    .setMessage(message)
-                    .setPositiveButton("OK"){dialog,_ ->dialog.dismiss()}
-                    .show()
-
-            }
-        }
-
-    }
-    mViewModel.getUser().observe(this){
-    }
-}
-
-    private fun navigateGoToOtherPage(){
-        bindingSingUpActivity.apply {
-            btnLoginAccount.setOnClickListener {
-                startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
-            }
-            btnSignUp.setOnClickListener {
-                //        val intent = Intent(this@SignUpActivity,HomeScreenActivity::class.java)
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//        startActivity(intent)
-                startActivity(Intent(this@SignUpActivity, HomeScreenActivity::class.java))
-            }
-        }
-    }
-
-// This method register user by api(name,phone,email,password)
-//  private fun registerUSer(name:String,phone:String,email: String,password:String,image:String){
-//    GlobalScope.launch(Dispatchers.IO) {
-//        val call = APIService.registerService(name, phone, email, password, image)
-//        call.enqueue(object : Callback<User> {
-//            override fun onResponse(call: Call<User>, response: Response<User>) {
-//                val user = response.body()
-//                if (user != null) {
-//                    // Registration successful, handle the response as needed
-//                    navigateToHomeScreen()
-//                }
-//            }
-//            override fun onFailure(call: Call<User>, t: Throwable) {
-//                Toast.makeText(this@SignUpActivity, t.message, Toast.LENGTH_SHORT).show()
-//                Log.i("TAG", "onFailure: " + t.message)
-//            }
-//        })
-//    }
-//  }
-
+    //==================================================================================================
+    /*This method is inheritance from TextWatcher
+    * inside method afterTextChange call methods editText that can be click button after full all text
+    * and call method validateName && validatePhone && validateEmail & validatePassword */
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
     }
@@ -213,11 +98,176 @@ private fun setUpObserver() {
                     && validatePhone()
                     && validateEmail()
                     && validatePassword()
+    }
 
+    //=================================================================================================
+    /*This method is inheritance from setOnClickListener. */
+    override fun onClick(view: View?) {
+        if (view != null && view.id == R.id.btn_LoginAccount) {
+            startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
+        } else if (view != null && view.id == R.id.btn_signUp) {
+            onSubmit()
+            startActivity(Intent(this@SignUpActivity, HomeScreenActivity::class.java))
+        } else if (view != null && view.id == R.id.imagePerson) {
+            openGallery()
+        }
+    }
+
+    //=================================================================================================
+    /*This method is inheritance from SetOnKey */
+    override fun onKey(view: View?, keyCode: Int, keyEvent: KeyEvent?): Boolean {
+        if (KeyEvent.KEYCODE_ENTER == keyCode && keyEvent!!.action == KeyEvent.ACTION_UP) {
+//            do register
+            onSubmit()
+        }
+        return false
+    }
+
+    //=================================================================================================
+// this method handle go to homeActivity.
+    private fun navigateGoToHome() {
+        startActivity(Intent(this@SignUpActivity, HomeScreenActivity::class.java))
     }
 
     //==============================================================================================
-    // this method on Focus Listener appear  (name,phone,email,password)
+    private fun setUpObserver() {
+        mViewModel.getIsLoading().observe(this) {
+            bindingSingUpActivity.progressbar.isVisible = it
+        }
+        mViewModel.getIsUniqueEmail().observe(this) {
+//        if (validateEmail(shouldUpdateView = false)){
+//            if (it){
+//                bindingSingUpActivity.emailTil.apply {
+//                    if (isErrorEnabled)isErrorEnabled=false
+//                    setStartIconDrawable(R.drawable.baseline_check_24)
+//                    setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
+//                }
+//            }else{
+//                bindingSingUpActivity.emailTil.apply {
+//                    if (startIconDrawable!= null)startIconDrawable =null
+//                    isErrorEnabled =true
+//                    error("Email is already taken")
+//                }
+//            }
+//        }
+        }
+        mViewModel.getErrorMessage().observe(this) {
+            //Name,Phone,Email,Password
+            val formErrorKey = arrayOf("name", "phone", "email", "password")
+            val message = StringBuilder()
+            it.map { entry ->
+                if (formErrorKey.contains(entry.key)) {
+                    when (entry.key) {
+                        "name" -> {
+                            bindingSingUpActivity.nameTil.apply {
+                                isErrorEnabled = true
+                                error = entry.value
+                            }
+
+                        }
+
+                        "phone" -> {
+                            bindingSingUpActivity.phoneTil.apply {
+                                isErrorEnabled = true
+                                error = entry.value
+                            }
+                        }
+
+                        "email" -> {
+                            bindingSingUpActivity.emailTil.apply {
+                                isErrorEnabled = true
+                                error = entry.value
+                            }
+                        }
+
+                        "password" -> {
+                            bindingSingUpActivity.passwordTil.apply {
+                                isErrorEnabled = true
+                                error = entry.value
+                            }
+                        }
+                    }
+                } else {
+                    message.append(entry.value).append("\n")
+                }
+                if (message.isNotEmpty()) {
+                    AlertDialog.Builder(this)
+                        .setIcon(R.drawable.baseline_info_24)
+                        .setTitle("INFORMATION")
+                        .setMessage(message)
+                        .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                        .show()
+                }
+            }
+        }
+        mViewModel.getUser().observe(this) {
+            if (it != null) {
+                navigateGoToHome()
+            }
+        }
+    }
+
+//    private fun registerUser( name:String,  phone:String, email:String,  password:String){
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val body = RegisterBody(name, phone, email, password)
+//            val call = APIService.getService().registerUser(body)
+//            call.enqueue(object : Callback<RegisterResponse> {
+//                override fun onResponse(
+//                    call: Call<RegisterResponse>,
+//                    response: Response<RegisterResponse>
+//                ) {
+//                    val user =response.body()
+//                    if (user!=null){
+//                        navigateGoToHome()
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+//                    Toast.makeText(this@SignUpActivity, t.message, Toast.LENGTH_SHORT).show()
+//                Log.i("TAG", "onFailure: " + t.message)
+//                }
+//
+//            })
+//        }
+//
+//    }
+
+
+    private fun onSubmit() {
+
+        if (validate()) {
+            //make Api request.
+//            registerUser( bindingSingUpActivity.edNameSign.text.toString(),
+//                bindingSingUpActivity.edPhoneSign.text.toString(),
+//                bindingSingUpActivity.edEmailSign.text.toString(),
+//                bindingSingUpActivity.edPasswordSing.text.toString())
+
+
+            mViewModel.registerUserVM(
+                RegisterBody(
+                    bindingSingUpActivity.edNameSign.text.toString(),
+                    bindingSingUpActivity.edPhoneSign.text.toString(),
+                    bindingSingUpActivity.edEmailSign.text.toString(),
+                    bindingSingUpActivity.edPasswordSing.text.toString()
+                )
+            )
+        }
+    }
+
+    //
+    private fun validate(): Boolean {
+        var isvalide = true
+        if (!validateName()) isvalide = false
+        if (!validatePhone()) isvalide = false
+        if (!validateEmail()) isvalide = false
+        if (!validatePassword()) isvalide = false
+        return isvalide
+
+    }
+
+
+    //==============================================================================================
+// this method on Focus Listener appear  (name,phone,email,password)
     private fun nameFocusListener() {
         val nameValue = bindingSingUpActivity.edNameSign
         nameValue.setOnFocusChangeListener { _, hasFocus ->
@@ -239,12 +289,13 @@ private fun setUpObserver() {
     private fun emailFocusListener() {
         val emailValue = bindingSingUpActivity.edEmailSign
         emailValue.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
+            if (!hasFocus)
                 validateEmail()
-                mViewModel.validateEmailAddress(ValidateEmailBody(emailValue.toString()))
-            }
+            //            else {
+//                mViewModel.validateEmailAddress(ValidateEmailBody(emailValue.toString()))
+//            }
 
-            }
+        }
     }
 
     private fun passwordFocusListener() {
@@ -255,8 +306,8 @@ private fun setUpObserver() {
             }
         }
     }
-    //=============================================================================================
 
+    //==================================================================================================
     //this method to validate name when user register
     private fun validateName(): Boolean {
         val name = bindingSingUpActivity.edNameSign.text.toString().trim()
@@ -293,7 +344,7 @@ private fun setUpObserver() {
     }
 
     //this method to validate email when user register
-    private fun validateEmail(shouldUpdateView:Boolean=true): Boolean {
+    private fun validateEmail(shouldUpdateView: Boolean = true): Boolean {
         val email = bindingSingUpActivity.edEmailSign.text.toString().trim()
 
         if (email.isEmpty()) {
@@ -447,4 +498,6 @@ private fun setUpObserver() {
             }
         }
     }
+
+
 }

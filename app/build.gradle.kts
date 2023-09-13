@@ -60,10 +60,16 @@ dependencies {
     implementation("io.github.amrdeveloper:reactbutton:2.1.0")
     //View Model
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
-
     //retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     //convrt retrofit
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    //OKHTTP
+    // define a BOM and its version
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
+
+    // define any required OkHttp artifacts without version
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.squareup.okhttp3:logging-interceptor")
 
 }

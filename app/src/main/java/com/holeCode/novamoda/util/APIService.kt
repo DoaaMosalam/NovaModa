@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit
 object APIService {
     private const val BASE_URL = "https://student.valuxapps.com/api/"
     fun getService(): APIConsumer {
+
         val client = OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
