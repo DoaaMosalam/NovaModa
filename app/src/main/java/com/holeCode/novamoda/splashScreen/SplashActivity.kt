@@ -41,7 +41,7 @@ class SplashActivity : AppCompatActivity() {
                 positive: Boolean,
                 progress: Float
             ) {
-                TODO("Not yet implemented")
+
             }
 
         })

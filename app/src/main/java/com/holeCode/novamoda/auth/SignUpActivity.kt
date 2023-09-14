@@ -24,10 +24,13 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.holeCode.novamoda.HomeScreenActivity
 import com.holeCode.novamoda.R
+import com.holeCode.novamoda.data.RegisterResponse
+import com.holeCode.novamoda.data.ValidateEmailBody
 import com.holeCode.novamoda.databinding.ActivitySignupBinding
 import com.holeCode.novamoda.pojo.RegisterBody
 import com.holeCode.novamoda.repository.AuthRepository
 import com.holeCode.novamoda.util.APIService
+import com.holeCode.novamoda.util.AuthToken
 import com.holeCode.novamoda.view_model.RegisterActivityViewModel
 import com.holeCode.novamoda.view_model.RegisterActivityViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -107,7 +110,9 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
             startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
         } else if (view != null && view.id == R.id.btn_signUp) {
             onSubmit()
-            startActivity(Intent(this@SignUpActivity, HomeScreenActivity::class.java))
+            val intent = Intent(this@SignUpActivity, HomeScreenActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         } else if (view != null && view.id == R.id.imagePerson) {
             openGallery()
         }
@@ -206,45 +211,13 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
             }
         }
     }
-
-//    private fun registerUser( name:String,  phone:String, email:String,  password:String){
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val body = RegisterBody(name, phone, email, password)
-//            val call = APIService.getService().registerUser(body)
-//            call.enqueue(object : Callback<RegisterResponse> {
-//                override fun onResponse(
-//                    call: Call<RegisterResponse>,
-//                    response: Response<RegisterResponse>
-//                ) {
-//                    val user =response.body()
-//                    if (user!=null){
-//                        navigateGoToHome()
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-//                    Toast.makeText(this@SignUpActivity, t.message, Toast.LENGTH_SHORT).show()
-//                Log.i("TAG", "onFailure: " + t.message)
-//                }
-//
-//            })
-//        }
-//
-//    }
-
-
     private fun onSubmit() {
 
         if (validate()) {
             //make Api request.
-//            registerUser( bindingSingUpActivity.edNameSign.text.toString(),
-//                bindingSingUpActivity.edPhoneSign.text.toString(),
-//                bindingSingUpActivity.edEmailSign.text.toString(),
-//                bindingSingUpActivity.edPasswordSing.text.toString())
-
-
             mViewModel.registerUserVM(
                 RegisterBody(
+                    bindingSingUpActivity.imagePerson.toString(),
                     bindingSingUpActivity.edNameSign.text.toString(),
                     bindingSingUpActivity.edPhoneSign.text.toString(),
                     bindingSingUpActivity.edEmailSign.text.toString(),
@@ -289,12 +262,12 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
     private fun emailFocusListener() {
         val emailValue = bindingSingUpActivity.edEmailSign
         emailValue.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus)
+            if (!hasFocus) {
                 validateEmail()
-            //            else {
+            }
+//            else if (!hasFocus) {
 //                mViewModel.validateEmailAddress(ValidateEmailBody(emailValue.toString()))
 //            }
-
         }
     }
 
@@ -332,6 +305,8 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         if (phone.isEmpty()) {
             bindingSingUpActivity.phoneTil.error = "Phone number is required"
             bindingSingUpActivity.phoneTil.endIconDrawable = null
+        } else if (!phone.matches("""^\d{10}$""".toRegex())){
+            bindingSingUpActivity.phoneTil.error = "Valid phone number"
         } else {
             bindingSingUpActivity.phoneTil.apply {
                 error = null
@@ -356,12 +331,9 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         } else {
             bindingSingUpActivity.emailTil.apply {
                 error = null
-//                endIconDrawable=checkIcon
                 setStartIconDrawable(R.drawable.baseline_check_24)
                 setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
             }
-
-
         }
         return bindingSingUpActivity.emailTil.error == null
     }
@@ -373,8 +345,8 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         if (password.isEmpty()) {
             bindingSingUpActivity.passwordTil.error = "Password is required"
             bindingSingUpActivity.passwordTil.endIconDrawable = null
-        } else if (password.length < 6) {
-            bindingSingUpActivity.passwordTil.error = "Password must be at least 6 characters"
+        } else if (password.length < 8) {
+            bindingSingUpActivity.passwordTil.error = "Password must be at least 8 characters"
             bindingSingUpActivity.passwordTil.endIconDrawable = null
         } else if (!password.matches(".*[A-Z].*".toRegex())) {
             bindingSingUpActivity.passwordTil.error =
@@ -386,6 +358,9 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         } else if (!password.matches(".*[@#\$%^&+=].*".toRegex())) {
             bindingSingUpActivity.passwordTil.error =
                 "Password must contain special[@#\$%^&+=] "
+        }else if(!password.matches(".*[1-9]|10.*".toRegex())){
+            bindingSingUpActivity.passwordTil.error =
+                "Password must contains numbers 1:10"
         } else {
             bindingSingUpActivity.passwordTil.apply {
                 error = null

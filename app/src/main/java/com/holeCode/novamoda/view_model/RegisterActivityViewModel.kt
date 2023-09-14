@@ -1,6 +1,7 @@
 package com.holeCode.novamoda.view_model
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -67,7 +68,6 @@ class RegisterActivityViewModel(
                         AuthToken.getInstance(application.baseContext).token =
                             it.data.data.toString()
                     }
-
                     is RequestStatus.Error -> {
                         isLoading.value = false
                         errorMessage.value = it.message
