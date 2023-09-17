@@ -24,13 +24,11 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.holeCode.novamoda.HomeScreenActivity
 import com.holeCode.novamoda.R
-import com.holeCode.novamoda.data.RegisterResponse
-import com.holeCode.novamoda.data.ValidateEmailBody
 import com.holeCode.novamoda.databinding.ActivitySignupBinding
 import com.holeCode.novamoda.pojo.RegisterBody
 import com.holeCode.novamoda.repository.AuthRepository
+import com.holeCode.novamoda.storage.SharedPreferencesManager
 import com.holeCode.novamoda.util.APIService
-import com.holeCode.novamoda.util.AuthToken
 import com.holeCode.novamoda.view_model.RegisterActivityViewModel
 import com.holeCode.novamoda.view_model.RegisterActivityViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -50,11 +48,17 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         super.onCreate(savedInstanceState)
         bindingSingUpActivity = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(bindingSingUpActivity.root)
+// After successful login
+        SharedPreferencesManager(this).setUserIsRegistered(true)
 
+// When user logs out or exits the app
+        SharedPreferencesManager(this).setUserIsRegistered(false)
+        //============================================================================================
         checkIcon = ContextCompat.getDrawable(this, R.drawable.baseline_check_24)!!
         bindingSingUpActivity.btnLoginAccount.setOnClickListener(this)
         bindingSingUpActivity.btnSignUp.setOnClickListener(this)
         bindingSingUpActivity.imagePerson.setOnClickListener(this)
+
         mViewModel = ViewModelProvider(
             this,
             RegisterActivityViewModelFactory(AuthRepository(APIService.getService()), application)
@@ -211,6 +215,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
             }
         }
     }
+
     private fun onSubmit() {
 
         if (validate()) {
@@ -227,7 +232,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         }
     }
 
-    //
+    /*This metjod validate all field edit text */
     private fun validate(): Boolean {
         var isvalide = true
         if (!validateName()) isvalide = false
@@ -237,7 +242,6 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         return isvalide
 
     }
-
 
     //==============================================================================================
 // this method on Focus Listener appear  (name,phone,email,password)
@@ -305,7 +309,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         if (phone.isEmpty()) {
             bindingSingUpActivity.phoneTil.error = "Phone number is required"
             bindingSingUpActivity.phoneTil.endIconDrawable = null
-        } else if (!phone.matches("""^\d{10}$""".toRegex())){
+        } else if (!phone.matches("""^\d{10}$""".toRegex())) {
             bindingSingUpActivity.phoneTil.error = "Valid phone number"
         } else {
             bindingSingUpActivity.phoneTil.apply {
@@ -358,7 +362,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         } else if (!password.matches(".*[@#\$%^&+=].*".toRegex())) {
             bindingSingUpActivity.passwordTil.error =
                 "Password must contain special[@#\$%^&+=] "
-        }else if(!password.matches(".*[1-9]|10.*".toRegex())){
+        } else if (!password.matches(".*[1-9]|10.*".toRegex())) {
             bindingSingUpActivity.passwordTil.error =
                 "Password must contains numbers 1:10"
         } else {
@@ -473,6 +477,5 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
             }
         }
     }
-
-
+    //==============================================================================================
 }

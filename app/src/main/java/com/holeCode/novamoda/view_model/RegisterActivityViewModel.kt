@@ -1,7 +1,6 @@
 package com.holeCode.novamoda.view_model
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +9,7 @@ import com.holeCode.novamoda.data.ValidateEmailBody
 import com.holeCode.novamoda.pojo.RegisterBody
 import com.holeCode.novamoda.pojo.User
 import com.holeCode.novamoda.repository.AuthRepository
-import com.holeCode.novamoda.util.AuthToken
+import com.holeCode.novamoda.storage.SharedPreferencesManager
 import com.holeCode.novamoda.util.RequestStatus
 import kotlinx.coroutines.launch
 
@@ -65,9 +64,11 @@ class RegisterActivityViewModel(
                         isLoading.value = false
                         user.value = it.data.data as User?
                         //save token using shared preference
-                        AuthToken.getInstance(application.baseContext).token =
-                            it.data.data.toString()
+//                        AuthToken.getInstance(application.baseContext).token
+                        SharedPreferencesManager.getInstance(application.baseContext).saveUser(body)
+
                     }
+
                     is RequestStatus.Error -> {
                         isLoading.value = false
                         errorMessage.value = it.message

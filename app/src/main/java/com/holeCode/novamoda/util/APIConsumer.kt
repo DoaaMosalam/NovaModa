@@ -14,9 +14,6 @@ interface APIConsumer {
     suspend fun validateEmailAddress(@Body body: ValidateEmailBody): Response<UniqueEmailValidateResponse>
 
     //call request register response
-//    @POST("register")
-//    fun registerUser(@Body registerUser: RegisterBody): Call<RegisterResponse>
-
     @POST("register")
     suspend fun registerUser(@Body registerUser: RegisterBody): Response<RegisterResponse>
 
