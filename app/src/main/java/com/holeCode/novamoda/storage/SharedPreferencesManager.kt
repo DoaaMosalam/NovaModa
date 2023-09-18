@@ -2,6 +2,7 @@ package com.holeCode.novamoda.storage
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.holeCode.novamoda.pojo.LoginBody
 import com.holeCode.novamoda.pojo.RegisterBody
 
 class SharedPreferencesManager(mCtx: Context) {
@@ -25,7 +26,6 @@ class SharedPreferencesManager(mCtx: Context) {
         mCtx.getSharedPreferences(TOKEN, Context.MODE_PRIVATE)
 
     fun saveUser(user: RegisterBody) {
-//        sharedPreferences =  mCtx.getSharedPreferences(TOKEN, Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("image", user.image)
         editor.putString("name", user.name)
@@ -36,8 +36,7 @@ class SharedPreferencesManager(mCtx: Context) {
     }
 
 
-    fun loadUser() {
-//        val sharedPreferences= mCtx.getSharedPreferences(TOKEN, Context.MODE_PRIVATE)
+    fun loadUser(user:RegisterBody) {
         sharedPreferences.getString("image", null)
         sharedPreferences.getString("name", null)
         sharedPreferences.getString("phone", null)
@@ -46,14 +45,12 @@ class SharedPreferencesManager(mCtx: Context) {
     }
 
     fun clear() {
-//        val sharedPreferences = mCtx.getSharedPreferences(TOKEN, Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.clear()
         editor.apply()
     }
 
     fun setUserIsRegistered(isRegister: Boolean) {
-//        val sharedPreferences = mCtx.getSharedPreferences(TOKEN, Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putBoolean(IS_USER_REGISTER_IN, isRegister)
         editor.apply()

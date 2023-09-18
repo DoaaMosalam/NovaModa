@@ -1,8 +1,10 @@
 package com.holeCode.novamoda.util
 
+import com.holeCode.novamoda.data.LoginResponse
 import com.holeCode.novamoda.data.RegisterResponse
 import com.holeCode.novamoda.data.UniqueEmailValidateResponse
 import com.holeCode.novamoda.data.ValidateEmailBody
+import com.holeCode.novamoda.pojo.LoginBody
 import com.holeCode.novamoda.pojo.RegisterBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -16,5 +18,9 @@ interface APIConsumer {
     //call request register response
     @POST("register")
     suspend fun registerUser(@Body registerUser: RegisterBody): Response<RegisterResponse>
+
+    //call request login response
+    @POST("login")
+    suspend fun loginUser(@Body loginUser:LoginBody):Response<LoginResponse>
 
 }
