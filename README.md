@@ -47,7 +47,7 @@ This E-Commerce Application is a testament to our commitment to excellence in mo
        <p> -Please make sure to try it yourself firstly.</p>
        <h3>Used Libraries</h3>
        <p><a href ="https://kotlinlang.org/">- Kotlin Language</a></p>
-        <a href="https://square.github.io/retrofit](https://firebase.google.com"> - Firebase</a></p>
+        <a href="https://square.github.io/retrofit/"> -Retrofit</a></p>
        <p><a href= "https://developer.android.com/topic/architecture?gclsrc=ds](https://developer.android.com/kotlin/coroutines">- Coroutines</a></p>
       <p><a href="https://developer.android.com/jetpack/androidx/releases/recyclerview">- RecyclerView</a></p>
         <p><a href="https://www.themoviedb.org/](https://en.wikipedia.org/wiki/SOLID">- SOLID Principles</a></p>
