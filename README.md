@@ -49,6 +49,7 @@ This E-Commerce Application is a testament to our commitment to excellence in mo
        <p><a href ="https://kotlinlang.org/">- Kotlin Language</a></p>
         <a href="https://square.github.io/retrofit/"> -Retrofit</a></p>
        <p><a href= "https://developer.android.com/topic/architecture?gclsrc=ds](https://developer.android.com/kotlin/coroutines">- Coroutines</a></p>
+       <p><a href= "https://developer.android.com/topic/libraries/architecture/viewmodels">-ViewModel</a></p>
       <p><a href="https://developer.android.com/jetpack/androidx/releases/recyclerview">- RecyclerView</a></p>
         <p><a href="https://www.themoviedb.org/](https://en.wikipedia.org/wiki/SOLID">- SOLID Principles</a></p>
 <h3>* Photos from application </h3>
