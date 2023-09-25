@@ -1,5 +1,6 @@
 package com.holeCode.novamoda.view_model
 
+
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,11 +15,10 @@ import com.holeCode.novamoda.storage.SharedPreferencesManager
 import com.holeCode.novamoda.util.RequestStatus
 import kotlinx.coroutines.launch
 
-class RegisterActivityViewModel(
-    private val authRepository: AuthRepository,
-    val application: Application
+class RegisterActivityViewModel(private val authRepository: AuthRepository,
+                                val application: Application
 ) :
-    ViewModel() {
+    ViewModel(){
     private var isLoading: MutableLiveData<Boolean> =
         MutableLiveData<Boolean>().apply { value = false }
     private var errorMessage: MutableLiveData<HashMap<String, String>> = MutableLiveData()

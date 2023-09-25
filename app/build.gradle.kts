@@ -59,7 +59,12 @@ dependencies {
     //reaction
     implementation("io.github.amrdeveloper:reactbutton:2.1.0")
     //View Model
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    // ViewModel Factory
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.2")
+
+
     //retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     //convrt retrofit

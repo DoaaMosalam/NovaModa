@@ -1,4 +1,5 @@
 package com.holeCode.novamoda.pojo
+
 /*this is login body
 * {
 	"email": "algazzar.abdelrahman@gmail.com",

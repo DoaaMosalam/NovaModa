@@ -36,10 +36,15 @@ class SharedPreferencesManager(mCtx: Context) {
     }
 
 
-    fun loadUser(user:RegisterBody) {
+    fun loadUser(user: RegisterBody) {
         sharedPreferences.getString("image", null)
         sharedPreferences.getString("name", null)
         sharedPreferences.getString("phone", null)
+        sharedPreferences.getString("email", null)
+        sharedPreferences.getString("password", null)
+    }
+
+    fun loadUserLogin(user: LoginBody) {
         sharedPreferences.getString("email", null)
         sharedPreferences.getString("password", null)
     }
@@ -54,7 +59,6 @@ class SharedPreferencesManager(mCtx: Context) {
         val editor = sharedPreferences.edit()
         editor.putBoolean(IS_USER_REGISTER_IN, isRegister)
         editor.apply()
-
     }
 
     fun isUserRegisterIn(): Boolean {

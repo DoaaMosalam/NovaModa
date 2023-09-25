@@ -6,14 +6,11 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.os.VibratorManager
-import android.provider.CalendarContract.Colors
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -22,23 +19,20 @@ import com.holeCode.novamoda.HomeScreenActivity
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.databinding.ActivityLoginBinding
 import com.holeCode.novamoda.pojo.LoginBody
-import com.holeCode.novamoda.pojo.RegisterBody
 import com.holeCode.novamoda.repository.AuthRepository
 import com.holeCode.novamoda.util.APIService
 import com.holeCode.novamoda.view_model.LoginActivityViewModel
 import com.holeCode.novamoda.view_model.LoginActivityViewModelFactory
-import com.holeCode.novamoda.view_model.RegisterActivityViewModel
-import com.holeCode.novamoda.view_model.RegisterActivityViewModelFactory
 
-class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener,View.OnKeyListener {
+class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, View.OnKeyListener {
     private lateinit var bindingLogActivity: ActivityLoginBinding
-    private lateinit var checkIcon:Drawable
-    private lateinit var mViewModel:LoginActivityViewModel
+    private lateinit var checkIcon: Drawable
+    private lateinit var mViewModel: LoginActivityViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingLogActivity = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(bindingLogActivity.root)
-        checkIcon=ContextCompat.getDrawable(this,R.drawable.baseline_check_24)!!
+        checkIcon = ContextCompat.getDrawable(this, R.drawable.baseline_check_24)!!
         //================================================================================================
         bindingLogActivity.edEmailLogin.addTextChangedListener(this@LoginActivity)
         bindingLogActivity.edPasswordLogin.addTextChangedListener(this@LoginActivity)
@@ -47,7 +41,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener,Vie
         bindingLogActivity.btnLogin.setOnClickListener(this)
         bindingLogActivity.btnForgetPasswrod.setOnClickListener(this)
 
-  //==================================================================================================
+        //==================================================================================================
         //handle toolbar.
         val toolbar = bindingLogActivity.login
         toolbar.text = "Login"
@@ -60,15 +54,19 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener,Vie
         emailFocusListener()
         passwordFocusListener()
         //=========================================================================================
-        mViewModel = ViewModelProvider(this, LoginActivityViewModelFactory(AuthRepository(APIService.getService()), application))
+        mViewModel = ViewModelProvider(
+            this,
+            LoginActivityViewModelFactory(AuthRepository(APIService.getService()), application)
+        )
             .get(LoginActivityViewModel::class.java)
         setUpObserver()
     } //end onCreate
+
     //============================================================================================
     //handle toolbar button back previous page.
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId){
-            android.R.id.home->{
+        return when (item.itemId) {
+            android.R.id.home -> {
                 finish()
                 true
             }
@@ -76,15 +74,17 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener,Vie
             else -> super.onOptionsItemSelected(item)
         }
     }
+
     //==================================================================================================
     //handle onClickListener
     override fun onClick(view: View?) {
-        if (view!=null ){
-            when (view.id){
-                R.id.btn_login ->{
+        if (view != null) {
+            when (view.id) {
+                R.id.btn_login -> {
                     onSubmitForm()
                 }
-                R.id.btn_forgetPasswrod->{
+
+                R.id.btn_forgetPasswrod -> {
                     navigationToForgetPage()
                 }
             }
@@ -92,7 +92,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener,Vie
     }
 
     override fun onKey(view: View?, event: Int, keyEvent: KeyEvent?): Boolean {
-        if (event==KeyEvent.KEYCODE_ENTER && keyEvent!!.action==KeyEvent.ACTION_UP) {
+        if (event == KeyEvent.KEYCODE_ENTER && keyEvent!!.action == KeyEvent.ACTION_UP) {
             onSubmitForm()
         }
         return false
@@ -117,26 +117,27 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener,Vie
 
     //==============================================================================================
     // invalidate email and password.
-    private fun validateEmail(shouldUpdateView: Boolean = true):Boolean{
+    private fun validateEmail(shouldUpdateView: Boolean = true): Boolean {
         val email = bindingLogActivity.edEmailLogin.text.toString().trim()
-        if (email.isEmpty()){
+        if (email.isEmpty()) {
             bindingLogActivity.emailTilLogin.error = "Email is required"
             bindingLogActivity.emailTilLogin.endIconDrawable = null
-        }else if (!isValidationEmail(email)){
+        } else if (!isValidationEmail(email)) {
             bindingLogActivity.emailTilLogin.error = "Invalid email address"
             bindingLogActivity.emailTilLogin.endIconDrawable = null
-        }else{
+        } else {
             bindingLogActivity.emailTilLogin.apply {
-                error=null
+                error = null
                 setStartIconDrawable(R.drawable.baseline_check_24)
                 setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
             }
         }
-        return bindingLogActivity.emailTilLogin.error==null
+        return bindingLogActivity.emailTilLogin.error == null
     }
-    private fun isValidationEmail(email:String):Boolean{
+
+    private fun isValidationEmail(email: String): Boolean {
         val pattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-        return  email.matches(pattern.toRegex())
+        return email.matches(pattern.toRegex())
 
     }
 
@@ -160,7 +161,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener,Vie
             bindingLogActivity.passworrdTilLogin.error =
                 "Password must contain special[@#\$%^&+=] "
         } else if (!password.matches(".*[1-9]|10.*".toRegex())) {
-            bindingLogActivity.passworrdTilLogin.error ="Password must contains numbers 1:10"
+            bindingLogActivity.passworrdTilLogin.error = "Password must contains numbers 1:10"
         } else {
             bindingLogActivity.passworrdTilLogin.apply {
                 error = null
@@ -169,7 +170,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener,Vie
                 setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
             }
         }
-        return  bindingLogActivity.passworrdTilLogin.error == null
+        return bindingLogActivity.passworrdTilLogin.error == null
     }
 
     private fun emailFocusListener() {
@@ -192,6 +193,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener,Vie
             }
         }
     }
+
     //==============================================================================================
     private fun setUpObserver() {
         mViewModel.getIsLoading().observe(this) {
@@ -200,7 +202,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener,Vie
 
         mViewModel.getErrorMessage().observe(this) {
             //Name,Phone,Email,Password
-            val formErrorKey = arrayOf( "email", "password")
+            val formErrorKey = arrayOf("email", "password")
             val message = StringBuilder()
             it.map { entry ->
                 if (formErrorKey.contains(entry.key)) {
@@ -240,7 +242,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener,Vie
         }
     }
 
-    private fun onSubmitForm(){
+    private fun onSubmitForm() {
         if (validate()) {
             //make Api request.
             mViewModel.loginUserVM(
@@ -259,19 +261,18 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener,Vie
         if (!validateEmail(shouldUpdateView = false)) isvalide = false
         if (!validatePassword()) isvalide = false
         return isvalide
-
     }
 
     //==============================================================================================
     private fun navigationToForgetPage() {
-        startActivity(Intent(this@LoginActivity, ForgetPasswordActivity::class.java))
+        startActivity(Intent(this@LoginActivity, ResetPasswordActivity::class.java))
     }
+
     private fun navigateGoToHome() {
         val intent = Intent(this@LoginActivity, HomeScreenActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
     }
-
 
 
 }

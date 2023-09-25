@@ -8,7 +8,7 @@ import java.security.InvalidParameterException
 
 class LoginActivityViewModelFactory(
     private val authRepository: AuthRepository,
-    private val application: Application
+    private val application: Application,
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")

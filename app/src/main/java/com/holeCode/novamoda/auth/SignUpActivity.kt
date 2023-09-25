@@ -20,7 +20,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -48,15 +47,17 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
     private var selectedImageUri: Uri? = null
     private lateinit var checkIcon: Drawable
     private lateinit var mViewModel: RegisterActivityViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingSingUpActivity = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(bindingSingUpActivity.root)
-// After successful login
+// After successful singUp
         SharedPreferencesManager(this).setUserIsRegistered(true)
 
 // When user logs out or exits the app
         SharedPreferencesManager(this).setUserIsRegistered(false)
+
         //============================================================================================
         checkIcon = ContextCompat.getDrawable(this, R.drawable.baseline_check_24)!!
         // handle toolbar
@@ -82,7 +83,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
 
         setUpObserver()
 
-        //================================================================================================
+//================================================================================================
         // this when text watcher button not clickable when full all edit tet
         bindingSingUpActivity.apply {
             edNameSign.addTextChangedListener(this@SignUpActivity)
@@ -100,13 +101,13 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
 
     //===============================================================================================
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             android.R.id.home -> {
                 finish()
-                return true
+                true
             }
 
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -169,21 +170,21 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
             bindingSingUpActivity.progressbar.isVisible = it
         }
         mViewModel.getIsUniqueEmail().observe(this) {
-        if (validateEmail(shouldUpdateView = false)){
-            if (it){
-                bindingSingUpActivity.emailTil.apply {
-                    if (isErrorEnabled)isErrorEnabled=false
-                    setStartIconDrawable(R.drawable.baseline_check_24)
-                    setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
-                }
-            }else{
-                bindingSingUpActivity.emailTil.apply {
-                    if (startIconDrawable!= null)startIconDrawable =null
-                    isErrorEnabled =true
-                    error("Email is already taken")
-                }
-            }
-        }
+//        if (validateEmail(shouldUpdateView = false)){
+//            if (it){
+//                bindingSingUpActivity.emailTil.apply {
+//                    if (isErrorEnabled)isErrorEnabled=false
+//                    setStartIconDrawable(R.drawable.baseline_check_24)
+//                    setStartIconTintList(ColorStateList.valueOf(Color.GREEN))
+//                }
+//            }else{
+//                bindingSingUpActivity.emailTil.apply {
+//                    if (startIconDrawable!= null)startIconDrawable =null
+//                    isErrorEnabled =true
+//                    error("Email is already taken")
+//                }
+//            }
+//        }
         }
         mViewModel.getErrorMessage().observe(this) {
             //Name,Phone,Email,Password
@@ -260,7 +261,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         startActivity(intent)
     }
 
-    /*This metjod validate all field edit text */
+    /*This method validate all field edit text */
     private fun validate(): Boolean {
         var isvalide = true
         if (!validateName()) isvalide = false
@@ -296,8 +297,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         emailValue.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 validateEmail()
-            }
-            else if (!hasFocus) {
+            } else if (!hasFocus) {
                 mViewModel.validateEmailAddress(ValidateEmailBody(emailValue.toString()))
             }
         }
@@ -403,6 +403,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         }
         return bindingSingUpActivity.passwordTil.error == null
     }
+
     //method pattern email
     private fun isValidEmail(email: String): Boolean {
         val pattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
@@ -467,7 +468,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == STORAGE_PERMISSION_REQUEST_CODE) {
@@ -499,5 +500,11 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
             }
         }
     }
+
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        bindingSingUpActivity=null
+//    }
 }
+
 

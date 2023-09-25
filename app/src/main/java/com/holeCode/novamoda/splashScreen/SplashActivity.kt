@@ -22,7 +22,7 @@ class SplashActivity : AppCompatActivity() {
             override fun onTransitionStarted(
                 motionLayout: MotionLayout?,
                 startId: Int,
-                endId: Int
+                endId: Int,
             ) {
 
             }
@@ -31,7 +31,7 @@ class SplashActivity : AppCompatActivity() {
                 motionLayout: MotionLayout?,
                 startId: Int,
                 endId: Int,
-                progress: Float
+                progress: Float,
             ) {
             }
 
@@ -44,7 +44,7 @@ class SplashActivity : AppCompatActivity() {
                 motionLayout: MotionLayout?,
                 triggerId: Int,
                 positive: Boolean,
-                progress: Float
+                progress: Float,
             ) {
 
             }
@@ -53,9 +53,9 @@ class SplashActivity : AppCompatActivity() {
     }
 
     //==================================================================================================
-    /*This method check if user register or not by shared preference */
     fun checkSharedPrefs() {
-        val isRegister = SharedPreferencesManager(this).isUserRegisterIn()
+        val sharedPreferencesManager = SharedPreferencesManager.getInstance(this)
+        val isRegister = sharedPreferencesManager.isUserRegisterIn()
 
         if (isRegister) {
             // User is register in, navigate to the home page
