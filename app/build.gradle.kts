@@ -76,5 +76,7 @@ dependencies {
     // define any required OkHttp artifacts without version
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("com.squareup.okhttp3:logging-interceptor")
+    //voolley android
+    implementation("com.android.volley:volley:1.2.1")
 
 }

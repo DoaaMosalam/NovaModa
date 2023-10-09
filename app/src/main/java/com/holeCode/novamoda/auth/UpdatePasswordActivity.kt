@@ -14,15 +14,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.holeCode.novamoda.HomeScreenActivity
 import com.holeCode.novamoda.R
-import com.holeCode.novamoda.databinding.ActivityNewPasswordBinding
+import com.holeCode.novamoda.databinding.ActivityUpdatePasswordBinding
 
-class NewPasswordActivity : AppCompatActivity(), View.OnClickListener,TextWatcher {
-    private lateinit var bindingNewPassword: ActivityNewPasswordBinding
+class UpdatePasswordActivity : AppCompatActivity(), View.OnClickListener,TextWatcher {
+    private lateinit var bindingNewPassword: ActivityUpdatePasswordBinding
     private lateinit var checkIcon: Drawable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindingNewPassword = ActivityNewPasswordBinding.inflate(layoutInflater)
+        bindingNewPassword = ActivityUpdatePasswordBinding.inflate(layoutInflater)
         setContentView(bindingNewPassword.root)
         //==========================================================================================
         checkIcon = ContextCompat.getDrawable(this, R.drawable.baseline_check_24)!!
@@ -30,8 +30,8 @@ class NewPasswordActivity : AppCompatActivity(), View.OnClickListener,TextWatche
         retrieveEmail()
 
         bindingNewPassword.apply {
-            bindingNewPassword.edCodeNewPassword.addTextChangedListener(this@NewPasswordActivity)
-            bindingNewPassword.ednewPassword.addTextChangedListener(this@NewPasswordActivity)
+            bindingNewPassword.edCodeNewPassword.addTextChangedListener(this@UpdatePasswordActivity)
+            bindingNewPassword.ednewPassword.addTextChangedListener(this@UpdatePasswordActivity)
         }
 //==================================================================================================
         bindingNewPassword.btnConfirm.setOnClickListener(this)
@@ -167,7 +167,7 @@ class NewPasswordActivity : AppCompatActivity(), View.OnClickListener,TextWatche
 
 
     private fun navigateGoToHome() {
-        startActivity(Intent(this@NewPasswordActivity,HomeScreenActivity::class.java))
+        startActivity(Intent(this@UpdatePasswordActivity,HomeScreenActivity::class.java))
     }
 
 
