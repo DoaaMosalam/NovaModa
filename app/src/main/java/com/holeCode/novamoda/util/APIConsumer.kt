@@ -8,7 +8,6 @@ import com.holeCode.novamoda.data.UniqueEmailValidateResponse
 import com.holeCode.novamoda.data.ValidateEmailBody
 import com.holeCode.novamoda.pojo.LoginBody
 import com.holeCode.novamoda.pojo.RegisterBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -32,26 +31,13 @@ interface APIConsumer {
     @POST("reset-password")
     suspend fun resetPassword(
         @Field("email") resetPasswordBody: ResetPasswordBody
-    ): Call<ResetPasswordResponse>
+    ): Response<ResetPasswordResponse>
 
 
 
     // call request reset-password
 //    @POST("reset-password")
 //    suspend fun resetPassword(@Body resetPassword: ResetPasswordBody): Response<ResetPasswordResponse>
-
-//    @FormUrlEncoded
-//    @POST("reset-password")
-//    fun sendVerificationCode(
-//        @Field("email") email: String
-//    ): Response<ResetPasswordBody>
-//
-//    @FormUrlEncoded
-//    @POST("reset-password")
-//    fun newPassword(
-//        @Field("verification_code") verificationCode: String,
-//        @Field("new_password") newPassword: String
-//    ): Response<ResetPasswordBody>
 
 
 }

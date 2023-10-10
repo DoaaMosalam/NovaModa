@@ -35,8 +35,8 @@ class LoginActivityViewModel(
                     is RequestStatus.Success -> {
                         isLoading.value = false
                         user.value = it.data.data as User?
-                        SharedPreferencesManager.getInstance(application.baseContext)
-                            .loadUserLogin(body)
+//                        SharedPreferencesManager.getInstance(application.baseContext)
+//                            .loadUserLogin(body)
                     }
 
                     is RequestStatus.Error -> {

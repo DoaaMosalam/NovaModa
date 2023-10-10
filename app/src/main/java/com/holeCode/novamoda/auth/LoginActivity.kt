@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.FirebaseAuth
 import com.holeCode.novamoda.HomeScreenActivity
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.databinding.ActivityLoginBinding
@@ -28,6 +29,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Vi
     private lateinit var bindingLogActivity: ActivityLoginBinding
     private lateinit var checkIcon: Drawable
     private lateinit var mViewModel: LoginActivityViewModel
+    private lateinit var mAuth:FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingLogActivity = ActivityLoginBinding.inflate(layoutInflater)
@@ -90,7 +92,6 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Vi
             }
         }
     }
-
     override fun onKey(view: View?, event: Int, keyEvent: KeyEvent?): Boolean {
         if (event == KeyEvent.KEYCODE_ENTER && keyEvent!!.action == KeyEvent.ACTION_UP) {
             onSubmitForm()
@@ -99,14 +100,8 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Vi
     }
 //==================================================================================================
 
-    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-    }
-
-    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-    }
-
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
     override fun afterTextChanged(p0: Editable?) {
         bindingLogActivity.btnLogin.isEnabled =
             bindingLogActivity.edEmailLogin.text!!.trim().toString().isNotEmpty()
