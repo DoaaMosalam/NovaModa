@@ -73,5 +73,5 @@ class SharedPreferencesManager(mCtx: Context) {
 //        set(value) = sharedPreferences.edit().putString(TOKEN_VALUE, value).apply()
 //            .also { field = value }
 //        get() = field ?: sharedPreferences.getString(TOKEN_VALUE, null)
-//    }
+
 }

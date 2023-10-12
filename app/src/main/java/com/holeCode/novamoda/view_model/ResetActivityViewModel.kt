@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.holeCode.novamoda.data.ResetPasswordBody
+import com.holeCode.novamoda.pojo.ResetPasswordBody
 import com.holeCode.novamoda.pojo.User
 import com.holeCode.novamoda.repository.AuthRepository
 import com.holeCode.novamoda.util.RequestStatus

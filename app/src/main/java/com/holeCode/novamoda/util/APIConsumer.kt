@@ -2,7 +2,7 @@ package com.holeCode.novamoda.util
 
 import com.holeCode.novamoda.data.LoginResponse
 import com.holeCode.novamoda.data.RegisterResponse
-import com.holeCode.novamoda.data.ResetPasswordBody
+import com.holeCode.novamoda.pojo.ResetPasswordBody
 import com.holeCode.novamoda.data.ResetPasswordResponse
 import com.holeCode.novamoda.data.UniqueEmailValidateResponse
 import com.holeCode.novamoda.data.ValidateEmailBody

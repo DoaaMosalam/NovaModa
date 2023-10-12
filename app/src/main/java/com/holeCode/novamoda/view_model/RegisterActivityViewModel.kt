@@ -62,8 +62,12 @@ class RegisterActivityViewModel(private val authRepository: AuthRepository,
                         isLoading.value = false
                         user.value = it.data.data as User?
                         //save token using shared preference
-//                        AuthToken.getInstance(application.baseContext).token
+//                        SharedPreferencesManager.getInstance(application.baseContext).token
+
                         SharedPreferencesManager.getInstance(application.baseContext).saveUser(body)
+                        // Set user as registered
+                        SharedPreferencesManager.getInstance(application.baseContext).setUserIsRegistered(true)
+
                     }
 
                     is RequestStatus.Error -> {

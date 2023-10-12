@@ -6,6 +6,6 @@ package com.holeCode.novamoda.pojo
 	"password": "123456"
 }*/
 data class LoginBody(
-    val email: String,
-    val password: String,
+    val email: String?,
+    val password: String?,
 )

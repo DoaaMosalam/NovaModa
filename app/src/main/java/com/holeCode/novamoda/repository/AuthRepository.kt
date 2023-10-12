@@ -1,6 +1,6 @@
 package com.holeCode.novamoda.repository
 
-import com.holeCode.novamoda.data.ResetPasswordBody
+import com.holeCode.novamoda.pojo.ResetPasswordBody
 import com.holeCode.novamoda.data.ValidateEmailBody
 import com.holeCode.novamoda.pojo.LoginBody
 import com.holeCode.novamoda.pojo.RegisterBody

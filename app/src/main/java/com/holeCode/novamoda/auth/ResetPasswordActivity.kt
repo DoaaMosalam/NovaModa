@@ -18,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.databinding.ActivityResetPasswordBinding
+import com.holeCode.novamoda.storage.FirebaseAuthenticationManager
 import com.holeCode.novamoda.view_model.ResetActivityViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +28,7 @@ class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickList
     private lateinit var bindingResetPassword: ActivityResetPasswordBinding
     private lateinit var checkIcon: Drawable
     private lateinit var mViewModel: ResetActivityViewModel
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var firebaseAuthenticationManager: FirebaseAuthenticationManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingResetPassword = ActivityResetPasswordBinding.inflate(layoutInflater)
@@ -174,9 +175,9 @@ class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickList
     private fun onSubmit() {
         lifecycleScope.launch {
             if (validate()) {
-//                                createAndSendResetEmail(bindingResetPassword.edEmailforget)
-                sendResetEmail(bindingResetPassword.edEmailforget)
-
+//                lifecycleScope.launch {
+//                    firebaseAuthenticationManager.sendResetEmail(bindingResetPassword.edEmailforget.text.toString())
+//                }
             }
         }
         sendNameEmail()
@@ -188,56 +189,4 @@ class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickList
 //        }
 //        startActivity(Intent(this@ResetPasswordActivity,UpdatePasswordActivity::class.java))
     }
-
-    private suspend fun createAndSendResetEmail(email: EditText) {
-        mAuth = FirebaseAuth.getInstance()
-        mAuth.createUserWithEmailAndPassword(email.toString(), "").addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                lifecycleScope.launch {
-                    Toast.makeText(
-                        this@ResetPasswordActivity,
-                        "Successful Create Email:  ",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                }
-            }
-        }
-    }
-
-    private suspend fun sendResetEmail(email: EditText) {
-        mAuth = FirebaseAuth.getInstance()
-        mAuth.sendPasswordResetEmail(email.toString()).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Toast.makeText(this, "Open Gmail", Toast.LENGTH_SHORT).show()
-            } else {
-                CoroutineScope(Dispatchers.IO).launch {
-                    openGmail()
-                }
-            }
-
-        }
-
-    }
-
-    //Add method to open gmail.
-    private suspend fun openGmail() {
-        lifecycleScope.launch {
-            try {
-                // Open Gmail app
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse("https://mail.google.com")
-                }
-
-                if (intent.resolveActivity(packageManager) != null) {
-                    startActivity(intent)
-                }
-            } catch (e: Exception) {
-                Toast.makeText(this@ResetPasswordActivity, e.message, Toast.LENGTH_SHORT).show()
-            }
-
-        }
-
-    }
-
 }

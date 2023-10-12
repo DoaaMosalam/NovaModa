@@ -11,25 +11,35 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.holeCode.novamoda.HomeScreenActivity
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.databinding.ActivityLoginBinding
 import com.holeCode.novamoda.pojo.LoginBody
 import com.holeCode.novamoda.repository.AuthRepository
+import com.holeCode.novamoda.storage.FirebaseAuthenticationManager
 import com.holeCode.novamoda.util.APIService
 import com.holeCode.novamoda.view_model.LoginActivityViewModel
 import com.holeCode.novamoda.view_model.LoginActivityViewModelFactory
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, View.OnKeyListener {
     private lateinit var bindingLogActivity: ActivityLoginBinding
     private lateinit var checkIcon: Drawable
     private lateinit var mViewModel: LoginActivityViewModel
-    private lateinit var mAuth:FirebaseAuth
+    private lateinit var firebaseAuthenticationManager: FirebaseAuthenticationManager
+    private val mAuth by lazy {
+        FirebaseAuth.getInstance()
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingLogActivity = ActivityLoginBinding.inflate(layoutInflater)
@@ -63,7 +73,6 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Vi
             .get(LoginActivityViewModel::class.java)
         setUpObserver()
     } //end onCreate
-
     //============================================================================================
     //handle toolbar button back previous page.
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

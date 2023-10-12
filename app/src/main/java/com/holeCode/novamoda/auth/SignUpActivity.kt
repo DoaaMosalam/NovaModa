@@ -19,17 +19,20 @@ import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.FirebaseAuth
 import com.holeCode.novamoda.HomeScreenActivity
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.data.ValidateEmailBody
 import com.holeCode.novamoda.databinding.ActivitySignupBinding
 import com.holeCode.novamoda.pojo.RegisterBody
 import com.holeCode.novamoda.repository.AuthRepository
+import com.holeCode.novamoda.storage.FirebaseAuthenticationManager
 import com.holeCode.novamoda.storage.SharedPreferencesManager
 import com.holeCode.novamoda.util.APIService
 import com.holeCode.novamoda.view_model.RegisterActivityViewModel
@@ -47,6 +50,10 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
     private var selectedImageUri: Uri? = null
     private lateinit var checkIcon: Drawable
     private lateinit var mViewModel: RegisterActivityViewModel
+    private lateinit var firebaseAuthenticationManager: FirebaseAuthenticationManager
+    private val mAuth by lazy {
+        FirebaseAuth.getInstance()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,6 +149,26 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
             startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
         } else if (view != null && view.id == R.id.btn_signUp) {
             onSubmit()
+/*This method register user by firebase and check if user to make success register or failed register */
+            val id = mAuth.currentUser?.uid.toString()
+            firebaseAuthenticationManager.registerUserFirebase(id,
+                bindingSingUpActivity.imagePerson.toString(),
+                bindingSingUpActivity.edNameSign.text.toString(),
+                bindingSingUpActivity.edPhoneSign.text.toString(),
+                bindingSingUpActivity.edEmailSign.text.toString(),
+            bindingSingUpActivity.edPasswordSing.text.toString()) { success, uid ->
+            if (success) {
+                // Registration successful, user is now registered with the provided UID
+                // Perform any additional actions or navigate to the next screen
+                Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show()
+
+                navigateGoToHome()
+            } else {
+                // Registration failed, handle the error
+                // You can access the error message from the errorMessage parameter
+                Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         } else if (view != null && view.id == R.id.imagePerson) {
             openGallery()
@@ -163,7 +190,6 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
     private fun navigateGoToHome() {
         startActivity(Intent(this@SignUpActivity, HomeScreenActivity::class.java))
     }
-
     //==============================================================================================
     private fun setUpObserver() {
         mViewModel.getIsLoading().observe(this) {
