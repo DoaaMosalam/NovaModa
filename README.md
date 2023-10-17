@@ -54,6 +54,13 @@ This E-Commerce Application is a testament to our commitment to excellence in mo
         <p><a href="https://www.themoviedb.org/](https://en.wikipedia.org/wiki/SOLID">- SOLID Principles</a></p>
 <h3>* Photos from application </h3>
   <img src="https://www.linkpicture.com/q/novamoda_logo.png" alt="Screen Shot">
+  <img src="https://i.postimg.cc/Xq2sRWvD/Screenshot-com-hole-Code-novamoda.jpg" alt="Register User." width=150 hight=150>  
+   <img src="https://i.postimg.cc/Hsg5gRM6/Screenshot-com-hole-Code-novamoda.jpg" alt=" Login User." width=150 hight=150>
+  <img src="https://i.postimg.cc/xdcN52r1/Screenshot-com-hole-Code-novamoda.jpg" alt="Reset Password" width=150 hight=150>
+  <img src="https://i.postimg.cc/X7LZ0J4v/Screenshot-com-hole-Code-novamoda.jpg" alt="Reset Password" width=150 hight=150>
+
+
+
 
 
 
