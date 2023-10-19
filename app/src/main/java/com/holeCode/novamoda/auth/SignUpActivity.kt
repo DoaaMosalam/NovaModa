@@ -19,13 +19,11 @@ import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.auth.FirebaseAuth
 import com.holeCode.novamoda.HomeScreenActivity
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.data.ValidateEmailBody
@@ -50,10 +48,12 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
     private var selectedImageUri: Uri? = null
     private lateinit var checkIcon: Drawable
     private lateinit var mViewModel: RegisterActivityViewModel
-    private lateinit var firebaseAuthenticationManager: FirebaseAuthenticationManager
-    private val mAuth by lazy {
-        FirebaseAuth.getInstance()
+    private var firebaseAuthenticationManager: FirebaseAuthenticationManager
+
+    init {
+        firebaseAuthenticationManager = FirebaseAuthenticationManager()
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,7 +99,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
             edPasswordSing.addTextChangedListener(this@SignUpActivity)
         }
 
-//        //================================================================================================
+        //================================================================================================
         nameFocusListener()
         phoneFocusListener()
         emailFocusListener()
@@ -122,9 +122,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
     /*This method is inheritance from TextWatcher
     * inside method afterTextChange call methods editText that can be click button after full all text
     * and call method validateName && validatePhone && validateEmail & validatePassword */
-    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-    }
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
     }
@@ -149,26 +147,6 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
             startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
         } else if (view != null && view.id == R.id.btn_signUp) {
             onSubmit()
-/*This method register user by firebase and check if user to make success register or failed register */
-            val id = mAuth.currentUser?.uid.toString()
-            firebaseAuthenticationManager.registerUserFirebase(id,
-                bindingSingUpActivity.imagePerson.toString(),
-                bindingSingUpActivity.edNameSign.text.toString(),
-                bindingSingUpActivity.edPhoneSign.text.toString(),
-                bindingSingUpActivity.edEmailSign.text.toString(),
-            bindingSingUpActivity.edPasswordSing.text.toString()) { success, uid ->
-            if (success) {
-                // Registration successful, user is now registered with the provided UID
-                // Perform any additional actions or navigate to the next screen
-                Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show()
-
-                navigateGoToHome()
-            } else {
-                // Registration failed, handle the error
-                // You can access the error message from the errorMessage parameter
-                Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show()
-            }
-        }
 
         } else if (view != null && view.id == R.id.imagePerson) {
             openGallery()
@@ -190,13 +168,14 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
     private fun navigateGoToHome() {
         startActivity(Intent(this@SignUpActivity, HomeScreenActivity::class.java))
     }
+
     //==============================================================================================
     private fun setUpObserver() {
         mViewModel.getIsLoading().observe(this) {
             bindingSingUpActivity.progressbar.isVisible = it
         }
-        mViewModel.getIsUniqueEmail().observe(this) {
-//        if (validateEmail(shouldUpdateView = false)){
+//        mViewModel.getIsUniqueEmail().observe(this) {
+//        if (validateEmail()){
 //            if (it){
 //                bindingSingUpActivity.emailTil.apply {
 //                    if (isErrorEnabled)isErrorEnabled=false
@@ -211,7 +190,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
 //                }
 //            }
 //        }
-        }
+//        }
         mViewModel.getErrorMessage().observe(this) {
             //Name,Phone,Email,Password
             val formErrorKey = arrayOf("name", "phone", "email", "password")
@@ -282,6 +261,12 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
                 )
             )
         }
+        mViewModel.registerUserByFirebase(
+            bindingSingUpActivity.edEmailSign.text.toString(),
+            bindingSingUpActivity.edPasswordSing.text.toString()
+        )
+
+
         val intent = Intent(this@SignUpActivity, HomeScreenActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)

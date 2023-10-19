@@ -2,29 +2,34 @@ package com.holeCode.novamoda.view_model
 
 
 import android.app.Application
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.holeCode.novamoda.data.ValidateEmailBody
-import com.holeCode.novamoda.pojo.LoginBody
 import com.holeCode.novamoda.pojo.RegisterBody
 import com.holeCode.novamoda.pojo.User
 import com.holeCode.novamoda.repository.AuthRepository
+import com.holeCode.novamoda.storage.FirebaseAuthenticationManager
 import com.holeCode.novamoda.storage.SharedPreferencesManager
 import com.holeCode.novamoda.util.RequestStatus
 import kotlinx.coroutines.launch
 
-class RegisterActivityViewModel(private val authRepository: AuthRepository,
-                                val application: Application
-) :
-    ViewModel(){
+class RegisterActivityViewModel(
+    private val authRepository: AuthRepository, val application: Application
+) : ViewModel() {
     private var isLoading: MutableLiveData<Boolean> =
         MutableLiveData<Boolean>().apply { value = false }
     private var errorMessage: MutableLiveData<HashMap<String, String>> = MutableLiveData()
     private var isUniqueEmail: MutableLiveData<Boolean> =
         MutableLiveData<Boolean>().apply { value = false }
     private var user: MutableLiveData<User> = MutableLiveData()
+    private var firebaseAuthenticationManager: FirebaseAuthenticationManager
+    init {
+        firebaseAuthenticationManager = FirebaseAuthenticationManager()
+    }
+
     fun getIsLoading(): LiveData<Boolean> = isLoading
     fun getErrorMessage(): LiveData<HashMap<String, String>> = errorMessage
     fun getIsUniqueEmail(): LiveData<Boolean> = isUniqueEmail
@@ -58,16 +63,13 @@ class RegisterActivityViewModel(private val authRepository: AuthRepository,
                     is RequestStatus.Waiting -> {
                         isLoading.value = true
                     }
+
                     is RequestStatus.Success -> {
                         isLoading.value = false
                         user.value = it.data.data as User?
                         //save token using shared preference
 //                        SharedPreferencesManager.getInstance(application.baseContext).token
-
                         SharedPreferencesManager.getInstance(application.baseContext).saveUser(body)
-                        // Set user as registered
-                        SharedPreferencesManager.getInstance(application.baseContext).setUserIsRegistered(true)
-
                     }
 
                     is RequestStatus.Error -> {
@@ -79,5 +81,9 @@ class RegisterActivityViewModel(private val authRepository: AuthRepository,
         }
     }
 
-
+    fun registerUserByFirebase(email: String, password: String) {
+        viewModelScope.launch {
+            firebaseAuthenticationManager.registerUserByFirebase(email, password)
+        }
+    }
 }

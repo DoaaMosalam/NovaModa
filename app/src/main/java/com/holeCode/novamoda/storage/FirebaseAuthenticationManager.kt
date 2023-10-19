@@ -1,11 +1,15 @@
 package com.holeCode.novamoda.storage
 
+
 import android.content.Intent
 import android.net.Uri
-import android.widget.EditText
+import android.util.Log
+
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
@@ -14,14 +18,16 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.holeCode.novamoda.pojo.RegisterBody
-import com.holeCode.novamoda.pojo.User
-import kotlinx.coroutines.CoroutineScope
+import com.holeCode.novamoda.pojo.UserFirebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.holeCode.novamoda.util.Result
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class FirebaseAuthenticationManager :AppCompatActivity(){
-    private val mAuth:FirebaseAuth by lazy {
+class FirebaseAuthenticationManager : AppCompatActivity() {
+    private val TAG = "FIREBASE_AUTH"
+    private val mAuth: FirebaseAuth by lazy {
         FirebaseAuth.getInstance()
     }
     private val storeFire by lazy {
@@ -31,66 +37,81 @@ class FirebaseAuthenticationManager :AppCompatActivity(){
         FirebaseDatabase.getInstance()
     }
 
-    private val storage by lazy{
+    private val storage by lazy {
         FirebaseStorage.getInstance()
     }
+    private val currentUserDocRef: DocumentReference
+        get() = storeFire.document("users/${mAuth.currentUser?.uid.toString()}")
 
-    val currentUserDocRef : DocumentReference
-        get() = storeFire.collection("user")
-            .document(mAuth.currentUser?.uid.toString())
-    val currentUserStorageRef:StorageReference
+    //   private val currentUserDocRef:DocumentReference
+//        get() = storeFire.collection("user").document(mAuth.currentUser?.uid.toString())
+    private val currentUserStorageRef: StorageReference
         get() = storage.reference.child(FirebaseAuth.getInstance().currentUser?.uid.toString())
-    fun registerUserFirebase(id:String,image:String,name:String,phone:String,email: String, password: String, onComplete: (Boolean, String?) -> Unit) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                val newUSer = User(
-                    id, image, name, phone, email, password)
-                currentUserDocRef.set(newUSer)
-                if (task.isSuccessful) {
-                    val user: FirebaseUser? = mAuth.currentUser
-                    onComplete(true, user?.uid)
-                } else {
-                    val errorMessage = task.exception?.message
-                    onComplete(false, errorMessage)
-                }
-            }
+
+    suspend fun registerUserByFirebase(
+        email: String,
+        password: String
+    ): Result<Boolean> {
+        return try {
+            mAuth.createUserWithEmailAndPassword(email, password).await()
+            Result.Success(true)
+
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
     }
 
-
-
-    private suspend fun saveUserProfile(user: RegisterBody) = withContext(Dispatchers.IO) {
-        currentUserDocRef.set(user)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this@FirebaseAuthenticationManager, "Data inserted", Toast.LENGTH_SHORT).show()
-
-                } else {
-                    Toast.makeText(
-                        this@FirebaseAuthenticationManager,
-                        "Failed to insert data",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+    /*this method create login user by firebase make sure login */
+    suspend fun loginUserByFirebase(email: String, password: String): Result<Boolean> =
+        withContext(Dispatchers.IO) {
+            val credential = EmailAuthProvider.getCredential(email, password)
+            try {
+                mAuth.signInWithCredential(credential).await()
+                Result.Success(true)
+            } catch (e: Exception) {
+                Result.Error(e)
             }
-    }
-
-    private suspend fun sendResetEmail(email: String)= withContext(Dispatchers.IO) {
-
-        mAuth.sendPasswordResetEmail(email.toString()).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Toast.makeText(this@FirebaseAuthenticationManager, "Open Gmail", Toast.LENGTH_SHORT).show()
-            } else {
-                CoroutineScope(Dispatchers.IO).launch {
-                    openGmail()
-                }
-            }
-
         }
 
-    }
+    /*this method reset password and open Gmail*/
+    suspend fun resetPasswordByFirebase(email: String): Result<Boolean> =
+        withContext(Dispatchers.IO) {
+            try {
+                mAuth.sendPasswordResetEmail(email)
+                when (val result = resetPasswordByFirebase(email)) {
+                    is Result.Success -> {
+                        val message = result.toString()
+                        Toast.makeText(
+                            this@FirebaseAuthenticationManager,
+                            message,
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                        // Open Gmail app
+                        openGmail()
+                    }
+
+                    is Result.Error -> {
+                        // Password reset email failed
+                        val errorMessage = result.toString()
+                        Toast.makeText(
+                            this@FirebaseAuthenticationManager,
+                            errorMessage,
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+                }
+                openGmail()
+                Result.Success(true)
+            } catch (e: Exception) {
+                Result.Error(e)
+
+            }
+        }
 
     //Add method to open gmail.
-    private suspend fun openGmail() {
+    private fun openGmail() {
         lifecycleScope.launch {
             try {
                 // Open Gmail app
@@ -102,12 +123,10 @@ class FirebaseAuthenticationManager :AppCompatActivity(){
                     startActivity(intent)
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@FirebaseAuthenticationManager, e.message, Toast.LENGTH_SHORT).show()
+                Result.Error(e)
             }
 
         }
 
     }
-
-
 }

@@ -4,31 +4,35 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
-import com.google.firebase.auth.FirebaseAuth
+import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.databinding.ActivityResetPasswordBinding
+import com.holeCode.novamoda.pojo.ResetPasswordBody
+import com.holeCode.novamoda.repository.AuthRepository
 import com.holeCode.novamoda.storage.FirebaseAuthenticationManager
+import com.holeCode.novamoda.util.APIService
 import com.holeCode.novamoda.view_model.ResetActivityViewModel
+import com.holeCode.novamoda.view_model.ResetActivityViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
+class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickListener,
+    View.OnKeyListener {
     private lateinit var bindingResetPassword: ActivityResetPasswordBinding
     private lateinit var checkIcon: Drawable
     private lateinit var mViewModel: ResetActivityViewModel
-    private lateinit var firebaseAuthenticationManager: FirebaseAuthenticationManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingResetPassword = ActivityResetPasswordBinding.inflate(layoutInflater)
@@ -48,14 +52,13 @@ class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickList
         //====================================================================
         bindingResetPassword.btnSend.setOnClickListener(this)
         //=====================================================================
+
 //        mViewModel = ViewModelProvider(
 //            this,
 //            ResetActivityViewModelFactory(AuthRepository(APIService.getService()), application)
-//        ).get(ResetActivityViewModel::class.java)
-//
+//        )
+//            .get(ResetActivityViewModel::class.java)
 //        setUpObserver()
-
-
     } // end on create
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -81,7 +84,11 @@ class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickList
         if (view != null) {
             when (view.id) {
                 R.id.btn_send -> {
-                    onSubmit()
+                    if (view != null) {
+                        sendNameEmail()
+                    } else {
+                        onSubmit()
+                    }
                 }
             }
         }
@@ -128,11 +135,12 @@ class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickList
         startActivity(intent)
     }
 
-//    private fun setUpObserver() {
-//        mViewModel.getIsLoading().observe(this){
-//            bindingResetPassword.progressbarforget.isVisible=it
+    //    private fun setUpObserver() {
+//        mViewModel.getIsLoading().observe(this) {
+//            bindingResetPassword.progressbarforget.isVisible = it
 //        }
-//        mViewModel.getErrorMessage().observe(this){
+//        mViewModel.getErrorMessage().observe(this) {
+//            //Name,Phone,Email,Password
 //            val formErrorKey = arrayOf("email")
 //            val message = StringBuilder()
 //            it.map { entry ->
@@ -148,7 +156,7 @@ class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickList
 //                } else {
 //                    message.append(entry.value).append("\n")
 //                }
-//                if (message.isEmpty()) {
+//                if (message.isNotEmpty()) {
 //                    AlertDialog.Builder(this)
 //                        .setIcon(R.drawable.baseline_info_24)
 //                        .setTitle("INFORMATION")
@@ -158,35 +166,35 @@ class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickList
 //                }
 //            }
 //        }
-//        mViewModel.getUser().observe(this){
-//            if (it!=null){
-//                sendNameEmail()
+//        mViewModel.getUser().observe(this) {
+//            if (it != null) {
 //                startActivity(Intent(this@ResetPasswordActivity,UpdatePasswordActivity::class.java))
 //            }
 //        }
 //    }
-
+//
     private fun validate(): Boolean {
         var isValidate = true
         if (!validateEmail()) isValidate = false
         return isValidate
     }
 
-    private fun onSubmit() {
-        lifecycleScope.launch {
-            if (validate()) {
-//                lifecycleScope.launch {
-//                    firebaseAuthenticationManager.sendResetEmail(bindingResetPassword.edEmailforget.text.toString())
-//                }
-            }
+    override fun onKey(view: View?, keyCode: Int, keyEvent: KeyEvent?): Boolean {
+        if (KeyEvent.KEYCODE_ENTER == keyCode && keyEvent!!.action == KeyEvent.ACTION_UP) {
+//            do reset password
+            onSubmit()
         }
-        sendNameEmail()
-//        if (validate()) {
-//            mViewModel.resetPasswordVM(ResetPasswordBody(
+        return false
+    }
+
+    private fun onSubmit() {
+        if (validate()) {
+//            mViewModel.resetPasswordVM(
+//                ResetPasswordBody(
 //                bindingResetPassword.edEmailforget.text.toString())
 //            )
-////            sendNameEmail()
-//        }
-//        startActivity(Intent(this@ResetPasswordActivity,UpdatePasswordActivity::class.java))
+        }
+        mViewModel.resetPasswordByFirebase(bindingResetPassword.edEmailforget.text.toString())
+        startActivity(Intent(this@ResetPasswordActivity, UpdatePasswordActivity::class.java))
     }
 }

@@ -46,11 +46,13 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    //firbase
-    implementation("com.google.firebase:firebase-auth-ktx:22.1.2")
-    implementation("com.google.firebase:firebase-firestore-ktx:24.8.1")
-    implementation("com.google.firebase:firebase-storage-ktx:20.2.1")
-    implementation("com.google.firebase:firebase-database-ktx:20.2.2")
+    //firebase
+    implementation("com.google.firebase:firebase-auth-ktx:22.2.0")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.9.0")
+    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
+    implementation("com.google.firebase:firebase-database-ktx:20.3.0")
+    implementation("com.google.firebase:firebase-auth:22.2.0")
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -67,12 +69,12 @@ dependencies {
     implementation("io.github.amrdeveloper:reactbutton:2.1.0")
     //View Model
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
     // ViewModel Factory
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.2")
     //retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    //convrt retrofit
+    //convert retrofit
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     //OKHTTP
     // define a BOM and its version
@@ -83,5 +85,19 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
     //voolley android
     implementation("com.android.volley:volley:1.2.1")
+
+    //roomDatabase
+    val room_version = "2.5.2"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
+
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+
 
 }

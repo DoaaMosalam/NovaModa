@@ -26,12 +26,13 @@ class SharedPreferencesManager(mCtx: Context) {
         mCtx.getSharedPreferences(TOKEN, Context.MODE_PRIVATE)
 
     fun saveUser(user: RegisterBody) {
-        val editor = sharedPreferences.edit()
-        editor.putString("image", user.image)
-        editor.putString("name", user.name)
-        editor.putString("phone", user.phone)
-        editor.putString("email", user.email)
-        editor.putString("password", user.password)
+        val editor = sharedPreferences.edit().apply {
+            putString("image", user.image)
+            putString("name", user.name)
+            putString("phone", user.phone)
+            putString("email", user.email)
+            putString("password", user.password)
+        }
         editor.apply()
     }
 
