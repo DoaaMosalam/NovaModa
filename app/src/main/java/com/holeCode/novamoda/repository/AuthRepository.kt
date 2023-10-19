@@ -10,7 +10,7 @@ import com.holeCode.novamoda.util.SimplifiedMessage
 import kotlinx.coroutines.flow.flow
 
 
-class AuthRepository(private val consumer: APIConsumer){
+class AuthRepository(private val consumer: APIConsumer) {
     fun validateEmailAddress(body: ValidateEmailBody) = flow {
         emit(RequestStatus.Waiting)
         val response = consumer.validateEmailAddress(body)
@@ -58,6 +58,7 @@ class AuthRepository(private val consumer: APIConsumer){
             )
         }
     }
+
     fun resetPassword(body: ResetPasswordBody) = flow {
         emit(RequestStatus.Waiting)
         val response = consumer.resetPassword(body)

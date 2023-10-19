@@ -16,7 +16,7 @@ import com.holeCode.novamoda.HomeScreenActivity
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.databinding.ActivityUpdatePasswordBinding
 
-class UpdatePasswordActivity : AppCompatActivity(), View.OnClickListener,TextWatcher {
+class UpdatePasswordActivity : AppCompatActivity(), View.OnClickListener, TextWatcher {
     private lateinit var bindingNewPassword: ActivityUpdatePasswordBinding
     private lateinit var checkIcon: Drawable
 
@@ -49,10 +49,11 @@ class UpdatePasswordActivity : AppCompatActivity(), View.OnClickListener,TextWat
         //===================================================================================
 
     }//end onCreate
+
     //This method to retrieve mail from reset password activity class.
-    private fun retrieveEmail(){
-        val email= intent.getStringExtra("email")
-        if(email!=null){
+    private fun retrieveEmail() {
+        val email = intent.getStringExtra("email")
+        if (email != null) {
             bindingNewPassword.txtEmail.text = email
         }
     }
@@ -63,19 +64,21 @@ class UpdatePasswordActivity : AppCompatActivity(), View.OnClickListener,TextWat
                 finish()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
+
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
     override fun afterTextChanged(p0: Editable?) {
-        bindingNewPassword.btnConfirm.isEnabled=
+        bindingNewPassword.btnConfirm.isEnabled =
             bindingNewPassword.edCodeNewPassword.text!!.trim().toString().isNotEmpty()
                     && bindingNewPassword.ednewPassword.text!!.trim().toString().isNotEmpty()
-                    &&validateCode()
-                    &&validateNewPassword()
+                    && validateCode()
+                    && validateNewPassword()
     }
 
 
@@ -85,7 +88,7 @@ class UpdatePasswordActivity : AppCompatActivity(), View.OnClickListener,TextWat
             when (view.id) {
                 R.id.btn_confirm -> {
 
-                   navigateGoToHome()
+                    navigateGoToHome()
                 }
             }
         }
@@ -167,7 +170,7 @@ class UpdatePasswordActivity : AppCompatActivity(), View.OnClickListener,TextWat
 
 
     private fun navigateGoToHome() {
-        startActivity(Intent(this@UpdatePasswordActivity,HomeScreenActivity::class.java))
+        startActivity(Intent(this@UpdatePasswordActivity, HomeScreenActivity::class.java))
     }
 
 

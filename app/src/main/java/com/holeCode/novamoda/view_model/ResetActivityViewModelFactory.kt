@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.holeCode.novamoda.repository.AuthRepository
 import java.security.InvalidParameterException
 
-class ResetActivityViewModelFactory (
+class ResetActivityViewModelFactory(
     private val authRepository: AuthRepository,
-private val application: Application,
+    private val application: Application,
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

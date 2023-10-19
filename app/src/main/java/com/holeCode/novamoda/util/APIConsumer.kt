@@ -34,7 +34,6 @@ interface APIConsumer {
     ): Response<ResetPasswordResponse>
 
 
-
     // call request reset-password
 //    @POST("reset-password")
 //    suspend fun resetPassword(@Body resetPassword: ResetPasswordBody): Response<ResetPasswordResponse>

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.holeCode.novamoda.repository.AuthRepository
 import java.security.InvalidParameterException
 
-class RegisterActivityViewModelFactory (
+class RegisterActivityViewModelFactory(
     private val authRepository: AuthRepository,
     private val application: Application
 ) : ViewModelProvider.Factory {
