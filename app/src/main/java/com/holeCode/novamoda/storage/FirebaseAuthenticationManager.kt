@@ -2,12 +2,18 @@ package com.holeCode.novamoda.storage
 
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
 
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.viewbinding.ViewBinding
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -17,45 +23,46 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.holeCode.novamoda.HomeScreenActivity
 import com.holeCode.novamoda.pojo.RegisterBody
+import com.holeCode.novamoda.pojo.User
 import com.holeCode.novamoda.pojo.UserFirebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.holeCode.novamoda.util.Result
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
+import java.util.Date
+import java.util.UUID
 
-class FirebaseAuthenticationManager : AppCompatActivity() {
-    private val TAG = "FIREBASE_AUTH"
+ class FirebaseAuthenticationManager : AppCompatActivity() {
+
     private val mAuth: FirebaseAuth by lazy {
         FirebaseAuth.getInstance()
     }
     private val storeFire by lazy {
         FirebaseFirestore.getInstance()
     }
-    private val dbFire by lazy {
-        FirebaseDatabase.getInstance()
-    }
 
-    private val storage by lazy {
-        FirebaseStorage.getInstance()
-    }
-    private val currentUserDocRef: DocumentReference
+    private val currentUserDocRefRegister: DocumentReference
         get() = storeFire.document("users/${mAuth.currentUser?.uid.toString()}")
 
-    //   private val currentUserDocRef:DocumentReference
-//        get() = storeFire.collection("user").document(mAuth.currentUser?.uid.toString())
-    private val currentUserStorageRef: StorageReference
-        get() = storage.reference.child(FirebaseAuth.getInstance().currentUser?.uid.toString())
 
     suspend fun registerUserByFirebase(
         email: String,
         password: String
     ): Result<Boolean> {
         return try {
-            mAuth.createUserWithEmailAndPassword(email, password).await()
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                val newUser = UserFirebase(email, password)
+                currentUserDocRefRegister.set(newUser)
+                if (task.isSuccessful){
+                    Toast.makeText(this@FirebaseAuthenticationManager, "Account Create Successful.", Toast.LENGTH_SHORT).show()
+                }
+            }.await()
             Result.Success(true)
-
         } catch (e: Exception) {
             Result.Error(e)
         }
@@ -77,56 +84,48 @@ class FirebaseAuthenticationManager : AppCompatActivity() {
     suspend fun resetPasswordByFirebase(email: String): Result<Boolean> =
         withContext(Dispatchers.IO) {
             try {
-                mAuth.sendPasswordResetEmail(email)
-                when (val result = resetPasswordByFirebase(email)) {
-                    is Result.Success -> {
-                        val message = result.toString()
-                        Toast.makeText(
-                            this@FirebaseAuthenticationManager,
-                            message,
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                        // Open Gmail app
-                        openGmail()
-                    }
-
-                    is Result.Error -> {
-                        // Password reset email failed
-                        val errorMessage = result.toString()
-                        Toast.makeText(
-                            this@FirebaseAuthenticationManager,
-                            errorMessage,
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                    }
-                }
+               mAuth.sendPasswordResetEmail(email).await()
                 openGmail()
-                Result.Success(true)
-            } catch (e: Exception) {
-                Result.Error(e)
-
-            }
+               Result.Success(true)
+           }catch (e:Exception){
+               Result.Error(e)
+           }
         }
 
     //Add method to open gmail.
-    private fun openGmail() {
-        lifecycleScope.launch {
-            try {
-                // Open Gmail app
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse("https://mail.google.com")
-                }
+    private suspend fun openGmail() {
+        val packageName = "com.google.android.gm" // Package name of the Gmail app
 
-                if (intent.resolveActivity(packageManager) != null) {
-                    startActivity(intent)
-                }
-            } catch (e: Exception) {
-                Result.Error(e)
-            }
-
+        // Check if the Gmail app is installed on the device
+        val packageManager = packageManager
+        val intent = packageManager.getLaunchIntentForPackage(packageName)
+        if (intent != null) {
+            // Gmail app is installed
+            startActivity(intent)
+        } else {
+            // Gmail app is not installed, open Gmail in a browser
+            val emailUri = Uri.parse("https://mail.google.com")
+            val browserIntent = Intent(Intent.ACTION_VIEW, emailUri)
+            startActivity(browserIntent)
         }
-
     }
+
+
+//        lifecycleScope.launch {
+//            try {
+//                // Open Gmail app
+//                val intent = Intent(Intent.ACTION_VIEW).apply {
+//                    data = Uri.parse("https://mail.google.com")
+//                }
+//
+//                if (intent.resolveActivity(packageManager) != null) {
+//                    startActivity(intent)
+//                }
+//            } catch (e: Exception) {
+//                Result.Error(e)
+//            }
+//
+//        }
+//
+//    }
 }

@@ -1,6 +1,7 @@
 package com.holeCode.novamoda.auth
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -19,16 +20,26 @@ import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.holeCode.novamoda.HomeScreenActivity
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.data.ValidateEmailBody
 import com.holeCode.novamoda.databinding.ActivitySignupBinding
 import com.holeCode.novamoda.pojo.RegisterBody
+import com.holeCode.novamoda.pojo.User
 import com.holeCode.novamoda.repository.AuthRepository
 import com.holeCode.novamoda.storage.FirebaseAuthenticationManager
 import com.holeCode.novamoda.storage.SharedPreferencesManager
@@ -39,17 +50,41 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.Date
+import java.util.UUID
 
 class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, View.OnKeyListener {
     private lateinit var bindingSingUpActivity: ActivitySignupBinding
-    private var selectedImageUri: Uri? = null
+
     private lateinit var checkIcon: Drawable
     private lateinit var mViewModel: RegisterActivityViewModel
-    private var firebaseAuthenticationManager: FirebaseAuthenticationManager
+    // Constants
+    private val PICK_IMAGE_REQUEST = 1
+    private lateinit var selectedImage: Uri
+    private lateinit var userName: String
+    private lateinit var userstatus: String
+    private val mAuth: FirebaseAuth by lazy {
+        FirebaseAuth.getInstance()
+    }
+    private val storeFire by lazy {
+        FirebaseFirestore.getInstance()
+    }
+    private val database by lazy {
+        FirebaseDatabase.getInstance()
+    }
 
+    private val storage by lazy {
+        FirebaseStorage.getInstance()
+    }
+    private val currentUserDocRef: DocumentReference
+        get() = storeFire.collection("user").document(mAuth.currentUser?.uid.toString())
+    private val currentUserStorageRef: StorageReference
+        get() = storage.reference.child(FirebaseAuth.getInstance().currentUser?.uid.toString())
+    private var firebaseAuthenticationManager: FirebaseAuthenticationManager
     init {
         firebaseAuthenticationManager = FirebaseAuthenticationManager()
     }
@@ -69,7 +104,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         checkIcon = ContextCompat.getDrawable(this, R.drawable.baseline_check_24)!!
         // handle toolbar
         val toolbar = findViewById<TextView>(R.id.signUp)
-        toolbar.text = "SingUp"
+        toolbar.text = "SignUp"
         setSupportActionBar(bindingSingUpActivity.toolbarmain)
         supportActionBar?.title = ""
         supportActionBar?.setHomeButtonEnabled(true)
@@ -143,13 +178,22 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
     //=================================================================================================
     /*This method is inheritance from setOnClickListener. */
     override fun onClick(view: View?) {
-        if (view != null && view.id == R.id.btn_LoginAccount) {
-            startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
-        } else if (view != null && view.id == R.id.btn_signUp) {
-            onSubmit()
+        if(view != null){
+        when(view.id){
+                R.id.imagePerson->{
+                    lifecycleScope.launch {
+                        OpenImageChooser()
+                    }
+                }
+                R.id.btn_signUp ->{
+                    onSubmit()
+                    lifecycleScope.launch(Dispatchers.Main) { uploadData() }
+                }
+                R.id.btn_LoginAccount ->{
+                    startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
 
-        } else if (view != null && view.id == R.id.imagePerson) {
-            openGallery()
+                }
+            }
         }
     }
 
@@ -423,94 +467,145 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
 
     //===============================================================================================
     /*This method open gallery and choose image then save in icon image. */
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, GALLERY_REQUEST_CODE)
+    suspend fun OpenImageChooser() = withContext(Dispatchers.IO) {
+        val intent = Intent().apply {
+            action = Intent.ACTION_GET_CONTENT
+            type = "image/*"
+            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png"))
+
+        }
+        startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
-    private fun saveImageToStorage(imageUri: Uri) {
-        GlobalScope.launch(Dispatchers.IO) {
-            val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
-            val file = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "my_image.jpg")
-            var success = false
+    private suspend fun uploadData() = withContext(Dispatchers.IO) {
+        val uid = mAuth.currentUser?.uid.toString()
+        val name = bindingSingUpActivity.edNameSign.text.toString()
+        val phone = bindingSingUpActivity.edPhoneSign.text.toString()
+        val email = bindingSingUpActivity.edEmailSign.text.toString()
+        val password = bindingSingUpActivity.edPasswordSing.text.toString()
 
-            try {
-                val outputStream = FileOutputStream(file)
-                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-                outputStream.flush()
-                outputStream.close()
-                success = true
-            } catch (e: IOException) {
-                e.printStackTrace()
+        val user = User(uid, "No Image", name, phone,email,password)
+        val reference = currentUserStorageRef.child("Profile").child(Date().time.toString())
+        reference.putFile(selectedImage).addOnCompleteListener { uploadTask ->
+            if (uploadTask.isSuccessful) {
+                reference.downloadUrl.addOnSuccessListener { downloadUri ->
+                    user.image = downloadUri.toString()
+                    lifecycleScope.launch {
+                        saveUserProfile(user)
+                    }
+                }
+            } else {
+                lifecycleScope.launch {
+                    saveUserProfile(user)
+                }
+
             }
+        }
 
-            withContext(Dispatchers.Main) {
-                if (success) {
-                    // Image saved successfully
-                    bindingSingUpActivity.imagePerson.setImageURI(imageUri)
+    }
+
+    private suspend fun saveUserProfile(user: User) = withContext(Dispatchers.IO) {
+        currentUserDocRef.set(user)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(this@SignUpActivity, "Data inserted", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this@SignUpActivity, HomeScreenActivity::class.java))
+                    finish()
                 } else {
-                    // Error saving image
+                    Toast.makeText(
+                        this@SignUpActivity,
+                        "Failed to insert data",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
-        }
     }
 
-    private fun isStoragePermissionGranted(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                return true
-            } else {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    STORAGE_PERMISSION_REQUEST_CODE
-                )
-                return false
+    suspend fun uploadInfo(imageUri: String) = withContext((Dispatchers.IO)) {
+        val user = User(
+            mAuth.uid.toString(),
+            imageUri,
+            bindingSingUpActivity.edNameSign.text.toString(),
+            bindingSingUpActivity.edPhoneSign.text.toString(),
+            bindingSingUpActivity.edEmailSign.text.toString(),
+            bindingSingUpActivity.edPasswordSing.text.toString()
+
+        )
+        database.reference.child("users")
+            .child(mAuth.uid.toString())
+            .setValue(user)
+            .addOnCompleteListener {
+                Toast.makeText(this@SignUpActivity, "Data  inserted", Toast.LENGTH_SHORT)
+                    .show()
+                startActivity(Intent(this@SignUpActivity, HomeScreenActivity::class.java))
+                finish()
             }
-        } else {
-            return true
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray,
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == STORAGE_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted, save the image again
-                if (selectedImageUri != null) {
-                    saveImageToStorage(selectedImageUri!!)
-                }
-            } else {
-                // Permission denied, handle accordingly
-            }
-        }
-    }
-
-    companion object {
-        private const val GALLERY_REQUEST_CODE = 1001
-        private const val STORAGE_PERMISSION_REQUEST_CODE = 1002
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            val selectedImage = data.data
-            if (selectedImage != null) {
-                selectedImageUri = selectedImage
-                if (isStoragePermissionGranted()) {
-                    saveImageToStorage(selectedImageUri!!)
+        if (data != null) {
+            if (data.data != null) {
+                /*this code compress image
+                * save image in firebase realtime*/
+                bindingSingUpActivity.imagePerson.setImageURI(data.data)
+                val selectedImagePath = data.data
+                val selectedImageBmp =
+                    MediaStore.Images.Media.getBitmap(this.contentResolver, selectedImagePath)
+                val outPutStream = ByteArrayOutputStream()
+                selectedImageBmp.compress(Bitmap.CompressFormat.JPEG, 20, outPutStream)
+                val selectedImageByte = outPutStream.toByteArray()
+
+//                UploadProfileImage(selectedImageByte) { path ->
+//                    val userMap = mutableMapOf<String, Any>()
+//                    userMap["name"] = userName
+//                    userMap["Pictures"] = path
+//                    currentUserDocRef.update(userMap)
+//
+//                }
+
+                val uri = data.data //filePath
+                val storage = FirebaseStorage.getInstance()
+                val time = Date().time
+                val reference = storage.reference.child("ProfilePicture").child(time.toString() + "")
+                reference.putFile(uri!!).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        reference.downloadUrl.addOnCompleteListener { uri ->
+                            val filePath = uri.toString()
+                            val obj = HashMap<String, Any>()
+                            obj["image"] = filePath
+                            database.reference.child("users")
+                                .child(FirebaseAuth.getInstance().uid!!).updateChildren(obj)
+                                .addOnSuccessListener { }
+                        }
+                    }
                 }
             }
+            bindingSingUpActivity.imagePerson.setImageURI(data.data)
+            selectedImage = data.data!!
+
         }
     }
+
+
+//    private fun UploadProfileImage(
+//        selectedImageByte: ByteArray,
+//        onSuccess: (imagePath: String) -> Unit
+//    ) {
+//        val ref =
+//            currentUserStorageRef.child("ProfilePictures/${UUID.nameUUIDFromBytes(selectedImageByte)}")
+//        ref.putBytes(selectedImageByte).addOnCompleteListener {
+//            if (it.isSuccessful) {
+//                onSuccess(ref.path)
+//            } else {
+//                Toast.makeText(
+//                    this@ProfileActivity,
+//                    "Error:${it.exception?.message.toString()}",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//            }
+//        }
+//    }
 
 //    override fun onDestroy() {
 //        super.onDestroy()
