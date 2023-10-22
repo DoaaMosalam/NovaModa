@@ -16,7 +16,7 @@ import javax.annotation.Nonnull
 data class User(
     @PrimaryKey(autoGenerate = true)
     @SerializedName("_id") val id: String?,
-    val image: String,
+    var image: String,
     @Nonnull
     val name: String,
     @Nonnull
@@ -25,4 +25,7 @@ data class User(
     val email: String,
     @Nonnull
     val password: String,
-)
+){
+        constructor() : this("", "", "", "","","")
+
+}

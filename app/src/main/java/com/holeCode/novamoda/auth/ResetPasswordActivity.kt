@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.databinding.ActivityResetPasswordBinding
 import com.holeCode.novamoda.pojo.ResetPasswordBody
@@ -52,13 +53,12 @@ class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickList
         //====================================================================
         bindingResetPassword.btnSend.setOnClickListener(this)
         //=====================================================================
-
-//        mViewModel = ViewModelProvider(
-//            this,
-//            ResetActivityViewModelFactory(AuthRepository(APIService.getService()), application)
-//        )
-//            .get(ResetActivityViewModel::class.java)
-//        setUpObserver()
+        mViewModel = ViewModelProvider(
+            this,
+            ResetActivityViewModelFactory(AuthRepository(APIService.getService()), application)
+        )
+            .get(ResetActivityViewModel::class.java)
+        setUpObserver()
     } // end on create
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -135,43 +135,43 @@ class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickList
         startActivity(intent)
     }
 
-    //    private fun setUpObserver() {
-//        mViewModel.getIsLoading().observe(this) {
-//            bindingResetPassword.progressbarforget.isVisible = it
-//        }
-//        mViewModel.getErrorMessage().observe(this) {
-//            //Name,Phone,Email,Password
-//            val formErrorKey = arrayOf("email")
-//            val message = StringBuilder()
-//            it.map { entry ->
-//                if (formErrorKey.contains(entry.key)) {
-//                    when (entry.key) {
-//                        "email" -> {
-//                            bindingResetPassword.emailTilforget.apply {
-//                                isErrorEnabled = true
-//                                error = entry.value
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    message.append(entry.value).append("\n")
-//                }
-//                if (message.isNotEmpty()) {
-//                    AlertDialog.Builder(this)
-//                        .setIcon(R.drawable.baseline_info_24)
-//                        .setTitle("INFORMATION")
-//                        .setMessage(message)
-//                        .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-//                        .show()
-//                }
-//            }
-//        }
-//        mViewModel.getUser().observe(this) {
-//            if (it != null) {
-//                startActivity(Intent(this@ResetPasswordActivity,UpdatePasswordActivity::class.java))
-//            }
-//        }
-//    }
+        private fun setUpObserver() {
+        mViewModel.getIsLoading().observe(this) {
+            bindingResetPassword.progressbarforget.isVisible = it
+        }
+        mViewModel.getErrorMessage().observe(this) {
+            //Name,Phone,Email,Password
+            val formErrorKey = arrayOf("email")
+            val message = StringBuilder()
+            it.map { entry ->
+                if (formErrorKey.contains(entry.key)) {
+                    when (entry.key) {
+                        "email" -> {
+                            bindingResetPassword.emailTilforget.apply {
+                                isErrorEnabled = true
+                                error = entry.value
+                            }
+                        }
+                    }
+                } else {
+                    message.append(entry.value).append("\n")
+                }
+                if (message.isNotEmpty()) {
+                    AlertDialog.Builder(this)
+                        .setIcon(R.drawable.baseline_info_24)
+                        .setTitle("INFORMATION")
+                        .setMessage(message)
+                        .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                        .show()
+                }
+            }
+        }
+        mViewModel.getUser().observe(this) {
+            if (it != null) {
+                startActivity(Intent(this@ResetPasswordActivity,UpdatePasswordActivity::class.java))
+            }
+        }
+    }
 //
     private fun validate(): Boolean {
         var isValidate = true
@@ -189,12 +189,13 @@ class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickList
 
     private fun onSubmit() {
         if (validate()) {
-//            mViewModel.resetPasswordVM(
-//                ResetPasswordBody(
-//                bindingResetPassword.edEmailforget.text.toString())
-//            )
+            mViewModel.resetPasswordVM(
+                ResetPasswordBody(
+                bindingResetPassword.edEmailforget.text.toString())
+            )
         }
         mViewModel.resetPasswordByFirebase(bindingResetPassword.edEmailforget.text.toString())
-        startActivity(Intent(this@ResetPasswordActivity, UpdatePasswordActivity::class.java))
+
+//        startActivity(Intent(this@ResetPasswordActivity, UpdatePasswordActivity::class.java))
     }
 }

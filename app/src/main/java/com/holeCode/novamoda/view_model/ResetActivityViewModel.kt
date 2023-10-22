@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.holeCode.novamoda.auth.UpdatePasswordActivity
 import com.holeCode.novamoda.pojo.ResetPasswordBody
 import com.holeCode.novamoda.pojo.User
 import com.holeCode.novamoda.repository.AuthRepository
@@ -15,16 +16,12 @@ import kotlinx.coroutines.launch
 class ResetActivityViewModel(
     private val authRepository: AuthRepository,
     val application: Application
-) :
-    ViewModel() {
+) :ViewModel() {
     private var isLoading: MutableLiveData<Boolean> =
         MutableLiveData<Boolean>().apply { value = false }
     private var errorMessage: MutableLiveData<HashMap<String, String>> = MutableLiveData()
-    private var isUniqueEmail: MutableLiveData<Boolean> =
-        MutableLiveData<Boolean>().apply { value = false }
     private var user: MutableLiveData<User> = MutableLiveData()
     private var firebaseAuthenticationManager: FirebaseAuthenticationManager
-
     init {
         firebaseAuthenticationManager = FirebaseAuthenticationManager()
     }
@@ -32,14 +29,6 @@ class ResetActivityViewModel(
     fun getIsLoading(): LiveData<Boolean> = isLoading
     fun getErrorMessage(): LiveData<HashMap<String, String>> = errorMessage
     fun getUser(): LiveData<User> = user
-
-    fun resetPasswordByFirebase(email: String) {
-        viewModelScope.launch {
-            firebaseAuthenticationManager.resetPasswordByFirebase(email)
-
-        }
-    }
-
 
     fun resetPasswordVM(body: ResetPasswordBody) {
         viewModelScope.launch {
@@ -52,7 +41,6 @@ class ResetActivityViewModel(
                     is RequestStatus.Success -> {
                         isLoading.value = false
                         user.value = it.data.data as User?
-
                     }
 
                     is RequestStatus.Error -> {
@@ -61,6 +49,12 @@ class ResetActivityViewModel(
                     }
                 }
             }
+        }
+    }
+    fun resetPasswordByFirebase(email: String) {
+        viewModelScope.launch {
+            firebaseAuthenticationManager.resetPasswordByFirebase(email)
+
         }
     }
 

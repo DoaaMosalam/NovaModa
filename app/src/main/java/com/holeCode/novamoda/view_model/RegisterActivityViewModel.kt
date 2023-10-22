@@ -25,15 +25,15 @@ class RegisterActivityViewModel(
     private var isUniqueEmail: MutableLiveData<Boolean> =
         MutableLiveData<Boolean>().apply { value = false }
     private var user: MutableLiveData<User> = MutableLiveData()
-    private var firebaseAuthenticationManager: FirebaseAuthenticationManager
-    init {
-        firebaseAuthenticationManager = FirebaseAuthenticationManager()
-    }
-
     fun getIsLoading(): LiveData<Boolean> = isLoading
     fun getErrorMessage(): LiveData<HashMap<String, String>> = errorMessage
     fun getIsUniqueEmail(): LiveData<Boolean> = isUniqueEmail
     fun getUser(): LiveData<User> = user
+
+    private var firebaseAuthenticationManager: FirebaseAuthenticationManager
+    init {
+        firebaseAuthenticationManager = FirebaseAuthenticationManager()
+    }
     fun validateEmailAddress(body: ValidateEmailBody) {
         viewModelScope.launch {
             authRepository.validateEmailAddress(body).collect {

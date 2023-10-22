@@ -1,8 +1,10 @@
 package com.holeCode.novamoda.data
 
+import com.google.gson.annotations.SerializedName
+
 data class ResetPasswordResponse
     (
-    val status: Boolean? = null,
-    val message: String? = null,
+   @SerializedName("status") val status: Boolean? = null,
+    @SerializedName("message") val message: String? = null,
     val data: Any? = null,
 )
