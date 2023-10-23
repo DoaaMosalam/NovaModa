@@ -38,17 +38,24 @@ import java.util.Date
 import java.util.UUID
 
  class FirebaseAuthenticationManager : AppCompatActivity() {
-
+     private lateinit var selectedImage: Uri
     private val mAuth: FirebaseAuth by lazy {
         FirebaseAuth.getInstance()
     }
     private val storeFire by lazy {
         FirebaseFirestore.getInstance()
     }
+     private val database by lazy {
+         FirebaseDatabase.getInstance()
+     }
+     private val storage by lazy {
+         FirebaseStorage.getInstance()
+     }
 
-    private val currentUserDocRefRegister: DocumentReference
+    private val currentUserDocRef: DocumentReference
         get() = storeFire.document("users/${mAuth.currentUser?.uid.toString()}")
-
+     private val currentUserStorageRef: StorageReference
+         get() = storage.reference.child(mAuth.currentUser?.uid.toString())
 
     suspend fun registerUserByFirebase(
         email: String,
@@ -57,7 +64,7 @@ import java.util.UUID
         return try {
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 val newUser = UserFirebase(email, password)
-                currentUserDocRefRegister.set(newUser)
+                currentUserDocRef.set(newUser)
                 if (task.isSuccessful){
                     Toast.makeText(this@FirebaseAuthenticationManager, "Account Create Successful.", Toast.LENGTH_SHORT).show()
                 }
@@ -91,41 +98,39 @@ import java.util.UUID
                Result.Error(e)
            }
         }
+     //Add method to open gmail.
+      suspend fun openGmail() {
+         lifecycleScope.launch {
+            try {
+                // Open Gmail app
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("https://mail.google.com")
+                }
 
-    //Add method to open gmail.
-    private suspend fun openGmail() {
-        val packageName = "com.google.android.gm" // Package name of the Gmail app
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+                }
+            } catch (e: Exception) {
+                Result.Error(e)
+            }
 
-        // Check if the Gmail app is installed on the device
-        val packageManager = packageManager
-        val intent = packageManager.getLaunchIntentForPackage(packageName)
-        if (intent != null) {
-            // Gmail app is installed
-            startActivity(intent)
-        } else {
-            // Gmail app is not installed, open Gmail in a browser
-            val emailUri = Uri.parse("https://mail.google.com")
-            val browserIntent = Intent(Intent.ACTION_VIEW, emailUri)
-            startActivity(browserIntent)
         }
-    }
 
 
-//        lifecycleScope.launch {
-//            try {
-//                // Open Gmail app
-//                val intent = Intent(Intent.ACTION_VIEW).apply {
-//                    data = Uri.parse("https://mail.google.com")
-//                }
+//         val packageName = "com.google.android.gm" // Package name of the Gmail app
+
+         // Check if the Gmail app is installed on the device
+//         val packageManager = packageManager
+//         val intent = packageManager.getLaunchIntentForPackage(packageName)
+//         if (intent != null) {
+//             // Gmail app is installed
+//             startActivity(intent)
+//         } else {
+//             // Gmail app is not installed, open Gmail in a browser
+//             val emailUri = Uri.parse("https://mail.google.com")
+//             val browserIntent = Intent(Intent.ACTION_VIEW, emailUri)
+//             startActivity(browserIntent)
+//         }
+     }
 //
-//                if (intent.resolveActivity(packageManager) != null) {
-//                    startActivity(intent)
-//                }
-//            } catch (e: Exception) {
-//                Result.Error(e)
-//            }
-//
-//        }
-//
-//    }
 }

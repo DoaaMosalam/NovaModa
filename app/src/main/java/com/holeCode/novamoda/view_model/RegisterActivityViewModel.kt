@@ -86,4 +86,5 @@ class RegisterActivityViewModel(
             firebaseAuthenticationManager.registerUserByFirebase(email, password)
         }
     }
+
 }

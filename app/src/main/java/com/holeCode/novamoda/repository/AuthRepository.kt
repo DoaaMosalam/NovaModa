@@ -1,6 +1,5 @@
 package com.holeCode.novamoda.repository
 
-import com.holeCode.novamoda.pojo.ResetPasswordBody
 import com.holeCode.novamoda.data.ValidateEmailBody
 import com.holeCode.novamoda.pojo.LoginBody
 import com.holeCode.novamoda.pojo.RegisterBody
@@ -46,22 +45,6 @@ class AuthRepository(private val consumer: APIConsumer) {
     fun loginUser(body: LoginBody) = flow {
         emit(RequestStatus.Waiting)
         val response = consumer.loginUser(body)
-        if (response.isSuccessful) {
-            emit((RequestStatus.Success(response.body()!!)))
-        } else {
-            emit(
-                RequestStatus.Error(
-                    SimplifiedMessage.get(
-                        response.errorBody()!!.byteStream().reader().readText()
-                    )
-                )
-            )
-        }
-    }
-
-    fun resetPassword(body: ResetPasswordBody) = flow {
-        emit(RequestStatus.Waiting)
-        val response = consumer.resetPassword(body)
         if (response.isSuccessful) {
             emit((RequestStatus.Success(response.body()!!)))
         } else {
