@@ -15,8 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.auth.EmailAuthProvider
-import com.holeCode.novamoda.HomeScreenActivity
+import com.holeCode.novamoda.MainScreenActivity
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.databinding.ActivityLoginBinding
 import com.holeCode.novamoda.pojo.LoginBody
@@ -267,7 +266,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Vi
     }
 
     private fun navigateGoToHome() {
-        val intent = Intent(this@LoginActivity, HomeScreenActivity::class.java)
+        val intent = Intent(this@LoginActivity, MainScreenActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
     }

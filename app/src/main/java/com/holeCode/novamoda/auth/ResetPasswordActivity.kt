@@ -27,6 +27,7 @@ class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickList
     init {
         firebaseAuthenticationManager = FirebaseAuthenticationManager()
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingResetPassword = ActivityResetPasswordBinding.inflate(layoutInflater)
@@ -124,6 +125,7 @@ class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickList
         intent.putExtra("email", email)
         startActivity(intent)
     }
+
     private fun validate(): Boolean {
         var isValidate = true
         if (!validateEmail()) isValidate = false

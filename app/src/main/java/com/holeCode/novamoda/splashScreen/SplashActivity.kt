@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
-import com.holeCode.novamoda.HomeScreenActivity
+import com.holeCode.novamoda.MainScreenActivity
 import com.holeCode.novamoda.auth.SignUpActivity
 import com.holeCode.novamoda.databinding.ActivitySplashBinding
 import com.holeCode.novamoda.storage.SharedPreferencesManager
@@ -59,7 +59,7 @@ class SplashActivity : AppCompatActivity() {
 
         if (isRegister) {
             // User is register in, navigate to the home page
-            startActivity(Intent(this, HomeScreenActivity::class.java))
+            startActivity(Intent(this, MainScreenActivity::class.java))
             finish()
         } else {
             // User is not register in, navigate to the login page

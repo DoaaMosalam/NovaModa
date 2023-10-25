@@ -19,7 +19,6 @@ import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -28,18 +27,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.holeCode.novamoda.HomeScreenActivity
+import com.holeCode.novamoda.MainScreenActivity
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.data.ValidateEmailBody
 import com.holeCode.novamoda.databinding.ActivitySignupBinding
 import com.holeCode.novamoda.pojo.RegisterBody
-import com.holeCode.novamoda.pojo.User
 import com.holeCode.novamoda.repository.AuthRepository
-import com.holeCode.novamoda.storage.FirebaseAuthenticationManager
 import com.holeCode.novamoda.storage.SharedPreferencesManager
 import com.holeCode.novamoda.util.APIService
 import com.holeCode.novamoda.view_model.RegisterActivityViewModel
@@ -57,25 +51,15 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
     private lateinit var bindingSingUpActivity: ActivitySignupBinding
     private lateinit var checkIcon: Drawable
     private lateinit var mViewModel: RegisterActivityViewModel
+
     // Constants
     private var selectedImageUri: Uri? = null
     private val mAuth: FirebaseAuth by lazy {
         FirebaseAuth.getInstance()
     }
-    private val storeFire by lazy {
-        FirebaseFirestore.getInstance()
-    }
     private val database by lazy {
         FirebaseDatabase.getInstance()
     }
-
-    private val storage by lazy {
-        FirebaseStorage.getInstance()
-    }
-    private val currentUserDocRef: DocumentReference
-        get() = storeFire.collection("user").document(mAuth.currentUser?.uid.toString())
-    private val currentUserStorageRef: StorageReference
-        get() = storage.reference.child(mAuth.currentUser?.uid.toString())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -172,10 +156,9 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
                         openGallery()
                     }
                 }
+
                 R.id.btn_signUp -> {
                     onSubmit()
-                    lifecycleScope.launch { uploadData() }
-
                 }
 
                 R.id.btn_LoginAccount -> {
@@ -199,7 +182,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
     //=================================================================================================
 // this method handle go to homeActivity.
     private fun navigateGoToHome() {
-        startActivity(Intent(this@SignUpActivity, HomeScreenActivity::class.java))
+        startActivity(Intent(this@SignUpActivity, MainScreenActivity::class.java))
     }
 
     //==============================================================================================
@@ -300,7 +283,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         )
 
 
-        val intent = Intent(this@SignUpActivity, HomeScreenActivity::class.java)
+        val intent = Intent(this@SignUpActivity, MainScreenActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
     }
@@ -454,101 +437,6 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         return email.matches(pattern.toRegex())
     }
 
-    private suspend fun uploadData()= withContext(Dispatchers.IO) {
-//        val uid = mAuth.currentUser?.uid.toString()
-//        val name = bindingSingUpActivity.edNameSign.text.toString()
-//        val phone = bindingSingUpActivity.edPhoneSign.text.toString()
-//        val email = bindingSingUpActivity.edEmailSign.text.toString()
-//        val password = bindingSingUpActivity.edPasswordSing.text.toString()
-//
-//        val user = User(uid, "No Image", name, phone, email, password)
-//
-//        val imageRef = currentUserStorageRef.child("Profile").child(Date().time.toString())
-//        imageRef.putFile(selectedImageUri!!).addOnCompleteListener { uploadTask ->
-//            if (uploadTask.isSuccessful) {
-//                imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-//                    user.image = downloadUri.toString()
-//                    lifecycleScope.launch {
-//                        saveUserProfile(user)
-//                    }
-//                }
-//            } else {
-//                lifecycleScope.launch {
-//                    saveUserProfile(user)
-//                }
-//
-//            }
-//        }
-        val reference = currentUserStorageRef.child("Profile").child(Date().time.toString())
-        reference.putFile(selectedImageUri!!).addOnCompleteListener {
-            if (it.isSuccessful) {
-                reference.downloadUrl.addOnSuccessListener { task ->
-                    lifecycleScope.launch {
-                        uploadInfo(task.toString())
-                    }
-                }
-            } else {
-                val uid = mAuth.currentUser?.uid.toString()
-                val na = bindingSingUpActivity.edNameSign.text.toString()
-                val ph = bindingSingUpActivity.edPhoneSign.text.toString()
-                val em = bindingSingUpActivity.edEmailSign.text.toString()
-                val pas = bindingSingUpActivity.edPasswordSing.text.toString()
-
-                val user = User(
-                    uid,
-                    "No Image",
-                    na,
-                    ph,
-                    em,
-                    pas
-
-                )
-                database.reference.child("users").child(uid).setValue(user)
-                    .addOnCanceledListener {
-                        val intent = Intent(this@SignUpActivity, HomeScreenActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }
-            }
-        }
-    }
-
-    private suspend fun saveUserProfile(user: User) = withContext(Dispatchers.IO) {
-        currentUserDocRef.set(user)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this@SignUpActivity, "Data inserted", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this@SignUpActivity, HomeScreenActivity::class.java))
-                    finish()
-                } else {
-                    Toast.makeText(
-                        this@SignUpActivity,
-                        "Failed to insert data",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-    }
-
-    suspend fun uploadInfo(imageUri: String) = withContext((Dispatchers.IO)) {
-        val user = User(
-            mAuth.uid.toString(),
-            bindingSingUpActivity.edNameSign.text.toString(),
-            bindingSingUpActivity.edPhoneSign.text.toString(),
-            bindingSingUpActivity.edEmailSign.text.toString(),
-            bindingSingUpActivity.edPasswordSing.text.toString(),
-            imageUri
-        )
-        database.reference.child("users")
-            .child(mAuth.uid.toString())
-            .setValue(user)
-            .addOnCompleteListener {
-                Toast.makeText(this@SignUpActivity, "Data  inserted", Toast.LENGTH_SHORT)
-                    .show()
-                startActivity(Intent(this@SignUpActivity, HomeScreenActivity::class.java))
-                finish()
-            }
-    }
     //===============================================================================================
     /*This method open gallery and choose image then save in icon image. */
     private fun openGallery() {
@@ -658,10 +546,12 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         }
     }
 
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        bindingSingUpActivity=null
-//    }
+    override fun onStart() {
+        super.onStart()
+        if (mAuth!=null){
+            navigateGoToHome()
+        }
+    }
 }
 
 

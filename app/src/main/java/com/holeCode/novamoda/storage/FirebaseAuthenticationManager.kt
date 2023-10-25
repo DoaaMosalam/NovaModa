@@ -2,60 +2,40 @@ package com.holeCode.novamoda.storage
 
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
-import android.view.LayoutInflater
 
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.viewbinding.ViewBinding
-import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.holeCode.novamoda.HomeScreenActivity
-import com.holeCode.novamoda.pojo.RegisterBody
-import com.holeCode.novamoda.pojo.User
 import com.holeCode.novamoda.pojo.UserFirebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.holeCode.novamoda.util.Result
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withContext
-import java.io.ByteArrayOutputStream
-import java.util.Date
-import java.util.UUID
 
- class FirebaseAuthenticationManager : AppCompatActivity() {
-     private lateinit var selectedImage: Uri
+class FirebaseAuthenticationManager : AppCompatActivity() {
     private val mAuth: FirebaseAuth by lazy {
         FirebaseAuth.getInstance()
     }
     private val storeFire by lazy {
         FirebaseFirestore.getInstance()
     }
-     private val database by lazy {
-         FirebaseDatabase.getInstance()
-     }
-     private val storage by lazy {
-         FirebaseStorage.getInstance()
-     }
+    private val storage by lazy {
+        FirebaseStorage.getInstance()
+    }
 
     private val currentUserDocRef: DocumentReference
         get() = storeFire.document("users/${mAuth.currentUser?.uid.toString()}")
-     private val currentUserStorageRef: StorageReference
-         get() = storage.reference.child(mAuth.currentUser?.uid.toString())
+    private val currentUserStorageRef: StorageReference
+        get() = storage.reference.child(mAuth.currentUser?.uid.toString())
 
     suspend fun registerUserByFirebase(
         email: String,
@@ -65,8 +45,12 @@ import java.util.UUID
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 val newUser = UserFirebase(email, password)
                 currentUserDocRef.set(newUser)
-                if (task.isSuccessful){
-                    Toast.makeText(this@FirebaseAuthenticationManager, "Account Create Successful.", Toast.LENGTH_SHORT).show()
+                if (task.isSuccessful) {
+                    Toast.makeText(
+                        this@FirebaseAuthenticationManager,
+                        "Account Create Successful.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }.await()
             Result.Success(true)
@@ -91,16 +75,17 @@ import java.util.UUID
     suspend fun resetPasswordByFirebase(email: String): Result<Boolean> =
         withContext(Dispatchers.IO) {
             try {
-               mAuth.sendPasswordResetEmail(email).await()
+                mAuth.sendPasswordResetEmail(email).await()
                 openGmail()
-               Result.Success(true)
-           }catch (e:Exception){
-               Result.Error(e)
-           }
+                Result.Success(true)
+            } catch (e: Exception) {
+                Result.Error(e)
+            }
         }
-     //Add method to open gmail.
-      suspend fun openGmail() {
-         lifecycleScope.launch {
+
+    //Add method to open gmail.
+    private suspend fun openGmail() {
+        lifecycleScope.launch {
             try {
                 // Open Gmail app
                 val intent = Intent(Intent.ACTION_VIEW).apply {
@@ -115,11 +100,11 @@ import java.util.UUID
             }
 
         }
-
-
+    }
+//
 //         val packageName = "com.google.android.gm" // Package name of the Gmail app
 
-         // Check if the Gmail app is installed on the device
+        // Check if the Gmail app is installed on the device
 //         val packageManager = packageManager
 //         val intent = packageManager.getLaunchIntentForPackage(packageName)
 //         if (intent != null) {
@@ -131,6 +116,5 @@ import java.util.UUID
 //             val browserIntent = Intent(Intent.ACTION_VIEW, emailUri)
 //             startActivity(browserIntent)
 //         }
-     }
 //
 }

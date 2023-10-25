@@ -31,9 +31,11 @@ class RegisterActivityViewModel(
     fun getUser(): LiveData<User> = user
 
     private var firebaseAuthenticationManager: FirebaseAuthenticationManager
+
     init {
         firebaseAuthenticationManager = FirebaseAuthenticationManager()
     }
+
     fun validateEmailAddress(body: ValidateEmailBody) {
         viewModelScope.launch {
             authRepository.validateEmailAddress(body).collect {
@@ -87,4 +89,7 @@ class RegisterActivityViewModel(
         }
     }
 
+//    fun uploadDataFirebase(uid:String,name:String,phone:String,email:String,password:String){
+//        viewModelScope.launch { firebaseAuthenticationManager.uploadData(uid,name,phone,email,password) }
+//    }
 }

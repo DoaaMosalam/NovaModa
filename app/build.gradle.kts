@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.holeCode.novamoda"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.holeCode.novamoda"
         minSdk = 25
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -52,7 +52,7 @@ dependencies {
     implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
     implementation("com.google.firebase:firebase-database-ktx:20.3.0")
     implementation("com.google.firebase:firebase-auth:22.2.0")
-    implementation ("com.google.android.gms:play-services-auth:19.2.0")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -86,8 +86,7 @@ dependencies {
     implementation("com.android.volley:volley:1.2.1")
 
     //roomDatabase
-    val room_version = "2.5.2"
-
+    val room_version = "2.6.0"
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
 

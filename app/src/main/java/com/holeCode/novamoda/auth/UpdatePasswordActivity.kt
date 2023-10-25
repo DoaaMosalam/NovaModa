@@ -12,7 +12,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.holeCode.novamoda.HomeScreenActivity
+import com.holeCode.novamoda.MainScreenActivity
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.databinding.ActivityUpdatePasswordBinding
 
@@ -170,7 +170,7 @@ class UpdatePasswordActivity : AppCompatActivity(), View.OnClickListener, TextWa
 
 
     private fun navigateGoToHome() {
-        startActivity(Intent(this@UpdatePasswordActivity, HomeScreenActivity::class.java))
+        startActivity(Intent(this@UpdatePasswordActivity, MainScreenActivity::class.java))
     }
 
 
