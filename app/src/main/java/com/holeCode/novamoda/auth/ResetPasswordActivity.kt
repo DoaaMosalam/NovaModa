@@ -15,17 +15,17 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.databinding.ActivityResetPasswordBinding
-import com.holeCode.novamoda.storage.FirebaseAuthenticationManager
+import com.holeCode.novamoda.storage.Firebasedb
 import kotlinx.coroutines.launch
 
 class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickListener,
     View.OnKeyListener {
     private lateinit var bindingResetPassword: ActivityResetPasswordBinding
     private lateinit var checkIcon: Drawable
-    private var firebaseAuthenticationManager: FirebaseAuthenticationManager
+    private var firebasedb: Firebasedb
 
     init {
-        firebaseAuthenticationManager = FirebaseAuthenticationManager()
+        firebasedb = Firebasedb()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -143,7 +143,7 @@ class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickList
     private fun onSubmit() {
         if (validate()) {
             lifecycleScope.launch {
-                firebaseAuthenticationManager.resetPasswordByFirebase(
+                firebasedb.resetPasswordByFirebase(
                     bindingResetPassword.edEmailforget.text.toString()
                 )
             }

@@ -30,7 +30,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.holeCode.novamoda.MainScreenActivity
 import com.holeCode.novamoda.R
-import com.holeCode.novamoda.data.ValidateEmailBody
+import com.holeCode.novamoda.auth.data.ValidateEmailBody
 import com.holeCode.novamoda.databinding.ActivitySignupBinding
 import com.holeCode.novamoda.pojo.RegisterBody
 import com.holeCode.novamoda.repository.AuthRepository
@@ -546,12 +546,12 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (mAuth!=null){
-            navigateGoToHome()
-        }
-    }
+//    override fun onStart() {
+//        super.onStart()
+//        if (mAuth!=null){
+//            navigateGoToHome()
+//        }
+//    }
 }
 
 

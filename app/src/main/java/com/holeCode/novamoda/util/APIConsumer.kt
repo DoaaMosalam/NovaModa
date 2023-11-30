@@ -1,9 +1,9 @@
 package com.holeCode.novamoda.util
 
-import com.holeCode.novamoda.data.LoginResponse
-import com.holeCode.novamoda.data.RegisterResponse
-import com.holeCode.novamoda.data.UniqueEmailValidateResponse
-import com.holeCode.novamoda.data.ValidateEmailBody
+import com.holeCode.novamoda.auth.data.LoginResponse
+import com.holeCode.novamoda.auth.data.RegisterResponse
+import com.holeCode.novamoda.auth.data.UniqueEmailValidateResponse
+import com.holeCode.novamoda.auth.data.ValidateEmailBody
 import com.holeCode.novamoda.pojo.LoginBody
 import com.holeCode.novamoda.pojo.RegisterBody
 import retrofit2.Response

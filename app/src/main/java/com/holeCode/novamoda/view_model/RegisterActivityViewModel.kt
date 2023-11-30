@@ -7,11 +7,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.holeCode.novamoda.data.ValidateEmailBody
+import com.holeCode.novamoda.auth.data.ValidateEmailBody
 import com.holeCode.novamoda.pojo.RegisterBody
 import com.holeCode.novamoda.pojo.User
 import com.holeCode.novamoda.repository.AuthRepository
-import com.holeCode.novamoda.storage.FirebaseAuthenticationManager
+import com.holeCode.novamoda.storage.Firebasedb
 import com.holeCode.novamoda.storage.SharedPreferencesManager
 import com.holeCode.novamoda.util.RequestStatus
 import kotlinx.coroutines.launch
@@ -30,10 +30,10 @@ class RegisterActivityViewModel(
     fun getIsUniqueEmail(): LiveData<Boolean> = isUniqueEmail
     fun getUser(): LiveData<User> = user
 
-    private var firebaseAuthenticationManager: FirebaseAuthenticationManager
+    private var firebaseAuthenticationManager: Firebasedb
 
     init {
-        firebaseAuthenticationManager = FirebaseAuthenticationManager()
+        firebaseAuthenticationManager = Firebasedb()
     }
 
     fun validateEmailAddress(body: ValidateEmailBody) {

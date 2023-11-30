@@ -5,11 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.AuthCredential
 import com.holeCode.novamoda.pojo.LoginBody
 import com.holeCode.novamoda.pojo.User
 import com.holeCode.novamoda.repository.AuthRepository
-import com.holeCode.novamoda.storage.FirebaseAuthenticationManager
+import com.holeCode.novamoda.storage.Firebasedb
 import com.holeCode.novamoda.storage.SharedPreferencesManager
 import com.holeCode.novamoda.util.RequestStatus
 import kotlinx.coroutines.launch
@@ -25,12 +24,10 @@ class LoginActivityViewModel(
     fun getIsLoading(): LiveData<Boolean> = isLoading
     fun getErrorMessage(): LiveData<HashMap<String, String>> = errorMessage
     fun getUser(): LiveData<User> = user
-    private var firebaseAuthenticationManager: FirebaseAuthenticationManager
-
+    private var firebasedb: Firebasedb
     init {
-        firebaseAuthenticationManager = FirebaseAuthenticationManager()
+        firebasedb = Firebasedb()
     }
-
 
     fun loginUserVM(body: LoginBody) {
         viewModelScope.launch {
@@ -58,7 +55,7 @@ class LoginActivityViewModel(
 
     fun loginUserByFirebase(email: String, password: String) {
         viewModelScope.launch {
-            firebaseAuthenticationManager.loginUserByFirebase(email, password)
+            firebasedb.loginUserByFirebase(email, password)
 
         }
     }

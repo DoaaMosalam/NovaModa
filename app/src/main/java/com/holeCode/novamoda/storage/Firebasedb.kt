@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -21,7 +20,7 @@ import com.holeCode.novamoda.util.Result
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class FirebaseAuthenticationManager : AppCompatActivity() {
+class Firebasedb : AppCompatActivity() {
     private val mAuth: FirebaseAuth by lazy {
         FirebaseAuth.getInstance()
     }
@@ -47,7 +46,7 @@ class FirebaseAuthenticationManager : AppCompatActivity() {
                 currentUserDocRef.set(newUser)
                 if (task.isSuccessful) {
                     Toast.makeText(
-                        this@FirebaseAuthenticationManager,
+                        this@Firebasedb,
                         "Account Create Successful.",
                         Toast.LENGTH_SHORT
                     ).show()

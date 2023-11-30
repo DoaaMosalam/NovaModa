@@ -1,6 +1,6 @@
 package com.holeCode.novamoda.repository
 
-import com.holeCode.novamoda.data.ValidateEmailBody
+import com.holeCode.novamoda.auth.data.ValidateEmailBody
 import com.holeCode.novamoda.pojo.LoginBody
 import com.holeCode.novamoda.pojo.RegisterBody
 import com.holeCode.novamoda.util.APIConsumer

@@ -1,4 +1,4 @@
-package com.holeCode.novamoda.data
+package com.holeCode.novamoda.auth.data
 
 import com.holeCode.novamoda.pojo.User
 
