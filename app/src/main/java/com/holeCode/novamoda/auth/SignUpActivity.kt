@@ -51,7 +51,6 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
     private lateinit var bindingSingUpActivity: ActivitySignupBinding
     private lateinit var checkIcon: Drawable
     private lateinit var mViewModel: RegisterActivityViewModel
-
     // Constants
     private var selectedImageUri: Uri? = null
 
