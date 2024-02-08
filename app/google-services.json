@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "77770924184",
+    "project_id": "novamoda-3dcc9",
+    "storage_bucket": "novamoda-3dcc9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77770924184:android:a3f178464899ddefbff0ed",
+        "android_client_info": {
+          "package_name": "com.holeCode.novamoda"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3_EXetbNwcVJvXhcf8c0VzV1I3AIKXMI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

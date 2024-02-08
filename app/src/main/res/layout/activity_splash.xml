@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/motion_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="1.0"
+        android:background="@color/light_gray"
+        app:layoutDescription="@xml/activity_splash_scene"
+        tools:context=".splashScreen.SplashActivity">
+
+        <ImageView
+            android:id="@+id/image_motion"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/novamoda_logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+</layout>
