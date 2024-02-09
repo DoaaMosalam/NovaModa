@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.holeCode.novamoda.fragments.BagFragment
-import com.holeCode.novamoda.fragments.FavorityFragment
+import com.holeCode.novamoda.fragments.FavoriteFragment
 import com.holeCode.novamoda.fragments.HomeFragment
 import com.holeCode.novamoda.fragments.ProfileFragment
 import com.holeCode.novamoda.fragments.ShopFragment
@@ -13,7 +13,7 @@ class AdapterViewPager(fragmentAdapterViewPager: FragmentActivity):FragmentState
         HomeFragment(),
         ShopFragment(),
         BagFragment(),
-        FavorityFragment(),
+        FavoriteFragment(),
         ProfileFragment()
     )
     override fun getItemCount(): Int {

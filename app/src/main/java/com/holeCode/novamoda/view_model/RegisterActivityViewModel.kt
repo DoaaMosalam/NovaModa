@@ -14,10 +14,14 @@ import com.holeCode.novamoda.repository.AuthRepository
 import com.holeCode.novamoda.storage.Firebasedb
 import com.holeCode.novamoda.storage.SharedPreferencesManager
 import com.holeCode.novamoda.util.RequestStatus
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RegisterActivityViewModel(
-    private val authRepository: AuthRepository, val application: Application
+@HiltViewModel
+class RegisterActivityViewModel @Inject constructor(
+    private val authRepository: AuthRepository,
+    val application: Application
 ) : ViewModel() {
     private var isLoading: MutableLiveData<Boolean> =
         MutableLiveData<Boolean>().apply { value = false }

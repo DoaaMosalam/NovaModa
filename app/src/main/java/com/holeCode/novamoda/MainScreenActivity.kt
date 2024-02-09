@@ -2,6 +2,8 @@ package com.holeCode.novamoda
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.viewpager2.widget.ViewPager2
 import com.holeCode.novamoda.adapter.AdapterViewPager
 import com.holeCode.novamoda.databinding.ActivityMainScreenBinding
@@ -11,12 +13,16 @@ import kotlinx.coroutines.launch
 
 class MainScreenActivity : AppCompatActivity() {
     private lateinit var bindingMain: ActivityMainScreenBinding
+    private lateinit var mNavController: NavController
     private lateinit var adapterFragment:AdapterViewPager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingMain = ActivityMainScreenBinding.inflate(layoutInflater)
         setContentView(bindingMain.root)
-
+        //==========================================================================
+        //add nav controller
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        mNavController = navHostFragment.navController
 
         adapterFragment = AdapterViewPager(this)
         bindingMain.viewPagerMain.adapter = adapterFragment

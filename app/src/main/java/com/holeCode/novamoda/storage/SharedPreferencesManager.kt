@@ -45,7 +45,7 @@ class SharedPreferencesManager(mCtx: Context) {
         sharedPreferences.getString("password", null)
     }
 
-    fun loadUserLogin(user: LoginBody) {
+    fun loadUserLogin(user: LoginBody){
         sharedPreferences.getString("email", null)
         sharedPreferences.getString("password", null)
     }

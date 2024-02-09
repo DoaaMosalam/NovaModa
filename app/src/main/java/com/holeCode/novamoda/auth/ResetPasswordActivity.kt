@@ -22,11 +22,7 @@ class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickList
     View.OnKeyListener {
     private lateinit var bindingResetPassword: ActivityResetPasswordBinding
     private lateinit var checkIcon: Drawable
-    private var firebasedb: Firebasedb
-
-    init {
-        firebasedb = Firebasedb()
-    }
+    private var firebasedb: Firebasedb = Firebasedb()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +32,7 @@ class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickList
         //==========================================================
         //handle toolbar.
         val toolbar = bindingResetPassword.forgetPasswrod
-        toolbar.text = "Reset Password"
+        toolbar.text = getString(R.string.forget_password)
         setSupportActionBar(bindingResetPassword.toolbarforget)
         supportActionBar?.title = ""
         supportActionBar?.setHomeButtonEnabled(true)

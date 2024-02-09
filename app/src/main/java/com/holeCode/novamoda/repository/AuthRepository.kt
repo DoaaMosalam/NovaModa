@@ -7,9 +7,10 @@ import com.holeCode.novamoda.util.APIConsumer
 import com.holeCode.novamoda.util.RequestStatus
 import com.holeCode.novamoda.util.SimplifiedMessage
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
 
-class AuthRepository(private val consumer: APIConsumer) {
+class AuthRepository @Inject constructor(private val consumer: APIConsumer) {
     fun validateEmailAddress(body: ValidateEmailBody) = flow {
         emit(RequestStatus.Waiting)
         val response = consumer.validateEmailAddress(body)

@@ -102,11 +102,11 @@ dependencies {
     // Dagger Hilt dependencies
     implementation("com.google.dagger:hilt-android:2.50")
     kapt("com.google.dagger:hilt-android-compiler:2.50")
-    //dagger hilt viewmodel
-    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+    kapt("androidx.hilt:hilt-compiler:1.1.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
     //loading button
     implementation ("br.com.simplepass:loading-button-android:2.2.0")
-//    //smooth bar
+    //smooth bar
     implementation ("com.github.ibrahimsn98:SmoothBottomBar:1.7.9")
     //viewpager2 indicatior
     implementation ("io.github.vejei.viewpagerindicator:viewpagerindicator:1.0.0-alpha.1")
@@ -114,7 +114,6 @@ dependencies {
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
     //stepView
     implementation ("com.shuhart.stepview:stepview:1.5.1")
-
     //Android Ktx
     implementation ("androidx.fragment:fragment-ktx:1.6.2")
 

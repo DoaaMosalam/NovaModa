@@ -16,9 +16,9 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
-import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -35,7 +35,7 @@ import com.holeCode.novamoda.databinding.ActivitySignupBinding
 import com.holeCode.novamoda.pojo.RegisterBody
 import com.holeCode.novamoda.repository.AuthRepository
 import com.holeCode.novamoda.storage.SharedPreferencesManager
-import com.holeCode.novamoda.util.APIService
+import com.holeCode.novamoda.di.APIService
 import com.holeCode.novamoda.view_model.RegisterActivityViewModel
 import com.holeCode.novamoda.view_model.RegisterActivityViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +50,7 @@ import java.util.Date
 class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, View.OnKeyListener {
     private lateinit var bindingSingUpActivity: ActivitySignupBinding
     private lateinit var checkIcon: Drawable
-    private lateinit var mViewModel: RegisterActivityViewModel
+    private lateinit var  mViewModel: RegisterActivityViewModel
     // Constants
     private var selectedImageUri: Uri? = null
 
@@ -72,7 +72,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         checkIcon = ContextCompat.getDrawable(this, R.drawable.baseline_check_24)!!
         // handle toolbar
         val toolbar = findViewById<TextView>(R.id.signUp)
-        toolbar.text = "SignUp"
+        toolbar.text = getString(R.string.sign_up)
         setSupportActionBar(bindingSingUpActivity.toolbarmain)
         supportActionBar?.title = ""
 
@@ -85,12 +85,9 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         mViewModel = ViewModelProvider(
             this,
             RegisterActivityViewModelFactory(AuthRepository(APIService.getService()), application)
-        )
-            .get(RegisterActivityViewModel::class.java)
+        )[RegisterActivityViewModel::class.java]
 //==================================================================================================
-
         setUpObserver()
-
 //================================================================================================
         // this when text watcher button not clickable when full all edit tet
         bindingSingUpActivity.apply {

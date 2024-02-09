@@ -38,7 +38,7 @@ class UpdatePasswordActivity : AppCompatActivity(), View.OnClickListener, TextWa
 //=================================================================================================
         // handle toolbar
         val toolbar = findViewById<TextView>(R.id.txt_newPassword)
-        toolbar.text = "Create New Password"
+        toolbar.text = getString(R.string.new_password)
         setSupportActionBar(bindingNewPassword.toolbarNewpassword)
         supportActionBar?.title = ""
         supportActionBar?.setHomeButtonEnabled(true)
@@ -167,12 +167,8 @@ class UpdatePasswordActivity : AppCompatActivity(), View.OnClickListener, TextWa
     }
 
     //===============================================================================
-
-
     private fun navigateGoToHome() {
         startActivity(Intent(this@UpdatePasswordActivity, MainScreenActivity::class.java))
     }
-
-
 }
 

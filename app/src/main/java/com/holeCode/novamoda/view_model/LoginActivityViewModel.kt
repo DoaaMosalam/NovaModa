@@ -11,9 +11,12 @@ import com.holeCode.novamoda.repository.AuthRepository
 import com.holeCode.novamoda.storage.Firebasedb
 import com.holeCode.novamoda.storage.SharedPreferencesManager
 import com.holeCode.novamoda.util.RequestStatus
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginActivityViewModel(
+
+class LoginActivityViewModel  (
     private val authRepository: AuthRepository,
     val application: Application,
 ) : ViewModel() {

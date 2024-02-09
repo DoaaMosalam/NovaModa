@@ -13,7 +13,6 @@
         android:background="@color/light_gray"
         tools:context=".auth.LoginActivity">
 
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarmain"
             android:layout_width="match_parent"

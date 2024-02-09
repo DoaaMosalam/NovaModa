@@ -20,7 +20,7 @@ import com.holeCode.novamoda.R
 import com.holeCode.novamoda.databinding.ActivityLoginBinding
 import com.holeCode.novamoda.pojo.LoginBody
 import com.holeCode.novamoda.repository.AuthRepository
-import com.holeCode.novamoda.util.APIService
+import com.holeCode.novamoda.di.APIService
 import com.holeCode.novamoda.view_model.LoginActivityViewModel
 import com.holeCode.novamoda.view_model.LoginActivityViewModelFactory
 
@@ -46,7 +46,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Vi
         //==================================================================================================
         //handle toolbar.
         val toolbar = bindingLogActivity.login
-        toolbar.text = "Login"
+        toolbar.text = getString(R.string.login)
         setSupportActionBar(bindingLogActivity.toolbarmain)
         supportActionBar?.title = ""
         supportActionBar?.setHomeButtonEnabled(true)
