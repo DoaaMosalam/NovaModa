@@ -105,16 +105,16 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:1.1.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
     //loading button
-    implementation ("br.com.simplepass:loading-button-android:2.2.0")
+    implementation("br.com.simplepass:loading-button-android:2.2.0")
     //smooth bar
-    implementation ("com.github.ibrahimsn98:SmoothBottomBar:1.7.9")
+    implementation("com.github.ibrahimsn98:SmoothBottomBar:1.7.9")
     //viewpager2 indicatior
-    implementation ("io.github.vejei.viewpagerindicator:viewpagerindicator:1.0.0-alpha.1")
+    implementation("io.github.vejei.viewpagerindicator:viewpagerindicator:1.0.0-alpha.1")
     //Firebase coroutines
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
     //stepView
-    implementation ("com.shuhart.stepview:stepview:1.5.1")
+    implementation("com.shuhart.stepview:stepview:1.5.1")
     //Android Ktx
-    implementation ("androidx.fragment:fragment-ktx:1.6.2")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
 
 }

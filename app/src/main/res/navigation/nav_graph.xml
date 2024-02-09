@@ -15,7 +15,7 @@
         android:label="fragment_shop"
         tools:layout="@layout/fragment_shop" />
     <fragment
-        android:id="@+id/bagFragment2"
+        android:id="@+id/bagFragment"
         android:name="com.holeCode.novamoda.fragments.BagFragment"
         android:label="fragment_bag"
         tools:layout="@layout/fragment_bag" />

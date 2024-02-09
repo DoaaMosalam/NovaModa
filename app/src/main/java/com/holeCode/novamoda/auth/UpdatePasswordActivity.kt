@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import com.holeCode.novamoda.MainScreenActivity
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.databinding.ActivityUpdatePasswordBinding
@@ -22,8 +23,9 @@ class UpdatePasswordActivity : AppCompatActivity(), View.OnClickListener, TextWa
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindingNewPassword = ActivityUpdatePasswordBinding.inflate(layoutInflater)
-        setContentView(bindingNewPassword.root)
+//        bindingNewPassword = ActivityUpdatePasswordBinding.inflate(layoutInflater)
+//        setContentView(bindingNewPassword.root)
+        bindingNewPassword = DataBindingUtil.setContentView(this, R.layout.activity_update_password)
         //==========================================================================================
         checkIcon = ContextCompat.getDrawable(this, R.drawable.baseline_check_24)!!
         //call method Retrieve email from forget password activity class

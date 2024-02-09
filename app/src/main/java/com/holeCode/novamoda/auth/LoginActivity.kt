@@ -14,6 +14,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.holeCode.novamoda.MainScreenActivity
 import com.holeCode.novamoda.R
@@ -32,8 +33,9 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Vi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindingLogActivity = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(bindingLogActivity.root)
+//        bindingLogActivity = ActivityLoginBinding.inflate(layoutInflater)
+//        setContentView(bindingLogActivity.root)
+        bindingLogActivity = DataBindingUtil.setContentView(this, R.layout.activity_login)
         checkIcon = ContextCompat.getDrawable(this, R.drawable.baseline_check_24)!!
         //================================================================================================
         bindingLogActivity.edEmailLogin.addTextChangedListener(this@LoginActivity)
@@ -59,8 +61,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, Vi
         mViewModel = ViewModelProvider(
             this,
             LoginActivityViewModelFactory(AuthRepository(APIService.getService()), application)
-        )
-            .get(LoginActivityViewModel::class.java)
+        )[LoginActivityViewModel::class.java]
         setUpObserver()
     } //end onCreate
 

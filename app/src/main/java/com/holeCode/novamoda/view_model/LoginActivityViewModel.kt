@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginActivityViewModel @Inject constructor (
+class LoginActivityViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     val application: Application,
 ) : ViewModel() {
@@ -28,6 +28,7 @@ class LoginActivityViewModel @Inject constructor (
     fun getErrorMessage(): LiveData<HashMap<String, String>> = errorMessage
     fun getUser(): LiveData<User> = user
     private var firebasedb: Firebasedb
+
     init {
         firebasedb = Firebasedb()
     }

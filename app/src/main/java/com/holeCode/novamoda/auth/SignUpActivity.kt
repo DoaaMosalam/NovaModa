@@ -18,11 +18,11 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
@@ -32,10 +32,10 @@ import com.holeCode.novamoda.MainScreenActivity
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.auth.data.ValidateEmailBody
 import com.holeCode.novamoda.databinding.ActivitySignupBinding
+import com.holeCode.novamoda.di.APIService
 import com.holeCode.novamoda.pojo.RegisterBody
 import com.holeCode.novamoda.repository.AuthRepository
 import com.holeCode.novamoda.storage.SharedPreferencesManager
-import com.holeCode.novamoda.di.APIService
 import com.holeCode.novamoda.view_model.RegisterActivityViewModel
 import com.holeCode.novamoda.view_model.RegisterActivityViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -50,18 +50,18 @@ import java.util.Date
 class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, View.OnKeyListener {
     private lateinit var bindingSingUpActivity: ActivitySignupBinding
     private lateinit var checkIcon: Drawable
-    private lateinit var  mViewModel: RegisterActivityViewModel
+    private lateinit var mViewModel: RegisterActivityViewModel
+
     // Constants
     private var selectedImageUri: Uri? = null
 
-    private val database by lazy {
-        FirebaseDatabase.getInstance()
-    }
-
+    private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindingSingUpActivity = ActivitySignupBinding.inflate(layoutInflater)
-        setContentView(bindingSingUpActivity.root)
+//        bindingSingUpActivity = ActivitySignupBinding.inflate(layoutInflater)
+//        setContentView(bindingSingUpActivity.root)
+        bindingSingUpActivity = DataBindingUtil.setContentView(this, R.layout.activity_signup)
 // After successful singUp
         SharedPreferencesManager(this).setUserIsRegistered(true)
 
@@ -103,6 +103,7 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         emailFocusListener()
         passwordFocusListener()
     }//end onCreate
+
     //==================================================================================================
     /*This method is inheritance from TextWatcher
     * inside method afterTextChange call methods editText that can be click button after full all text
@@ -524,12 +525,12 @@ class SignUpActivity : AppCompatActivity(), TextWatcher, View.OnClickListener, V
         }
     }
 
-//    override fun onStart() {
-//        super.onStart()
-//        if (mAuth!=null){
-//            navigateGoToHome()
-//        }
-//    }
+    override fun onStart() {
+        super.onStart()
+        if (mAuth != null) {
+            navigateGoToHome()
+        }
+    }
 }
 
 

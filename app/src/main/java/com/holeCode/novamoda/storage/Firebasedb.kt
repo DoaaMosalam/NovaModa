@@ -103,7 +103,7 @@ class Firebasedb : AppCompatActivity() {
 //
 //         val packageName = "com.google.android.gm" // Package name of the Gmail app
 
-        // Check if the Gmail app is installed on the device
+    // Check if the Gmail app is installed on the device
 //         val packageManager = packageManager
 //         val intent = packageManager.getLaunchIntentForPackage(packageName)
 //         if (intent != null) {

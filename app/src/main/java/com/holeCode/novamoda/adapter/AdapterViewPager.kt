@@ -8,7 +8,9 @@ import com.holeCode.novamoda.fragments.FavoriteFragment
 import com.holeCode.novamoda.fragments.HomeFragment
 import com.holeCode.novamoda.fragments.ProfileFragment
 import com.holeCode.novamoda.fragments.ShopFragment
-class AdapterViewPager(fragmentAdapterViewPager: FragmentActivity):FragmentStateAdapter(fragmentAdapterViewPager) {
+
+class AdapterViewPager(fragmentAdapterViewPager: FragmentActivity) :
+    FragmentStateAdapter(fragmentAdapterViewPager) {
     private val fragmentList = listOf(
         HomeFragment(),
         ShopFragment(),
@@ -16,9 +18,12 @@ class AdapterViewPager(fragmentAdapterViewPager: FragmentActivity):FragmentState
         FavoriteFragment(),
         ProfileFragment()
     )
+
     override fun getItemCount(): Int {
-        return fragmentList.size }
+        return fragmentList.size
+    }
 
     override fun createFragment(position: Int): Fragment {
-        return fragmentList[position] }
+        return fragmentList[position]
+    }
 }

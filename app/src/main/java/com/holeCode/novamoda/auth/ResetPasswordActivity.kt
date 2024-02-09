@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.databinding.ActivityResetPasswordBinding
@@ -26,8 +27,11 @@ class ResetPasswordActivity : AppCompatActivity(), TextWatcher, View.OnClickList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindingResetPassword = ActivityResetPasswordBinding.inflate(layoutInflater)
-        setContentView(bindingResetPassword.root)
+//        bindingResetPassword = ActivityResetPasswordBinding.inflate(layoutInflater)
+//        setContentView(bindingResetPassword.root)
+        bindingResetPassword =
+            DataBindingUtil.setContentView(this, R.layout.activity_reset_password)
+
         checkIcon = ContextCompat.getDrawable(this, R.drawable.baseline_check_24)!!
         //==========================================================
         //handle toolbar.

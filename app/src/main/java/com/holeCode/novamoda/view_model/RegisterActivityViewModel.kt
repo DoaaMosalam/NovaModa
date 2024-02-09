@@ -92,8 +92,4 @@ class RegisterActivityViewModel @Inject constructor(
             firebaseAuthenticationManager.registerUserByFirebase(email, password)
         }
     }
-
-//    fun uploadDataFirebase(uid:String,name:String,phone:String,email:String,password:String){
-//        viewModelScope.launch { firebaseAuthenticationManager.uploadData(uid,name,phone,email,password) }
-//    }
 }
