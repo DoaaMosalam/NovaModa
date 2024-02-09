@@ -15,8 +15,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
-class LoginActivityViewModel  (
+@HiltViewModel
+class LoginActivityViewModel @Inject constructor (
     private val authRepository: AuthRepository,
     val application: Application,
 ) : ViewModel() {
