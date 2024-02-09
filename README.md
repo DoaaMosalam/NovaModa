@@ -1,9 +1,7 @@
 <html>
   <head> 
     <body>
-
-     
-<h1> <img src="https://www.linkpicture.com/q/novamoda_logo.png" alt ="Nova Moda" width=55 hight=50> Nova Moda  </h1>
+<h1> Nova Moda  </h1>
  <p>E-commerce App</p>
  <h2> Project Description </h2>
   <p>*Overview:
@@ -51,22 +49,7 @@ This E-Commerce Application is a testament to our commitment to excellence in mo
        <p><a href= "https://developer.android.com/topic/architecture?gclsrc=ds](https://developer.android.com/kotlin/coroutines">- Coroutines</a></p>
        <p><a href= "https://developer.android.com/topic/libraries/architecture/viewmodels">-ViewModel</a></p>
       <p><a href="https://developer.android.com/jetpack/androidx/releases/recyclerview">- RecyclerView</a></p>
-        <p><a href="https://www.themoviedb.org/](https://en.wikipedia.org/wiki/SOLID">- SOLID Principles</a></p>
-<h3>* Photos from application </h3>
-  <img src="https://www.linkpicture.com/q/novamoda_logo.png" alt="Screen Shot">
-  <img src="https://i.postimg.cc/Xq2sRWvD/Screenshot-com-hole-Code-novamoda.jpg" alt="Register User." width=150 hight=150>  
-   <img src="https://i.postimg.cc/Hsg5gRM6/Screenshot-com-hole-Code-novamoda.jpg" alt=" Login User." width=150 hight=150>
-  <img src="https://i.postimg.cc/xdcN52r1/Screenshot-com-hole-Code-novamoda.jpg" alt="Reset Password" width=150 hight=150>
-  <img src="https://i.postimg.cc/X7LZ0J4v/Screenshot-com-hole-Code-novamoda.jpg" alt="Reset Password" width=150 hight=150>
-
-
-
-
-
-
-
-
-    
+        <p><a href="https://www.themoviedb.org/](https://en.wikipedia.org/wiki/SOLID">- SOLID Principles</a></p>   
 <head/>
   <html/>
  </body>
