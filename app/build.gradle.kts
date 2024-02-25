@@ -46,6 +46,8 @@ android {
 }
 
 dependencies {
+    implementation(project (":data"))
+    implementation(project (":domain"))
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
@@ -93,17 +95,23 @@ dependencies {
     //navigation  components
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
-    //roomDatabase
 
+    //roomDatabase
     implementation("androidx.room:room-runtime:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-common:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+
     // Dagger Hilt dependencies
     implementation("com.google.dagger:hilt-android:2.50")
     kapt("com.google.dagger:hilt-android-compiler:2.50")
     kapt("androidx.hilt:hilt-compiler:1.1.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
+    //for Serializable annotation using in type converter
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+    implementation("com.google.code.gson:gson:2.10.1")
+
     //loading button
     implementation("br.com.simplepass:loading-button-android:2.2.0")
     //smooth bar

@@ -18,5 +18,8 @@
     <string name="bag">Bag</string>
     <string name="favorite">favorite</string>
     <string name="profile">Profile</string>
+    <string name="tlet_s_find_n_your_gadget">\tLet\'s find\n Your Gadget!</string>
+    <string name="search_now">Search now</string>
+    <string name="filter">filter</string>
 
 </resources>

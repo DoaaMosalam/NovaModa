@@ -18,4 +18,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "NovaModa"
 include(":app")
- 
+include(":data")
+include(":domain")

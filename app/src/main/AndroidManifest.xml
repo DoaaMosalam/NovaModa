@@ -20,19 +20,19 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".auth.UpdatePasswordActivity"
+            android:name=".ui.auth.UpdatePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".MainScreenActivity"
+            android:name=".ui.MainScreenActivity"
             android:exported="false" />
         <activity
-            android:name=".auth.ResetPasswordActivity"
+            android:name=".ui.auth.ResetPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".auth.LoginActivity"
+            android:name=".ui.auth.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".splashScreen.SplashActivity"
+            android:name=".ui.splashScreen.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.NovaModa">
             <intent-filter>
@@ -42,7 +42,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".auth.SignUpActivity"
+            android:name=".ui.auth.SignUpActivity"
             android:exported="false" />
 
         <meta-data
