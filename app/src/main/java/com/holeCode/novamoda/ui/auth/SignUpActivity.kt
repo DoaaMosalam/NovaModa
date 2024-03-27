@@ -32,7 +32,7 @@ import com.holeCode.novamoda.ui.MainScreenActivity
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.data.request.ValidateEmailBody
 import com.holeCode.novamoda.databinding.ActivitySignupBinding
-import com.holeCode.novamoda.data.di.APIService
+import com.holeCode.novamoda.di.APIService
 import com.holeCode.novamoda.domain.model.RegisterBody
 import com.holeCode.novamoda.data.repository.AuthRepository
 import com.holeCode.novamoda.data.local.SharedPreferencesManager

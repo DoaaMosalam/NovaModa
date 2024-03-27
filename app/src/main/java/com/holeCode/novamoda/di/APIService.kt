@@ -1,4 +1,4 @@
-package com.holeCode.novamoda.data.di
+package com.holeCode.novamoda.di
 
 
 import com.holeCode.novamoda.data.util.APIConsumer

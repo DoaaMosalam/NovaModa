@@ -9,7 +9,7 @@ import com.holeCode.novamoda.R
 
 
 
-class ChairFragment : Fragment() {
+class ClothesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

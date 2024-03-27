@@ -9,7 +9,7 @@ import com.holeCode.novamoda.R
 
 
 
-class TableFragment : Fragment() {
+class SportsFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null

@@ -8,12 +8,13 @@ import android.view.ViewGroup
 import com.holeCode.novamoda.R
 
 
+class LightingFragment : Fragment() {
 
-class FurnitureFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+
         }
     }
 
@@ -22,8 +23,7 @@ class FurnitureFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_furrnitry, container, false)
+        return inflater.inflate(R.layout.fragment_accessory, container, false)
     }
-
 
 }

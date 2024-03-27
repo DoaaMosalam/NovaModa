@@ -1,4 +1,4 @@
-package com.holeCode.novamoda
+package com.holeCode.novamoda.data.util
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 

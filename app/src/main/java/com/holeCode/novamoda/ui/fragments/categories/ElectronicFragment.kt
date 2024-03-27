@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.holeCode.novamoda.R
 
-class CupboardFragment : Fragment() {
 
+
+class ElectronicFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
         }
     }
 
@@ -22,7 +22,7 @@ class CupboardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cuppoard, container, false)
+        return inflater.inflate(R.layout.fragment_furrnitry, container, false)
     }
 
 

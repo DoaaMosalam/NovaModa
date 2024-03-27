@@ -1,5 +1,6 @@
 package com.holeCode.novamoda.domain.adapter
 
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -20,22 +21,4 @@ class HomeViewPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         return fragments[position]
     }
-
-//    fragmentAdapterViewPager: FragmentActivity) :
-//    FragmentStateAdapter(fragmentAdapterViewPager) {
-//    private val fragmentList = listOf(
-//        ChairFragment(),
-//        CuppoardFragment(),
-//        FurrnitryFragment(),
-//        TableFragment(),
-//        AccessoryFragment()
-//    )
-//
-//    override fun getItemCount(): Int {
-//        return fragmentList.size
-//    }
-//
-//    override fun createFragment(position: Int): Fragment {
-//        return fragmentList[position]
-//    }
 }

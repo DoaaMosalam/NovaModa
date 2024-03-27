@@ -21,7 +21,7 @@ import com.holeCode.novamoda.R
 import com.holeCode.novamoda.databinding.ActivityLoginBinding
 import com.holeCode.novamoda.domain.model.LoginBody
 import com.holeCode.novamoda.data.repository.AuthRepository
-import com.holeCode.novamoda.data.di.APIService
+import com.holeCode.novamoda.di.APIService
 import com.holeCode.novamoda.ui.viewmodel.LoginActivityViewModel
 import com.holeCode.novamoda.ui.viewmodel.LoginActivityViewModelFactory
 
