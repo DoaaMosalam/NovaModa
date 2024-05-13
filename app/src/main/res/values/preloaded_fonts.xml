@@ -2,6 +2,7 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/alfa_slab_one</item>
+        <item>@font/almendra_display</item>
         <item>@font/archivo_black</item>
         <item>@font/metrophobic</item>
         <item>@font/poppins</item>

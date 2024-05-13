@@ -13,7 +13,20 @@
           "package_name": "com.holeCode.novamoda"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "77770924184-b3ub85156uftlaa2imjm2gt5irtoo9m5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.holeCode.novamoda",
+            "certificate_hash": "3bd4ff9aed771c25971a58219bd1799b4e404092"
+          }
+        },
+        {
+          "client_id": "77770924184-jamh047c6hbtjug0tbjvn9ucsul0vntv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC3_EXetbNwcVJvXhcf8c0VzV1I3AIKXMI"
@@ -21,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77770924184-jamh047c6hbtjug0tbjvn9ucsul0vntv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

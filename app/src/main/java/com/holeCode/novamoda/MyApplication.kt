@@ -9,12 +9,13 @@ import dagger.hilt.android.HiltAndroidApp
 import io.reactivex.schedulers.Schedulers
 
 @HiltAndroidApp
-class MyApplication : Application(){
+class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         listenToNetworkConnectivity()
 
     }
+
     @SuppressLint("CheckResult")
     fun listenToNetworkConnectivity() {
         ReactiveNetwork.observeInternetConnectivity().subscribeOn(Schedulers.io())
@@ -23,6 +24,7 @@ class MyApplication : Application(){
                 FirebaseCrashlytics.getInstance().setCustomKey("connected_to_internet", isConnected)
             }
     }
+
     companion object {
         private const val TAG = "MyApplication"
     }
