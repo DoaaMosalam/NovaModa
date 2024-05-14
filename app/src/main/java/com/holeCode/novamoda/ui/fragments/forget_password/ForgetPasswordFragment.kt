@@ -70,7 +70,6 @@ class ForgetPasswordFragment :  BottomSheetDialogFragment(), TextWatcher {
                     is Resource.Success->{
                         progressDialog.dismiss()
                         showSentEmailSuccessDialog()
-
                     }
                     is Resource.Error->{
                         progressDialog.dismiss()
@@ -91,15 +90,18 @@ class ForgetPasswordFragment :  BottomSheetDialogFragment(), TextWatcher {
                 "OK"
             ) { dialog, _ ->
                 dialog?.dismiss()
-                this@ForgetPasswordFragment.dismiss()
+//                this@ForgetPasswordFragment.dismiss()
+                navigateToLoginFragment()
+
             }
                 .create()
                 .show()
     }
     private fun navigateToLoginFragment() {
-
-        // You can replace "R.id.action_forgetPasswordFragment_to_loginFragment" with your actual action ID
-        findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+        val navController = findNavController() ?: return // Ensure NavController is not null
+        if (navController.currentDestination?.id == R.id.registerFragment) {
+            navController.navigate(R.id.action_registerFragment_to_loginFragment)
+        }
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -107,7 +109,6 @@ class ForgetPasswordFragment :  BottomSheetDialogFragment(), TextWatcher {
     }
 
     companion object {
-
         private const val TAG = "ForgetPasswordFragment"
     }
 

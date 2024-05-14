@@ -25,6 +25,35 @@
         <item name="android:windowLightNavigationBar">false</item>
     </style>
 
+
+    <style name="authInputTil">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/_10dp</item>
+        <item name="android:layout_marginBottom">@dimen/_10dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="authInput">
+        <item name="android:layout_width">@dimen/_343dp</item>
+        <item name="android:layout_height">@dimen/_64dp</item>
+        <item name="android:background">@drawable/desgin_edittext</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:padding">@dimen/_5dp</item>
+    </style>
+
+
+    <style name="buttonSocial">
+        <item name="android:layout_width">@dimen/_343dp</item>
+        <item name="android:layout_height">@dimen/_57dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">@dimen/_10dp</item>
+        <item name="android:background">@drawable/background_edittext</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+
     <style name="AppToolbarStyle" parent="Widget.AppCompat.Toolbar">
         <!-- Change toolbar background color -->
         <item name="android:textColor">@color/primary_color</item>

@@ -15,7 +15,7 @@
             app:destination="@id/registerFragment"
             app:enterAnim="@anim/to_right" />
         <action
-            android:id="@+id/action_loginFragment_to_reset_password_Fragment"
+            android:id="@+id/action_loginFragment_to_forget_password_Fragment"
             app:destination="@id/reset_password_Fragment"
             app:enterAnim="@anim/to_right" />
         <action

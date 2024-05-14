@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.facebook.AccessToken
@@ -52,8 +51,6 @@ class LoginFragment : BasicFragment<FragmentLoginBinding,LoginViewModel>(), Text
 
     private lateinit var checkIcon: Drawable
     override val viewModel: LoginViewModel by viewModels()
-
-//    private val loginViewModel: LoginViewModel by viewModels()
 
     private val callbackManager: CallbackManager by lazy { CallbackManager.Factory.create() }
     private val loginManager: LoginManager by lazy { LoginManager.getInstance() }
@@ -108,8 +105,12 @@ class LoginFragment : BasicFragment<FragmentLoginBinding,LoginViewModel>(), Text
         viewModel.user.observe(viewLifecycleOwner) { user ->
             user?.let {
                 // Handle successful login, e.g., navigate to the next screen
-//                progressDialog.show()
-                navigateToHome()
+                if (user!=null){
+//                    progressDialog.show()
+                    navigateToHome()
+                }else{
+                    navigateToHome()
+                }
                 Toast.makeText(requireContext(), "Login successful", Toast.LENGTH_SHORT).show()
             }
         }
@@ -337,7 +338,7 @@ class LoginFragment : BasicFragment<FragmentLoginBinding,LoginViewModel>(), Text
     private fun navigateToResetPassword() {
         binding.btnForgetPasswrod.setOnClickListener { v ->
             Navigation.findNavController(v)
-                .navigate(R.id.action_loginFragment_to_reset_password_Fragment)
+                .navigate(R.id.action_loginFragment_to_forget_password_Fragment)
         }
     }
 

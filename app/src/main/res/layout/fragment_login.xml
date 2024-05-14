@@ -25,21 +25,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ProgressBar
-                android:id="@+id/loading_wheel"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:elevation="100dp"
-                android:focusable="true"
-                android:indeterminate="true"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbarmain"
                 android:layout_width="match_parent"
@@ -81,52 +66,41 @@
                 app:layout_constraintVertical_bias="0.0">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
                     android:src="@drawable/novamoda_logo" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/authInputTil"
                     android:id="@+id/emailTilLogin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10dp"
-                    android:layout_marginBottom="@dimen/_10dp"
-                    android:gravity="center"
                     app:helperText="*"
                     app:helperTextTextColor="@color/red">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ed_emailLogin"
-                        android:layout_width="343dp"
-                        android:layout_height="64dp"
+                        style="@style/authInput"
                         android:background="@drawable/desgin_edittext"
                         android:backgroundTint="@color/white"
                         android:drawableStart="@drawable/baseline_email_24"
                         android:hint="@string/email"
-                        android:padding="5dp"
                         android:text="@={loginViewModel.email}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/passworrdTilLogin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/authInputTil"
                     app:helperText="*"
                     app:helperTextTextColor="@color/red"
                     app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ed_PasswordLogin"
-                        android:layout_width="343dp"
-                        android:layout_height="64dp"
+                        style="@style/authInput"
                         android:autofillHints="Password"
-                        android:background="@drawable/desgin_edittext"
-                        android:backgroundTint="@color/white"
                         android:drawableStart="@drawable/baseline_lock_24"
                         android:ems="10"
                         android:hint="@string/password"
                         android:inputType="textPassword"
-                        android:padding="5dp"
                         android:text="@={loginViewModel.password}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -211,27 +185,15 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_google"
-                    android:layout_width="343dp"
-                    android:layout_height="57dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_10dp"
-                    android:background="@drawable/background_edittext"
+                   style="@style/buttonSocial"
                     android:drawableStart="@drawable/google_icon"
-                    android:text="@string/login_with_google"
-                    android:textColor="@color/black"
-                    android:textAllCaps="false" />
+                    android:text="@string/login_with_google" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_facebook"
-                    android:layout_width="343dp"
-                    android:layout_height="57dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_10dp"
-                    android:background="@drawable/background_edittext"
+                    style="@style/buttonSocial"
                     android:drawableStart="@drawable/facebook_icon"
-                    android:text="@string/login_with_facebook"
-                    android:textColor="@color/black"
-                    android:textAllCaps="false" />
+                    android:text="@string/login_with_facebook" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.constraintlayout.widget.ConstraintLayout>

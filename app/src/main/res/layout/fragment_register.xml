@@ -48,22 +48,6 @@
 
             </androidx.appcompat.widget.Toolbar>
 
-            <ProgressBar
-                android:id="@+id/progressbar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:elevation="100dp"
-                android:focusable="true"
-                android:indeterminate="true"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/laProgressBar"
                 android:layout_width="match_parent"
@@ -87,8 +71,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/nameTil"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/authInputTil"
                     app:boxBackgroundMode="outline"
                     app:boxStrokeColor="@color/red"
                     app:helperText="*"
@@ -96,21 +79,16 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ed_nameSign"
-                        android:layout_width="343dp"
-                        android:layout_height="64dp"
+                        style="@style/authInput"
                         android:layout_gravity="center"
-                        android:background="@drawable/desgin_edittext"
-                        android:backgroundTint="@color/white"
                         android:drawableStart="@drawable/baseline_person_24"
                         android:hint="@string/name"
-                        android:text="@={registerViewModel.name}"
-                        android:padding="5dp" />
+                        android:text="@={registerViewModel.name}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/phoneTil"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/authInputTil"
                     app:boxBackgroundMode="outline"
                     app:boxStrokeColor="@color/red"
                     app:counterEnabled="true"
@@ -121,22 +99,17 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ed_phoneSign"
-                        android:layout_width="343dp"
-                        android:layout_height="64dp"
+                        style="@style/authInput"
                         android:layout_gravity="center"
-                        android:background="@drawable/desgin_edittext"
-                        android:backgroundTint="@color/white"
                         android:drawableStart="@drawable/baseline_phone_24"
                         android:hint="@string/phone"
                         android:text="@={registerViewModel.phone}"
-                        android:inputType="phone"
-                        android:padding="5dp" />
+                        android:inputType="phone"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/emailTil"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/authInputTil"
                     app:boxBackgroundMode="outline"
                     app:boxStrokeColor="@color/red"
                     app:helperText="*"
@@ -144,23 +117,17 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ed_emailSign"
-                        android:layout_width="343dp"
-                        android:layout_height="64dp"
+                        style="@style/authInput"
                         android:layout_gravity="center"
                         android:background="@drawable/desgin_edittext"
-                        android:backgroundTint="@color/white"
-                        android:drawableStart="@drawable/baseline_email_24"
                         android:hint="@string/email"
                         android:text="@={registerViewModel.email}"
-                        android:inputType="textEmailAddress"
-                        android:padding="5dp" />
+                        android:inputType="textEmailAddress" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/passwordTil"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    style="@style/authInputTil"
                     app:boxBackgroundMode="outline"
                     app:boxStrokeColor="@color/red"
                     app:counterEnabled="true"
@@ -171,11 +138,8 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ed_PasswordSing"
-                        android:layout_width="343dp"
-                        android:layout_height="64dp"
+                        style="@style/authInput"
                         android:autofillHints="Password"
-                        android:background="@drawable/desgin_edittext"
-                        android:backgroundTint="@color/white"
                         android:drawableStart="@drawable/baseline_lock_24"
                         android:ems="10"
                         android:hint="@string/password"

@@ -57,6 +57,8 @@ class LoginViewModel @Inject constructor(
             }
             if (result.status) {
                 _user.value = result.data
+                Log.d("Login", "Authentication sucess for: $email $password")
+
 
             } else {
                 Log.d("Login", "Authentication failed for: $email $password")

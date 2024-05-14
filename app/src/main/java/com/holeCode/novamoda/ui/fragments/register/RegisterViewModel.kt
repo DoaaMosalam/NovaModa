@@ -48,7 +48,7 @@ class RegisterViewModel @Inject constructor(
         try {
             val result = withContext(Dispatchers.IO){ novaUseCase.register(registerModel, lang)}
             if (result.status){
-                Log.d("register", "Authentication Register failed for:$name $phone $email $password")
+                Log.d("register", "Authentication Register Successful for:$name $phone $email $password")
                 _registerUser.value =  registerModel
             }else{
                 _errorMessage.value = "Register failed: ${result.message}"
