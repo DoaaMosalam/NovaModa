@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav"
+    android:id="@+id/home_nav_graph"
     app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/homeFragment"
@@ -10,8 +10,8 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_bagFragment"
-            app:destination="@id/bagFragment" />
+            android:id="@+id/action_homeFragment_to_shopFragment"
+            app:destination="@id/shopFragment" />
     </fragment>
     <fragment
         android:id="@+id/shopFragment"
@@ -19,30 +19,32 @@
         android:label="fragment_shop"
         tools:layout="@layout/fragment_shop" >
         <action
-            android:id="@+id/action_shopFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            android:id="@+id/action_shopFragment_to_bagFragment"
+            app:destination="@id/bagFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.holeCode.novamoda.ui.fragments.favorite.FavoriteFragment"
         android:label="fragment_favorite"
-        tools:layout="@layout/fragment_favorite" />
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.holeCode.novamoda.ui.fragments.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/bagFragment"
         android:name="com.holeCode.novamoda.ui.fragments.bag.BagFragment"
         android:label="fragment_bag"
         tools:layout="@layout/fragment_bag" >
         <action
-            android:id="@+id/action_bagFragment_to_shopFragment"
-            app:destination="@id/shopFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.holeCode.novamoda.ui.fragments.profile.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
-        <action
-            android:id="@+id/action_profileFragment_to_favoriteFragment"
+            android:id="@+id/action_bagFragment_to_favoriteFragment"
             app:destination="@id/favoriteFragment" />
     </fragment>
+    <include app:graph="@navigation/auth_graph" />
+
 </navigation>

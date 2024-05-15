@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="registerViewModel"
             type="com.holeCode.novamoda.ui.fragments.register.RegisterViewModel" />
@@ -103,8 +104,8 @@
                         android:layout_gravity="center"
                         android:drawableStart="@drawable/baseline_phone_24"
                         android:hint="@string/phone"
-                        android:text="@={registerViewModel.phone}"
-                        android:inputType="phone"/>
+                        android:inputType="phone"
+                        android:text="@={registerViewModel.phone}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -121,8 +122,8 @@
                         android:layout_gravity="center"
                         android:background="@drawable/desgin_edittext"
                         android:hint="@string/email"
-                        android:text="@={registerViewModel.email}"
-                        android:inputType="textEmailAddress" />
+                        android:inputType="textEmailAddress"
+                        android:text="@={registerViewModel.email}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -143,8 +144,8 @@
                         android:drawableStart="@drawable/baseline_lock_24"
                         android:ems="10"
                         android:hint="@string/password"
-                        android:text="@={registerViewModel.password}"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        android:text="@={registerViewModel.password}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -160,16 +161,9 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_register"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"
+                    style="@style/button_auth"
                     android:background="@drawable/btn_background"
-                    android:enabled="false"
-                    android:gravity="center"
-                    android:text="@string/register"
-                    android:textColor="@color/status_text_color"
-                    android:textSize="15sp" />
+                    android:text="@string/register" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

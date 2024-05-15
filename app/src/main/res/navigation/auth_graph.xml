@@ -15,10 +15,6 @@
             app:destination="@id/registerFragment"
             app:enterAnim="@anim/to_right" />
         <action
-            android:id="@+id/action_loginFragment_to_forget_password_Fragment"
-            app:destination="@id/reset_password_Fragment"
-            app:enterAnim="@anim/to_right" />
-        <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:enterAnim="@anim/to_right" />
@@ -37,12 +33,12 @@
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/reset_password_Fragment"
+        android:id="@+id/forget_password_Fragment"
         android:name="com.holeCode.novamoda.ui.fragments.forget_password.ForgetPasswordFragment"
-        android:label="fragment_reset_password_"
-        tools:layout="@layout/fragment_forget_password" >
+        android:label="fragment_forget_password_"
+        tools:layout="@layout/fragment_forget_password">
         <action
-            android:id="@+id/action_reset_password_Fragment_to_loginFragment"
+            android:id="@+id/action_forget_password_Fragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
     <fragment

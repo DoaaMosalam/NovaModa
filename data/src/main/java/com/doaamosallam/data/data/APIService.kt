@@ -25,9 +25,6 @@ import retrofit2.http.Path
 
 /*This class interface request API*/
 interface APIService {
-
-
-
     @FormUrlEncoded
     @POST("login")
     suspend fun login(

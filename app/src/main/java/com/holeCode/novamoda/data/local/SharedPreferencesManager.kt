@@ -1,9 +1,7 @@
 package com.holeCode.novamoda.data.local
 
 import android.content.Context
-import android.content.SharedPreferences
-import com.doaamosallam.domain.model.auth.LoginBody
-import com.doaamosallam.domain.model.auth.RegisterBody
+
 
 class SharedPreferencesManager(mCtx: Context) {
 

@@ -8,4 +8,7 @@
     <dimen name="_343dp">343dp</dimen>
     <dimen name="_64dp">64dp</dimen>
     <dimen name="_57dp">57dp</dimen>
+    <dimen name="_15sp">15sp</dimen>
+    <dimen name="_190dp">190dp</dimen>
+    <dimen name="_48dp">48dp</dimen>
 </resources>

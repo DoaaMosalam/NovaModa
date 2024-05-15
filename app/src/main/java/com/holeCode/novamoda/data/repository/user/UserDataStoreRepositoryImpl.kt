@@ -1,9 +1,11 @@
 package com.holeCode.novamoda.data.repository.user
 
 import com.holeCode.novamoda.data.local.UserPreferencesDataSource
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
-
-class UserDataStoreRepositoryImpl(
+import javax.inject.Inject
+@ViewModelScoped
+class UserDataStoreRepositoryImpl @Inject constructor(
     private val userPreferencesDataSource: UserPreferencesDataSource
 ) : UserPreferenceRepository {
     override suspend fun saveLoginState(isLoggedIn: Boolean) {

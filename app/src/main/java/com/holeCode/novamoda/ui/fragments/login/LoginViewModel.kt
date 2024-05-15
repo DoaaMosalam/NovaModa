@@ -57,7 +57,7 @@ class LoginViewModel @Inject constructor(
             }
             if (result.status) {
                 _user.value = result.data
-                Log.d("Login", "Authentication sucess for: $email $password")
+                Log.d("Login", "Authentication successful for: $email $password")
 
 
             } else {
@@ -70,20 +70,6 @@ class LoginViewModel @Inject constructor(
             Toast.makeText(getApplication(), _errorMessage.value, Toast.LENGTH_SHORT).show()
         }
     }
-
-//    private fun handleLoginFlow(loginFlow: suspend () -> Flow<Resource<UserDetailsModel>>) =
-//        viewModelScope.launch(IO) {
-//            loginFlow().collect { resource ->
-//                when (resource) {
-//                    is Resource.Success -> {
-//                        savePreferenceData(resource.data!!)
-//                        _loginState.emit(Resource.Success(resource.data))
-//                    }
-//
-//                    else -> _loginState.emit(resource)
-//                }
-//            }
-//        }
 
     fun loginWithGoogle(idToken:String) = viewModelScope.launch {
         authRepository.loginWithGoogle(idToken).onEach {resource->

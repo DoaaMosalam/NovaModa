@@ -3,6 +3,8 @@ package com.holeCode.novamoda.common
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.databinding.ActivityMainBinding
 
@@ -10,6 +12,8 @@ import com.holeCode.novamoda.databinding.ActivityMainBinding
 class MainActivity : BasicActivity<ActivityMainBinding>() {
     override fun getLayoutResId() = R.layout.activity_main
     private lateinit var mNavController: NavController
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val navHostFragment =
@@ -17,6 +21,4 @@ class MainActivity : BasicActivity<ActivityMainBinding>() {
         mNavController = navHostFragment.navController
 
     }
-
-
 }

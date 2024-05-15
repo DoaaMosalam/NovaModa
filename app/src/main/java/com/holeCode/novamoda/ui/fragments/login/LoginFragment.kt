@@ -1,7 +1,6 @@
 package com.holeCode.novamoda.ui.fragments.login
 
 
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -32,21 +31,20 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.common.BasicFragment
-import com.holeCode.novamoda.common.HomeActivity
 import com.holeCode.novamoda.data.model.Resource
 import com.holeCode.novamoda.databinding.FragmentLoginBinding
+import com.holeCode.novamoda.ui.fragments.forget_password.ForgetPasswordFragment
 import com.holeCode.novamoda.util.CrashlyticsUtils
 import com.holeCode.novamoda.util.LoginException
 import com.holeCode.novamoda.util.isEmailValid
 import com.holeCode.novamoda.util.isPasswordValid
 import com.holeCode.novamoda.util.showSnakeBarError
-
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class LoginFragment : BasicFragment<FragmentLoginBinding,LoginViewModel>(), TextWatcher {
+class LoginFragment : BasicFragment<FragmentLoginBinding, LoginViewModel>(), TextWatcher {
     override fun getLayoutResID() = R.layout.fragment_login
 
     private lateinit var checkIcon: Drawable
@@ -73,8 +71,6 @@ class LoginFragment : BasicFragment<FragmentLoginBinding,LoginViewModel>(), Text
         initViewModel()
     }
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -94,7 +90,7 @@ class LoginFragment : BasicFragment<FragmentLoginBinding,LoginViewModel>(), Text
 //===============================================================================================
     /*This method call login from LoginViewModel with API*/
 
-    override fun  setUpObserve() {
+    override fun setUpObserve() {
         viewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
             errorMessage?.let {
                 Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
@@ -105,18 +101,15 @@ class LoginFragment : BasicFragment<FragmentLoginBinding,LoginViewModel>(), Text
         viewModel.user.observe(viewLifecycleOwner) { user ->
             user?.let {
                 // Handle successful login, e.g., navigate to the next screen
-                if (user!=null){
-//                    progressDialog.show()
-                    navigateToHome()
-                }else{
-                    navigateToHome()
-                }
+//                progressDialog.show()
+                navigateToHome()
                 Toast.makeText(requireContext(), "Login successful", Toast.LENGTH_SHORT).show()
             }
         }
 
     }
-//==============================================================================================
+
+    //==============================================================================================
     /*This method call method loginstate from loginViewModel.class with handle login with Google and Facebook*/
     private fun initViewModel() {
         lifecycleScope.launch {
@@ -129,13 +122,13 @@ class LoginFragment : BasicFragment<FragmentLoginBinding,LoginViewModel>(), Text
 
                         is Resource.Success -> {
                             progressDialog.dismiss()
-                            navigateToHome()
                         }
 
                         is Resource.Error -> {
 
                             progressDialog.dismiss()
-                            val msg = resource.exception?.message ?: getString(R.string.generic_error_msg)
+                            val msg =
+                                resource.exception?.message ?: getString(R.string.generic_error_msg)
                             Log.d(TAG, "initViewModelError: $msg")
                             view?.showSnakeBarError(msg)
                         }
@@ -144,6 +137,7 @@ class LoginFragment : BasicFragment<FragmentLoginBinding,LoginViewModel>(), Text
             }
         }
     }
+
     //=====================================================================================
     // handle code login with google.
     private val launcher =
@@ -179,9 +173,10 @@ class LoginFragment : BasicFragment<FragmentLoginBinding,LoginViewModel>(), Text
             CrashlyticsUtils.LOGIN_PROVIDER to provider,
         )
     }
+
     private fun firebaseAuthWithGoogle(idToken: String) {
         viewModel.loginWithGoogle(idToken)
-        navigateToHome()
+
     }
 
 
@@ -304,26 +299,22 @@ class LoginFragment : BasicFragment<FragmentLoginBinding,LoginViewModel>(), Text
     }
 
     //==================================================================================================
-    private fun initListener(){
+    private fun initListener() {
         navigateToHome()
         navigateToRegister()
-        navigateToResetPassword()
+        navigateToForgetPassword()
 
         binding.btnGoogle.setOnClickListener {
             loginWithGoogleRequest()
-
+            navigateToHome()
         }
         binding.btnFacebook.setOnClickListener {
             loginWithFacebook()
         }
-
     }
+
     private fun navigateToHome() {
-//            requireActivity().startActivity(Intent(activity, HomeActivity::class.java).apply {
-//                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//            })
-//            requireActivity().finish()
-//        }
+
         binding.btnLogin.setOnClickListener { v ->
             Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment)
         }
@@ -335,15 +326,19 @@ class LoginFragment : BasicFragment<FragmentLoginBinding,LoginViewModel>(), Text
         }
     }
 
-    private fun navigateToResetPassword() {
-        binding.btnForgetPasswrod.setOnClickListener { v ->
-            Navigation.findNavController(v)
-                .navigate(R.id.action_loginFragment_to_forget_password_Fragment)
+    private fun navigateToForgetPassword() {
+        binding.btnForgetPasswrod.setOnClickListener {
+            showForgetPasswordBottomSheet()
         }
     }
 
-    companion object{
-        const val TAG="Login"
+    private fun showForgetPasswordBottomSheet() {
+        val forgetPasswordFragment = ForgetPasswordFragment()
+        forgetPasswordFragment.show(parentFragmentManager, forgetPasswordFragment.tag)
+    }
+
+    companion object {
+        const val TAG = "Login"
     }
 
 }

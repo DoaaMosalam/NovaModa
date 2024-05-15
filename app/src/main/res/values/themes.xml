@@ -24,7 +24,14 @@
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
     </style>
-
+    <!--handle style Toolbar -->
+    <style name="AppToolbarStyle" parent="Widget.AppCompat.Toolbar">
+        <!-- Change toolbar background color -->
+        <item name="android:textColor">@color/primary_color</item>
+        <!-- Change title text color -->
+        <item name="android:titleTextAppearance">@style/AppToolbarTitle</item>
+    </style>
+    <!--Handle style InputTil in Auth screen-->
 
     <style name="authInputTil">
         <item name="android:layout_width">match_parent</item>
@@ -33,6 +40,7 @@
         <item name="android:layout_marginBottom">@dimen/_10dp</item>
         <item name="android:gravity">center</item>
     </style>
+<!--    Handle Style Edit Text input in Auth screen -->
 
     <style name="authInput">
         <item name="android:layout_width">@dimen/_343dp</item>
@@ -41,7 +49,21 @@
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:padding">@dimen/_5dp</item>
     </style>
+    <!--Handle button Authentication Screen -->
 
+    <style name="button_auth">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/btn_background</item>
+        <item name="android:enabled">false</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_margin">@dimen/_10dp</item>
+        <item name="android:textColor">@color/status_text_color</item>
+        <item name="android:textSize">@dimen/_15sp</item>
+
+    </style>
+<!--Handle style button google and facebook-->
 
     <style name="buttonSocial">
         <item name="android:layout_width">@dimen/_343dp</item>
@@ -54,12 +76,7 @@
     </style>
 
 
-    <style name="AppToolbarStyle" parent="Widget.AppCompat.Toolbar">
-        <!-- Change toolbar background color -->
-        <item name="android:textColor">@color/primary_color</item>
-        <!-- Change title text color -->
-        <item name="android:titleTextAppearance">@style/AppToolbarTitle</item>
-    </style>
+
 
     <style name="AppToolbarTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <!-- Change title font family -->

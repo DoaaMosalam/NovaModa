@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -28,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ForgetPasswordFragment :  BottomSheetDialogFragment(), TextWatcher {
+class ForgetPasswordFragment : BottomSheetDialogFragment(), TextWatcher {
 
     private val progressDialog by lazy { ProgressDialog.createProgressDialog(requireActivity()) }
 
@@ -44,7 +43,8 @@ class ForgetPasswordFragment :  BottomSheetDialogFragment(), TextWatcher {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_forget_password, container, false)
+        _binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_forget_password, container, false)
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.resetViewModel = viewModel
@@ -62,18 +62,20 @@ class ForgetPasswordFragment :  BottomSheetDialogFragment(), TextWatcher {
 
     private fun initViewModel() {
         lifecycleScope.launch {
-            viewModel.forgetPasswordState.collect{state->
-                when(state){
-                    is Resource.Loading->{
+            viewModel.forgetPasswordState.collect { state ->
+                when (state) {
+                    is Resource.Loading -> {
                         progressDialog.show()
                     }
-                    is Resource.Success->{
+
+                    is Resource.Success -> {
                         progressDialog.dismiss()
                         showSentEmailSuccessDialog()
                     }
-                    is Resource.Error->{
+
+                    is Resource.Error -> {
                         progressDialog.dismiss()
-                        val msg = state.exception?.message?: getString(R.string.generic_error_msg)
+                        val msg = state.exception?.message ?: getString(R.string.generic_error_msg)
                         Log.d(TAG, "initViewModelError: $msg")
                         view?.showSnakeBarError(msg)
                     }
@@ -83,6 +85,7 @@ class ForgetPasswordFragment :  BottomSheetDialogFragment(), TextWatcher {
 
         }
     }
+
     private fun showSentEmailSuccessDialog() {
         MaterialAlertDialogBuilder(requireActivity()).setTitle("Reset Password")
             .setMessage("We have sent you an email to reset your password. Please check your email.")
@@ -90,19 +93,13 @@ class ForgetPasswordFragment :  BottomSheetDialogFragment(), TextWatcher {
                 "OK"
             ) { dialog, _ ->
                 dialog?.dismiss()
-//                this@ForgetPasswordFragment.dismiss()
-                navigateToLoginFragment()
+                this@ForgetPasswordFragment.dismiss()
 
             }
-                .create()
-                .show()
+            .create()
+            .show()
     }
-    private fun navigateToLoginFragment() {
-        val navController = findNavController() ?: return // Ensure NavController is not null
-        if (navController.currentDestination?.id == R.id.registerFragment) {
-            navController.navigate(R.id.action_registerFragment_to_loginFragment)
-        }
-    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
