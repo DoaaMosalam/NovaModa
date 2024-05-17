@@ -1,20 +1,21 @@
 package com.holeCode.novamoda.ui.splashScreen
 
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.viewModels
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.holeCode.novamoda.R
-import com.holeCode.novamoda.common.BasicActivity
+import com.holeCode.novamoda.common.BaseActivity
 import com.holeCode.novamoda.common.HomeActivity
-import com.holeCode.novamoda.common.MainActivity
 import com.holeCode.novamoda.data.repository.auth.UserViewModel
 import com.holeCode.novamoda.databinding.ActivitySplashBinding
 import com.holeCode.novamoda.ui.fragments.login.LoginFragment.Companion.TAG
@@ -22,10 +23,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
+@SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
-class SplashActivity : BasicActivity<ActivitySplashBinding>() {
+class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     private val userViewModel: UserViewModel by viewModels()
-    override fun getLayoutResId() = R.layout.activity_splash
+    override val bindingInflater: (LayoutInflater) -> ActivitySplashBinding
+     = ActivitySplashBinding::inflate
+//    override fun getLayoutResId() = R.layout.activity_splash
 
     override fun onCreate(savedInstanceState: Bundle?) {
         initSplashScreen()

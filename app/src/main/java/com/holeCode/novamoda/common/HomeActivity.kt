@@ -1,6 +1,8 @@
 package com.holeCode.novamoda.common
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -11,16 +13,18 @@ import com.holeCode.novamoda.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeActivity : BasicActivity<ActivityHomeBinding>() {
-    override fun getLayoutResId()= R.layout.activity_home
+class HomeActivity : BaseActivity<ActivityHomeBinding>() {
+    override val bindingInflater: (LayoutInflater) -> ActivityHomeBinding
+            = ActivityHomeBinding::inflate
+
     private lateinit var mNavController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //        setContentView(R.layout.activity_home)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.home_nav) as NavHostFragment
-        bindingApp.bottomNavigation.setupWithNavController(navHostFragment.navController)
+        mNavController = navHostFragment.navController
+        binding.bottomNavigation.setupWithNavController(navHostFragment.navController)
 
 //        val navHostFragment =
 //            supportFragmentManager.findFragmentById(R.id.home_nav) as NavHostFragment

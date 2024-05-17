@@ -1,17 +1,17 @@
 package com.holeCode.novamoda.common
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.databinding.ActivityMainBinding
 
 
-class MainActivity : BasicActivity<ActivityMainBinding>() {
-    override fun getLayoutResId() = R.layout.activity_main
+class MainActivity : BaseActivity<ActivityMainBinding>() {
+
     private lateinit var mNavController: NavController
+    override val bindingInflater: (LayoutInflater) -> ActivityMainBinding = ActivityMainBinding::inflate
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
