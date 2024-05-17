@@ -21,7 +21,7 @@
             android:exported="false" />
         <activity
             android:name=".MainScreenActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".auth.ResetPasswordActivity"
             android:exported="false" />
