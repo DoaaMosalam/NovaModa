@@ -12,9 +12,8 @@ import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.holeCode.novamoda.R
-import com.holeCode.novamoda.common.BasicActivity
+import com.holeCode.novamoda.common.BaseActivity
 import com.holeCode.novamoda.common.HomeActivity
-import com.holeCode.novamoda.common.MainActivity
 import com.holeCode.novamoda.data.repository.auth.UserViewModel
 import com.holeCode.novamoda.databinding.ActivitySplashBinding
 import com.holeCode.novamoda.ui.fragments.login.LoginFragment.Companion.TAG
@@ -23,9 +22,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SplashActivity : BasicActivity<ActivitySplashBinding>() {
+class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding::inflate) {
     private val userViewModel: UserViewModel by viewModels()
-    override fun getLayoutResId() = R.layout.activity_splash
 
     override fun onCreate(savedInstanceState: Bundle?) {
         initSplashScreen()

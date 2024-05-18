@@ -9,8 +9,8 @@ import com.holeCode.novamoda.R
 import com.holeCode.novamoda.databinding.ActivityMainBinding
 
 
-class MainActivity : BasicActivity<ActivityMainBinding>() {
-    override fun getLayoutResId() = R.layout.activity_main
+class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
+
     private lateinit var mNavController: NavController
 
 
