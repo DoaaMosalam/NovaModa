@@ -11,13 +11,14 @@ import androidx.lifecycle.ViewModel
 import com.holeCode.novamoda.view.ProgressDialog
 import androidx.annotation.LayoutRes
 
-abstract class BasicFragment<DB : ViewDataBinding,VM:ViewModel> : Fragment() {
+abstract class BaseFragment<DB : ViewDataBinding,VM:ViewModel> : Fragment() {
      val progressDialog by lazy { ProgressDialog.createProgressDialog(requireActivity()) }
+
     protected abstract val viewModel: VM
+
     protected var _binding: DB? = null
     protected val binding get() = _binding!!
 
-//    protected lateinit var binding: DB
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

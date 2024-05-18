@@ -19,7 +19,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -32,7 +31,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.holeCode.novamoda.R
-import com.holeCode.novamoda.common.BasicFragment
+import com.holeCode.novamoda.common.BaseFragment
 import com.holeCode.novamoda.data.model.Resource
 import com.holeCode.novamoda.databinding.FragmentRegisterBinding
 import com.holeCode.novamoda.ui.fragments.login.LoginFragment
@@ -41,13 +40,10 @@ import com.holeCode.novamoda.util.isNameValid
 import com.holeCode.novamoda.util.isPasswordValid
 import com.holeCode.novamoda.util.isPhoneValid
 import com.holeCode.novamoda.util.showSnakeBarError
-import com.holeCode.novamoda.view.ProgressDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.observeOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -56,7 +52,7 @@ import java.io.IOException
 import java.util.Date
 
 @AndroidEntryPoint
-class RegisterFragment : BasicFragment<FragmentRegisterBinding,RegisterViewModel>(), TextWatcher {
+class RegisterFragment : BaseFragment<FragmentRegisterBinding,RegisterViewModel>(), TextWatcher {
     override fun getLayoutResID() = R.layout.fragment_register
 
     private lateinit var checkIcon: Drawable

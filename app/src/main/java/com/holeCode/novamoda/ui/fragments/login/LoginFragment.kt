@@ -30,7 +30,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.holeCode.novamoda.R
-import com.holeCode.novamoda.common.BasicFragment
+import com.holeCode.novamoda.common.BaseFragment
 import com.holeCode.novamoda.data.model.Resource
 import com.holeCode.novamoda.databinding.FragmentLoginBinding
 import com.holeCode.novamoda.ui.fragments.forget_password.ForgetPasswordFragment
@@ -44,7 +44,7 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class LoginFragment : BasicFragment<FragmentLoginBinding, LoginViewModel>(), TextWatcher {
+class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), TextWatcher {
     override fun getLayoutResID() = R.layout.fragment_login
 
     private lateinit var checkIcon: Drawable
