@@ -1,6 +1,7 @@
 package com.holeCode.novamoda.ui.fragments.login
 
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -31,6 +32,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.common.BaseFragment
+import com.holeCode.novamoda.common.HomeActivity
 import com.holeCode.novamoda.data.model.Resource
 import com.holeCode.novamoda.databinding.FragmentLoginBinding
 import com.holeCode.novamoda.ui.fragments.forget_password.ForgetPasswordFragment
@@ -101,7 +103,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Text
         viewModel.user.observe(viewLifecycleOwner) { user ->
             user?.let {
                 // Handle successful login, e.g., navigate to the next screen
-//                progressDialog.show()
+                progressDialog.show()
                 navigateToHome()
                 Toast.makeText(requireContext(), "Login successful", Toast.LENGTH_SHORT).show()
             }
@@ -314,9 +316,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Text
     }
 
     private fun navigateToHome() {
-
         binding.btnLogin.setOnClickListener { v ->
-            Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment)
+            Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeActivity)
         }
     }
 

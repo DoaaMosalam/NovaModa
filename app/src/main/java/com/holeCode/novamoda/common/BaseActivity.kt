@@ -15,7 +15,4 @@ abstract class BaseActivity<VB : ViewBinding>(private val bindingInflater: (infl
         _binding = bindingInflater.invoke(layoutInflater)
         setContentView(binding.root)
     }
-
-
-
 }

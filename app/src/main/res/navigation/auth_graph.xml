@@ -15,9 +15,8 @@
             app:destination="@id/registerFragment"
             app:enterAnim="@anim/to_right" />
         <action
-            android:id="@+id/action_loginFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:enterAnim="@anim/to_right" />
+            android:id="@+id/action_loginFragment_to_homeActivity"
+            app:destination="@id/homeActivity" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -29,8 +28,8 @@
             app:destination="@id/loginFragment"
             app:enterAnim="@anim/to_left" />
         <action
-            android:id="@+id/action_registerFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_registerFragment_to_homeActivity"
+            app:destination="@id/homeActivity" />
     </fragment>
     <fragment
         android:id="@+id/forget_password_Fragment"
@@ -41,9 +40,9 @@
             android:id="@+id/action_forget_password_Fragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.holeCode.novamoda.ui.fragments.home.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+    <activity
+        android:id="@+id/homeActivity"
+        android:name="com.holeCode.novamoda.common.HomeActivity"
+        android:label="activity_home"
+        tools:layout="@layout/activity_home" />
 </navigation>

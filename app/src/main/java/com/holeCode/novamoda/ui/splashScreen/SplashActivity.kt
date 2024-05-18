@@ -28,7 +28,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         initSplashScreen()
         super.onCreate(savedInstanceState)
-//        setContentView(getLayoutResId())
 
         lifecycleScope.launch {
             val isLoggedIn = userViewModel.isUserLoggedIn().first()

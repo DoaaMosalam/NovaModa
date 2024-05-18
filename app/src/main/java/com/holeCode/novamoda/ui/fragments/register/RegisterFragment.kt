@@ -98,7 +98,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding,RegisterViewModel>
 //            requireActivity().finish()
 //        }
         binding.btnRegister.setOnClickListener { v ->
-            Navigation.findNavController(v).navigate(R.id.action_registerFragment_to_homeFragment)
+            Navigation.findNavController(v).navigate(R.id.action_registerFragment_to_homeActivity)
         }
     }
     private fun initListener(){
