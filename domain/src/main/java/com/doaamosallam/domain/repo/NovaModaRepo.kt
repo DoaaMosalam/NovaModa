@@ -11,7 +11,7 @@ import com.doaamosallam.domain.model.products.LogoutModel
 import com.doaamosallam.domain.model.products.RegisterModel
 import com.doaamosallam.domain.model.products.SearchModel
 import com.doaamosallam.domain.model.products.UserModel
-import com.doaamosallam.domain.model.request.HomeDataResponse
+import com.doaamosallam.domain.model.request.HomeData
 
 
 interface NovaModaRepo {
@@ -19,29 +19,31 @@ interface NovaModaRepo {
 
     suspend fun register(model: RegisterModel, lang: String): UserModel
 
-    suspend fun getAllHomeData(lang: String, authorization: String): HomeDataResponse
+    suspend fun getAllHomeData(lang: String
+//                               , authorization: String
+    ): HomeData
 
     suspend fun addOrDeleteFavorite(
         id: Int,
         lang: String,
-        authorization: String
+//        authorization: String
     ): AddOrDeleteFavoriteModel
 
     suspend fun searchProducts(
         text: String,
         lang: String,
-        authorization: String
+//        authorization: String
     ): SearchModel
 
     suspend fun getCartData(
-        lang: String,
-        authorization: String
+        lang: String
+//        , authorization: String
     ): CartModel
 
     suspend fun addToCart(
         productId: Int,
-        lang: String,
-        authorization: String
+        lang: String
+//        ,authorization: String
     ): CartModelAddToCart
 
     suspend fun editQty(

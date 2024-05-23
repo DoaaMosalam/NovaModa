@@ -12,10 +12,8 @@ import com.doaamosallam.domain.model.products.LogoutModel
 import com.doaamosallam.domain.model.products.RegisterModel
 import com.doaamosallam.domain.model.products.SearchModel
 import com.doaamosallam.domain.model.products.UserModel
-import com.doaamosallam.domain.model.request.HomeDataResponse
+import com.doaamosallam.domain.model.request.HomeData
 import com.doaamosallam.domain.repo.NovaModaRepo
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 
 class NovaModaRepoImp(private val apiService: APIService):NovaModaRepo {
     override suspend fun login(email: String, password: String, lang: String):UserModel =
@@ -24,30 +22,40 @@ class NovaModaRepoImp(private val apiService: APIService):NovaModaRepo {
     override suspend fun register(model: RegisterModel, lang: String): UserModel =
         apiService.register(model, lang)
 
-    override suspend fun getAllHomeData(lang: String, authorization: String): HomeDataResponse =
-        apiService.getAllHomeData(lang, authorization)
+    override suspend fun getAllHomeData(lang: String
+//                                        , authorization: String
+    ): HomeData =
+        apiService.getAllHomeData(lang)
+//    , authorization)
 
 
     override suspend fun addOrDeleteFavorite(
         id: Int,
         lang: String,
-        authorization: String
-    ): AddOrDeleteFavoriteModel = apiService.addOrDeleteFavorite(id, lang, authorization)
+//        authorization: String
+    ): AddOrDeleteFavoriteModel = apiService.addOrDeleteFavorite(id, lang)
+//    , authorization)
 
     override suspend fun searchProducts(
         text: String,
         lang: String,
-        authorization: String
-    ): SearchModel = apiService.searchProducts(text, lang, authorization)
+//        authorization: String
+    ): SearchModel = apiService.searchProducts(text, lang)
+//    , authorization)
 
-    override suspend fun getCartData(lang: String, authorization: String): CartModel =
-        apiService.getCartData(lang, authorization)
+    override suspend fun getCartData(
+        lang: String
+//                                     , authorization: String
+    ): CartModel =
+        apiService.getCartData(lang)
+//    , authorization)
 
     override suspend fun addToCart(
         productId: Int,
         lang: String,
-        authorization: String
-    ): CartModelAddToCart = apiService.addToCart(productId, lang, authorization)
+//        authorization: String
+    ): CartModelAddToCart = apiService.addToCart(productId, lang)
+//        , authorization)
 
     override suspend fun editQty(
         id: Int,

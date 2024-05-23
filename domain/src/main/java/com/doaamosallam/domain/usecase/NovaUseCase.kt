@@ -9,31 +9,37 @@ class NovaUseCase(private val novaModaRepo: NovaModaRepo) {
 
     suspend fun register(model: RegisterModel, lang: String) = novaModaRepo.register(model, lang)
 
-    suspend fun getHomeData(lang: String, authorization: String) =
-        novaModaRepo.getAllHomeData(lang, authorization)
+    suspend fun getAllHomeData(lang: String
+//                            , authorization: String
+    ) = novaModaRepo.getAllHomeData(lang)
+//        , authorization)
 
     suspend fun addOrDeleteFavorite(
         id: Int,
         lang: String,
-        authorization: String
-    ) = novaModaRepo.addOrDeleteFavorite(id, lang, authorization)
+//        authorization: String
+    ) = novaModaRepo.addOrDeleteFavorite(id, lang)
+//    , authorization)
 
     suspend fun searchProducts(
         text: String,
         lang: String,
-        authorization: String
-    ) = novaModaRepo.searchProducts(text, lang, authorization)
+//        authorization: String
+    ) = novaModaRepo.searchProducts(text, lang)
+//    , authorization)
 
     suspend fun getCartData(
         lang: String,
         authorization: String
-    ) = novaModaRepo.getCartData(lang, authorization)
+    ) = novaModaRepo.getCartData(lang)
+//        , authorization)
 
     suspend fun addToCart(
         productId: Int,
-        lang: String,
-        authorization: String
-    ) = novaModaRepo.addToCart(productId, lang, authorization)
+        lang: String
+//        ,authorization: String
+    ) = novaModaRepo.addToCart(productId, lang)
+//        , authorization)
 
     suspend fun editQty(
         id: Int,

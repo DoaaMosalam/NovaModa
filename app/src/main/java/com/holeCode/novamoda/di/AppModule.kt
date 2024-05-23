@@ -2,11 +2,13 @@ package com.holeCode.novamoda.di
 
 import android.app.Application
 import android.content.Context
+import com.holeCode.novamoda.data.local.SharedPreferencesManager
 import com.holeCode.novamoda.data.repository.auth.FirebaseAuthRepository
 import com.holeCode.novamoda.data.repository.auth.FirebaseAuthRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -21,5 +23,11 @@ object AppModule {
     @Provides
     fun provideContext(application: Application): Context {
         return application.applicationContext
+    }
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferencesManager(@ApplicationContext context: Context): SharedPreferencesManager {
+        return SharedPreferencesManager(context)
     }
 }

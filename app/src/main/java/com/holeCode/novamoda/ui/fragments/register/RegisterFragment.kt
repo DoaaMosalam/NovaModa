@@ -60,10 +60,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding,RegisterViewModel>
     // Constants
     private var selectedImageUri: Uri? = null
 
-    private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,16 +84,12 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding,RegisterViewModel>
         binding.btnRegister.setOnClickListener {
             viewModel.register()
         }
+//        navigateToHome()
         setUpObserve()
         initListener()
         initViewModel()
     }
     private fun navigateToHome() {
-//            requireActivity().startActivity(Intent(activity, HomeActivity::class.java).apply {
-//                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//            })
-//            requireActivity().finish()
-//        }
         binding.btnRegister.setOnClickListener { v ->
             Navigation.findNavController(v).navigate(R.id.action_registerFragment_to_homeActivity)
         }
@@ -120,8 +113,10 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding,RegisterViewModel>
         viewModel.registerUser.observe(viewLifecycleOwner){user->
             user?.let {
                progressDialog.show()
+                navigateToHome()
             }
         }
+
     }
     private fun initViewModel(){
         lifecycleScope.launch {
@@ -133,7 +128,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding,RegisterViewModel>
                         }
                         is Resource.Success->{
                             progressDialog.dismiss()
-                            navigateToHome()
                         }
                         is Resource.Error->{
                             progressDialog.dismiss()

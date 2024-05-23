@@ -12,8 +12,7 @@ import com.doaamosallam.domain.model.products.LogoutModel
 import com.doaamosallam.domain.model.products.RegisterModel
 import com.doaamosallam.domain.model.products.SearchModel
 import com.doaamosallam.domain.model.products.UserModel
-import com.doaamosallam.domain.model.request.HomeDataResponse
-import retrofit2.Response
+import com.doaamosallam.domain.model.request.HomeData
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -42,14 +41,14 @@ interface APIService {
     @GET("home")
     suspend fun getAllHomeData(
         @Header("lang") lang:String,
-        @Header("Authorization") authorization:String
-    ):HomeDataResponse
+//        @Header("Authorization") authorization:String
+    ):HomeData
     @FormUrlEncoded
     @POST("favorites")
     suspend fun addOrDeleteFavorite(
         @Field("product_id") id: Int,
         @Header("lang") lang: String,
-        @Header("Authorization") authorization: String
+//        @Header("Authorization") authorization: String
     ): AddOrDeleteFavoriteModel
 
     @FormUrlEncoded
@@ -57,13 +56,13 @@ interface APIService {
     suspend fun searchProducts(
         @Field("text") text: String,
         @Header("lang") lang: String,
-        @Header("Authorization") authorization: String
+//        @Header("Authorization") authorization: String
     ): SearchModel
 
     @GET("carts")
     suspend fun getCartData(
         @Header("lang") lang: String,
-        @Header("Authorization") authorization: String
+//        @Header("Authorization") authorization: String
     ): CartModel
 
     @FormUrlEncoded
@@ -71,7 +70,7 @@ interface APIService {
     suspend fun addToCart(
         @Field("product_id") productId: Int,
         @Header("lang") lang: String,
-        @Header("Authorization") authorization: String
+//        @Header("Authorization") authorization: String
     ): CartModelAddToCart
 
     @FormUrlEncoded

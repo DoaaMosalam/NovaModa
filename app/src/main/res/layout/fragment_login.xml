@@ -118,6 +118,7 @@
                     android:background="@drawable/desgin_edittext"
                     android:drawableEnd="@drawable/baseline_arrow_right_alt_24"
                     android:text="@string/forgot_your_password"
+                    android:onClick="@{()->loginViewModel.navigateToForgetPassword()}"
                     android:textAllCaps="false"
                     android:textColor="@color/black" />
 
@@ -143,6 +144,7 @@
                         android:layout_gravity="right|bottom"
                         android:layout_marginTop="@dimen/_20dp"
                         android:text="@string/register"
+                        android:onClick="@{()->loginViewModel.navigateToRegister()}"
                         android:textAllCaps="false"
                         android:textColor="@color/primary_color"
                         android:textSize="@dimen/_15sp"

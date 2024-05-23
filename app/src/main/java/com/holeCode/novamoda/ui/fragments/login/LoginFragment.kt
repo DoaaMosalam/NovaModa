@@ -1,7 +1,7 @@
 package com.holeCode.novamoda.ui.fragments.login
 
 
-import android.content.Intent
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -9,9 +9,11 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +22,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -32,7 +35,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.common.BaseFragment
-import com.holeCode.novamoda.common.HomeActivity
 import com.holeCode.novamoda.data.model.Resource
 import com.holeCode.novamoda.databinding.FragmentLoginBinding
 import com.holeCode.novamoda.ui.fragments.forget_password.ForgetPasswordFragment
@@ -64,9 +66,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Text
         addTextWatcher()
         addFocusListener()
 
-        binding.btnLogin.setOnClickListener {
-            viewModel.login()
-        }
+//        binding.btnLogin.setOnClickListener {
+//            viewModel.login()
+//        }
 
         setUpObserve()
         initListener()
@@ -86,6 +88,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Text
         (requireActivity() as AppCompatActivity).supportActionBar?.title =
             getString(R.string.login_to_your_account)
 
+        binding.edEmailLogin.setOnKeyListener { view, keyCode, _ ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_BACK) {
+                //viewModel.setText(text!!)
+                binding.edEmailLogin.clearFocus()
+                closeKeyBoard(view)
+            }
+            true
+        }
+
         return binding.root
     }
 
@@ -96,16 +107,36 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Text
         viewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
             errorMessage?.let {
                 Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+            }
+        }
+        lifecycleScope.launch {
+            viewModel.user.collect{user ->
+                user.let {
+                    // Handle successful login, e.g., navigate to the next screen
+                    progressDialog.show()
+                    navigateToHome()
+                    Toast.makeText(requireContext(), "Login successful", Toast.LENGTH_SHORT).show()
+                }
 
             }
         }
 
-        viewModel.user.observe(viewLifecycleOwner) { user ->
-            user?.let {
-                // Handle successful login, e.g., navigate to the next screen
-                progressDialog.show()
+        viewModel.navigateToHome.observe(viewLifecycleOwner) { navigate ->
+            if (navigate) {
                 navigateToHome()
-                Toast.makeText(requireContext(), "Login successful", Toast.LENGTH_SHORT).show()
+                viewModel.navigateToHomeDone()
+            }
+        }
+        viewModel.navigateToRegister.observe(viewLifecycleOwner) {
+            if (it) {
+                navigateToRegister()
+                viewModel.navigateToRegisterDone()
+            }
+        }
+        viewModel.navigateToForgetPassword.observe(viewLifecycleOwner) {
+            if (it) {
+                navigateToForgetPassword()
+                viewModel.navigateToForgetPasswordDone()
             }
         }
 
@@ -140,6 +171,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Text
         }
     }
 
+    private fun closeKeyBoard(view: View) {
+        val imm: InputMethodManager =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
     //=====================================================================================
     // handle code login with google.
     private val launcher =
@@ -161,6 +198,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Text
         try {
             val account = completedTask.getResult(ApiException::class.java)
             firebaseAuthWithGoogle(account.idToken!!)
+            navigateToHome()
         } catch (e: Exception) {
             view?.showSnakeBarError(e.message ?: getString(R.string.generic_error_msg))
             val msg = e.message ?: getString(R.string.generic_error_msg)
@@ -178,6 +216,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Text
 
     private fun firebaseAuthWithGoogle(idToken: String) {
         viewModel.loginWithGoogle(idToken)
+        navigateToHome()
 
     }
 
@@ -303,12 +342,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Text
     //==================================================================================================
     private fun initListener() {
         navigateToHome()
-        navigateToRegister()
-        navigateToForgetPassword()
 
         binding.btnGoogle.setOnClickListener {
             loginWithGoogleRequest()
-            navigateToHome()
+
         }
         binding.btnFacebook.setOnClickListener {
             loginWithFacebook()

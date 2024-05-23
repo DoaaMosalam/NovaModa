@@ -21,11 +21,8 @@ import javax.inject.Inject
 class HomeActivityViewModel @Inject constructor(
     private val novaUseCase: NovaUseCase,
     application: Application
-) :
-    AndroidViewModel(application) {
+) : AndroidViewModel(application) {
 
-    private val _navigateToSearch = MutableLiveData(false)
-    val navigateToSearch: LiveData<Boolean> get() = _navigateToSearch
 
     private val _user = MutableLiveData<UserData>()
     val user: LiveData<UserData> get() = _user
@@ -45,36 +42,11 @@ class HomeActivityViewModel @Inject constructor(
     private val _logOut = MutableLiveData(false)
     val logOut: LiveData<Boolean> get() = _logOut
 
-    private val _language = MutableLiveData(lang)
+    private val _language = MutableLiveData("en") // Default to English if `lang` is not defined
     val language: LiveData<String> get() = _language
-
 
     init {
         getCartData()
-    }
-
-    fun navigateToSearch(boolean: Boolean) {
-        _navigateToSearch.value = boolean
-    }
-
-    fun navigateToSearchDone() {
-        _navigateToSearch.value = false
-    }
-
-    fun search(text: String) {
-        if (text.isNotEmpty()) {
-            try {
-                viewModelScope.launch {
-                    val result = withContext(Dispatchers.IO) {
-                        novaUseCase.searchProducts(text, lang, authorization)
-                    }
-                    _products.value = result.data.data
-                }
-            } catch (e: NetworkErrorException) {
-                Toast.makeText(getApplication(), "No internet connection", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
     }
 
     fun setText(text: String) {
@@ -85,17 +57,13 @@ class HomeActivityViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val res = withContext(Dispatchers.IO) {
-                    novaUseCase.addOrDeleteFavorite(id, lang, authorization)
+                    novaUseCase.addOrDeleteFavorite(id, _language.value ?: "en")
+//                    , _user.value?.token ?: "")
                 }
-                if (res.status) {
-                    Toast.makeText(getApplication(), res.message, Toast.LENGTH_SHORT).show()
-                } else {
-                    setText(_text.value.toString())
-                    Toast.makeText(getApplication(), res.message, Toast.LENGTH_SHORT).show()
-                }
+                Toast.makeText(getApplication(), res.message, Toast.LENGTH_SHORT).show()
+                setText(_text.value ?: "")
             } catch (e: NetworkErrorException) {
-                Toast.makeText(getApplication(), "No internet connection", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(getApplication(), "No internet connection", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -104,18 +72,17 @@ class HomeActivityViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val res = withContext(Dispatchers.IO) {
-                    novaUseCase.getCartData(lang, authorization)
+                    novaUseCase.getCartData(_language.value ?: "en", _user.value?.token ?: "")
                 }
-                if (res.status)
+                if (res.status) {
                     _cart.value = res
-                else
+                } else {
                     Toast.makeText(getApplication(), res.message, Toast.LENGTH_SHORT).show()
+                }
             } catch (e: NetworkErrorException) {
-                Toast.makeText(getApplication(), "No internet connection", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(getApplication(), "No internet connection", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
 
     fun setBadge(badgeNumber: Int) {
@@ -130,15 +97,15 @@ class HomeActivityViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val res = withContext(Dispatchers.IO) {
-                    novaUseCase.logOut("SomeFcmToken", lang, authorization)
+                    novaUseCase.logOut("SomeFcmToken", _language.value ?: "en", _user.value?.token ?: "")
                 }
-                if (res.status)
+                if (res.status) {
                     _logOut.value = true
-                else
+                } else {
                     Toast.makeText(getApplication(), res.message, Toast.LENGTH_SHORT).show()
+                }
             } catch (e: NetworkErrorException) {
-                Toast.makeText(getApplication(), "No internet connection", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(getApplication(), "No internet connection", Toast.LENGTH_SHORT).show()
             }
         }
     }
