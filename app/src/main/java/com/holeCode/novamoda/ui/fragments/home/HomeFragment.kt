@@ -26,17 +26,6 @@ import kotlinx.coroutines.launch
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override fun getLayoutResID() = R.layout.fragment_home
     override val viewModel: HomeViewModel by viewModels()
-    private lateinit var productAdapter: HomeAdapter
-    private lateinit var bannerAdapter: SliderAdapter
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = DataBindingUtil.inflate(inflater, getLayoutResID(), container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,7 +49,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
         lifecycleScope.launch {
             viewModel.bannerList.collect { banner ->
-                bannerAdapter = SliderAdapter(banner)
+                val bannerAdapter = SliderAdapter(banner)
                 binding.sliderViewImage.setSliderAdapter(bannerAdapter)
             binding.sliderViewImage.setIndicatorAnimation(IndicatorAnimationType.WORM)
             binding.sliderViewImage.setSliderTransformAnimation(SliderAnimations.DEPTHTRANSFORMATION)
@@ -68,7 +57,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             }
         }
 
-        productAdapter = HomeAdapter(
+       val  productAdapter = HomeAdapter(
             OnClickListener({
                 findNavController().navigate(
                     HomeFragmentDirections.actionHomeFragmentToProductDetailsFragment(

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.doaamosallam.domain.model.products.EntireData
+import com.doaamosallam.domain.model.products.ProductModel
 import com.holeCode.novamoda.databinding.ItemCategoryBinding
 
 class CategoriesAdapter(private val onClickListener: OnClickListenerCategory) :

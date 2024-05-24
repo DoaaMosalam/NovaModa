@@ -21,12 +21,6 @@ class HomeAdapter(private val onClickListener: OnClickListener) :
         }
 
         fun iconFavoriteToggle(productModel: ProductModel) {
-//            if(inFavorite)
-//                itemHomeBinding.imgButtonItemHome.setImageDrawable(
-//                    ContextCompat.getDrawable(itemHomeBinding.imgButtonItemHome.context, R.drawable.ic_favorite_border))
-//            else
-//                itemHomeBinding.imgButtonItemHome.setImageDrawable(
-//                    ContextCompat.getDrawable(itemHomeBinding.imgButtonItemHome.context, R.drawable.ic_favorite))
             productModel.in_favorites = !productModel.in_favorites
             bind(productModel)
         }

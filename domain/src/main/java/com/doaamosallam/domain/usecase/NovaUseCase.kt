@@ -30,7 +30,7 @@ class NovaUseCase(private val novaModaRepo: NovaModaRepo) {
 
     suspend fun getCartData(
         lang: String,
-        authorization: String
+//        authorization: String
     ) = novaModaRepo.getCartData(lang)
 //        , authorization)
 
@@ -45,41 +45,47 @@ class NovaUseCase(private val novaModaRepo: NovaModaRepo) {
         id: Int,
         qty: Int,
         lang: String,
-        authorization: String
-    ) = novaModaRepo.editQty(id, qty, lang, authorization)
+//        authorization: String
+    ) = novaModaRepo.editQty(id, qty, lang)
+//    , authorization)
 
     suspend fun getCategoryData(lang: String) = novaModaRepo.getCategoryData(lang)
 
     suspend fun getCategoryDetails(
         id: Int,
         lang: String,
-        authorization: String
-    ) = novaModaRepo.getCategoryDetails(id, lang, authorization)
+//        authorization: String
+    ) = novaModaRepo.getCategoryDetails(id, lang)
+//    , authorization)
 
     suspend fun logOut(
         fcmToken: String,
         lang: String,
-        authorization: String
-    ) = novaModaRepo.logOut(fcmToken, lang, authorization)
+//        authorization: String
+    ) = novaModaRepo.logOut(fcmToken, lang)
+//    , authorization)
 
     suspend fun updateProfile(
         name: String,
         email: String,
         phone: String,
         lang: String,
-        authorization: String
-    ) = novaModaRepo.updateProfile(name, email, phone, lang, authorization)
+//        authorization: String
+    ) = novaModaRepo.updateProfile(name, email, phone, lang)
+//    , authorization)
 
     suspend fun getFavorites(
         lang: String,
-        authorization: String
-    ) = novaModaRepo.getFavorites(lang, authorization)
+//        authorization: String
+    ) = novaModaRepo.getFavorites(lang)
+//    , authorization)
 
     suspend fun changePass(
         currentPass: String,
         newPass: String,
         lang: String,
-        authorization: String
-    ) = novaModaRepo.changePass(currentPass, newPass, lang, authorization)
+//        authorization: String
+    ) = novaModaRepo.changePass(currentPass, newPass, lang)
+//    , authorization)
 
 }

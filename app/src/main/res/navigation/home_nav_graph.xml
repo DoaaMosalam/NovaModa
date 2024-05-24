@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_shopFragment_to_bagFragment"
             app:destination="@id/bagFragment" />
+        <action
+            android:id="@+id/action_shopFragment_to_categoryProducts"
+            app:destination="@id/categoryProducts" />
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
@@ -56,6 +59,18 @@
         <argument
             android:name="product"
             app:argType="com.doaamosallam.domain.model.products.ProductModel" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryProducts"
+        android:name="com.holeCode.novamoda.ui.fragments.shop.products.CategoryProducts"
+        android:label="fragment_category_products"
+        tools:layout="@layout/fragment_category_products" >
+        <action
+            android:id="@+id/action_categoryProducts_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+        <argument
+            android:name="categoryId"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

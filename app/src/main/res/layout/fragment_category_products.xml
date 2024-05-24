@@ -3,20 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragments.shop.ShopFragment">
+        tools:context=".ui.fragments.shop.products.CategoryProducts">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerCategory"
+            android:id="@+id/recyclerCategoryDetails"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="4dp"
             android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
-            tools:listitem="@layout/item_category"
+            tools:listitem="@layout/item_home"
             tools:itemCount="10" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -61,9 +61,10 @@ class NovaModaRepoImp(private val apiService: APIService):NovaModaRepo {
         id: Int,
         qty: Int,
         lang: String,
-        authorization: String
+//        authorization: String
     ): EditQtyModel =
-        apiService.editQty(id, qty, lang, authorization)
+        apiService.editQty(id, qty, lang)
+//    , authorization)
 
     override suspend fun getCategoryData(lang: String): CategoryModel =
         apiService.getCategoryData(lang)
@@ -71,32 +72,40 @@ class NovaModaRepoImp(private val apiService: APIService):NovaModaRepo {
     override suspend fun getCategoryDetails(
         id: Int,
         lang: String,
-        authorization: String
-    ): CategoryDetailsModel = apiService.getCategoryDetails(id, lang, authorization)
+//        authorization: String
+    ): CategoryDetailsModel = apiService.getCategoryDetails(id, lang)
+//    , authorization)
 
     override suspend fun logOut(
         fcmToken: String,
         lang: String,
-        authorization: String
+//        authorization: String
     ): LogoutModel =
-        apiService.logOut(fcmToken, lang, authorization)
+        apiService.logOut(fcmToken, lang)
+//    , authorization)
 
     override suspend fun updateProfile(
         name: String,
         email: String,
         phone: String,
         lang: String,
-        authorization: String
-    ): UserModel = apiService.updateProfile(name, email, phone, lang, authorization)
+//        authorization: String
+    ): UserModel = apiService.updateProfile(name, email, phone, lang)
+//    , authorization)
 
-    override suspend fun getFavorites(lang: String, authorization: String): FavoritesModel =
-        apiService.getFavorites(lang, authorization)
+    override suspend fun getFavorites(
+        lang: String,
+//                                      authorization: String
+    ): FavoritesModel =
+        apiService.getFavorites(lang)
+//    , authorization)
 
     override suspend fun changePass(
         currentPass: String,
         newPass: String,
         lang: String,
-        authorization: String
-    ): LogoutModel = apiService.changePass(currentPass, newPass, lang, authorization)
+//        authorization: String
+    ): LogoutModel = apiService.changePass(currentPass, newPass, lang)
+//    , authorization)
 
 }

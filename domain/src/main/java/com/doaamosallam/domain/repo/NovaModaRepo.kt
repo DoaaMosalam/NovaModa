@@ -50,7 +50,7 @@ interface NovaModaRepo {
         id: Int,
         qty: Int,
         lang: String,
-        authorization: String
+//        authorization: String
     ): EditQtyModel
 
     suspend fun getCategoryData(lang: String): CategoryModel
@@ -58,13 +58,13 @@ interface NovaModaRepo {
     suspend fun getCategoryDetails(
         id: Int,
         lang: String,
-        authorization: String
+//        authorization: String
     ): CategoryDetailsModel
 
     suspend fun logOut(
         fcmToken: String,
         lang: String,
-        authorization: String
+//        authorization: String
     ): LogoutModel
 
     suspend fun updateProfile(
@@ -72,18 +72,18 @@ interface NovaModaRepo {
         email: String,
         phone: String,
         lang: String,
-        authorization: String
+//        authorization: String
     ): UserModel
 
     suspend fun getFavorites(
         lang: String,
-        authorization: String
+//        authorization: String
     ): FavoritesModel
 
     suspend fun changePass(
         currentPass: String,
         newPass: String,
         lang: String,
-        authorization: String
+//        authorization: String
     ): LogoutModel
 }

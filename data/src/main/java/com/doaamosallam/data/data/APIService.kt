@@ -79,7 +79,7 @@ interface APIService {
         @Path("id") id: Int,
         @Field("quantity") qty: Int,
         @Header("lang") lang: String,
-        @Header("Authorization") authorization: String
+//        @Header("Authorization") authorization: String
     ): EditQtyModel
 
     @GET("categories")
@@ -89,7 +89,7 @@ interface APIService {
     suspend fun getCategoryDetails(
         @Path("id") id: Int,
         @Header("lang") lang: String,
-        @Header("Authorization") authorization: String
+//        @Header("Authorization") authorization: String
     ): CategoryDetailsModel
 
     @FormUrlEncoded
@@ -97,7 +97,7 @@ interface APIService {
     suspend fun logOut(
         @Field("fcm_token") fcmToken: String,
         @Header("lang") lang: String,
-        @Header("Authorization") authorization: String
+//        @Header("Authorization") authorization: String
     ): LogoutModel
 
     @FormUrlEncoded
@@ -107,13 +107,13 @@ interface APIService {
         @Field("email") email: String,
         @Field("phone") phone: String,
         @Header("lang") lang: String,
-        @Header("Authorization") authorization: String
+//        @Header("Authorization") authorization: String
     ): UserModel
 
     @GET("favorites")
     suspend fun getFavorites(
         @Header("lang") lang: String,
-        @Header("Authorization") authorization: String
+//        @Header("Authorization") authorization: String
     ): FavoritesModel
 
     @FormUrlEncoded
@@ -122,6 +122,6 @@ interface APIService {
         @Field("current_password") currentPass: String,
         @Field("new_password") newPass: String,
         @Header("lang") lang: String,
-        @Header("Authorization") authorization: String
+//        @Header("Authorization") authorization: String
     ): LogoutModel
 }

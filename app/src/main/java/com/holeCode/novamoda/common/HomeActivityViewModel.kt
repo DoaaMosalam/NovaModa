@@ -72,7 +72,8 @@ class HomeActivityViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val res = withContext(Dispatchers.IO) {
-                    novaUseCase.getCartData(_language.value ?: "en", _user.value?.token ?: "")
+                    novaUseCase.getCartData(_language.value ?: "en")
+//                        , _user.value?.token ?: "")
                 }
                 if (res.status) {
                     _cart.value = res
@@ -97,7 +98,8 @@ class HomeActivityViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val res = withContext(Dispatchers.IO) {
-                    novaUseCase.logOut("SomeFcmToken", _language.value ?: "en", _user.value?.token ?: "")
+                    novaUseCase.logOut("SomeFcmToken", _language.value ?: "en")
+//                        , _user.value?.token ?: "")
                 }
                 if (res.status) {
                     _logOut.value = true
