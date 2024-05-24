@@ -66,9 +66,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Text
         addTextWatcher()
         addFocusListener()
 
-//        binding.btnLogin.setOnClickListener {
-//            viewModel.login()
-//        }
 
         setUpObserve()
         initListener()

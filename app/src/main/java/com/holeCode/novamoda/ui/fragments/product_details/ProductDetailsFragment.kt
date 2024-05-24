@@ -36,14 +36,19 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding,Produc
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         setUpObserve()
 
 
     }
     override fun setUpObserve() {
         val productModel = navArgs.product
-        viewModel.favorite(productModel.in_favorites)
-        viewModel.textCart(productModel.in_cart)
+       lifecycleScope.launch {
+            viewModel.favorite(productModel.in_favorites)
+            viewModel.textCart(productModel.in_cart)
+        }
+
 
        lifecycleScope.launch {
            viewModel.errorMessage.collect{error ->
@@ -63,15 +68,29 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding,Produc
         binding.imgButtonProductDetails.setOnClickListener {
             viewModel.addOrDeleteFavorite(productModel.id)
         }
-        viewModel.addedToCart.observe(viewLifecycleOwner) {
-            productModel.in_cart = it
+
+       lifecycleScope.launch {
+            viewModel.favorite.collect { isFavorite ->
+                productModel.in_favorites = isFavorite
             binding.productModel = productModel
-//            sharedViewModel.getCartData()
+            }
         }
-        viewModel.favorite.observe(viewLifecycleOwner) {
-            productModel.in_favorites = it
+
+        lifecycleScope.launch {
+            viewModel.addedToCart.collect { isInCart ->
+                productModel.in_cart = isInCart
             binding.productModel = productModel
+            }
         }
+//        viewModel.addedToCart.observe(viewLifecycleOwner) {
+//            productModel.in_cart = it
+//            binding.productModel = productModel
+////            sharedViewModel.getCartData()
+//        }
+//        viewModel.favorite.observe(viewLifecycleOwner) {
+//            productModel.in_favorites = it
+//            binding.productModel = productModel
+//        }
 
 
     }

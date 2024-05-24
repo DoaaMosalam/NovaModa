@@ -78,9 +78,10 @@ class RegisterViewModel @Inject constructor(
                 // Notify transaction complete
                 transactionManager.completeTransaction()
             }
-            else{
-                _errorMessage.value = "Register failed: ${result.message}"
-            }
+            _errorMessage.value = "Register failed: ${result.message}"
+//            else{
+//                _errorMessage.value = "Register failed: ${result.message}"
+//            }
 
         }catch (e:Exception){
             _errorMessage.value = e.message ?: "An error occurred"

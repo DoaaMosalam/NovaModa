@@ -67,7 +67,6 @@ class LoginViewModel @Inject constructor(
             }
             if (result.status) {
                 _user.emit(result.data)
-//                _user.value = result.data
                 Log.d("Login", "Authentication successful for: $email $password")
                 // get user data to SharedPreferences
                 result.data.let { userData ->
@@ -75,11 +74,13 @@ class LoginViewModel @Inject constructor(
                         .getUser(application, email, password)
                 }
             }
-            else {
-                Log.d("Login", "Authentication failed for: $email $password")
-                _errorMessage.value = "Login failed: ${result.message}"
-
-            }
+            Log.d("Login", "Authentication failed for: $email $password")
+            _errorMessage.value = "Login failed: ${result.message}"
+//            else {
+//                Log.d("Login", "Authentication failed for: $email $password")
+//                _errorMessage.value = "Login failed: ${result.message}"
+//
+//            }
         } catch (e: Exception) {
             _errorMessage.value = e.message ?: "An error occurred"
             Toast.makeText(getApplication(), _errorMessage.value, Toast.LENGTH_SHORT).show()
