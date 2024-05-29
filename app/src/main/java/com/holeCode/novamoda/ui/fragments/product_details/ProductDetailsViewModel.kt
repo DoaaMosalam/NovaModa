@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.doaamosallam.domain.usecase.CartUseCase
+import com.doaamosallam.domain.usecase.FavoritesUseCase
 import com.doaamosallam.domain.usecase.NovaUseCase
 import com.holeCode.novamoda.common.lang
 import dagger.hilt.android.internal.Contexts.getApplication
@@ -22,7 +24,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductDetailsViewModel @Inject constructor(
-    private val novaUseCase: NovaUseCase
+    private val cartUseCase: CartUseCase,
+    private val favoriteUseCase: FavoritesUseCase
 ) :ViewModel(){
     private val _errorMessage  = MutableSharedFlow<String>()
     val errorMessage:SharedFlow<String> get() = _errorMessage
@@ -33,68 +36,13 @@ class ProductDetailsViewModel @Inject constructor(
 
     private val _addedToCart = MutableSharedFlow<Boolean>(replay = 1)
     val addedToCart: SharedFlow<Boolean> get() = _addedToCart.asSharedFlow()
-//    fun addOrDeleteFavorite(id: Int) {
-//        iconFavoriteToggle(_favorite.value!!)
-//        viewModelScope.launch {
-//            try {
-//                val res = withContext(Dispatchers.IO) {
-//                    novaUseCase.addOrDeleteFavorite(id, lang)
-////                        , authorization)
-//                }
-//                if (res.status) {
-//                    _errorMessage.emit(res.message)
-//                } else {
-//                    iconFavoriteToggle(_favorite.value!!)
-//                    _errorMessage.emit(res.message)
-//                }
-//            } catch (e: NetworkErrorException) {
-//                _errorMessage.emit("No internet connection ${e.message}")
-//            }
-//        }
-//    }
-//
-//    fun addOrDeleteProductToCart(id: Int) {
-//        viewModelScope.launch {
-//            try {
-//                val res = withContext(Dispatchers.IO) {
-//                    novaUseCase.addToCart(id, lang)
-////                        , authorization)
-//                }
-//                if (res.status) {
-//                    textCartToggle(_addedToCart.value!!)
-//                    _errorMessage.emit(res.message.toString())
-//                } else {
-//                    _errorMessage.emit(res.message.toString())
-//
-//                }
-//            } catch (e: NetworkErrorException) {
-//                _errorMessage.emit("No internet connection ${e.message}")
-//            }
-//        }
-//    }
-//
-//    private fun iconFavoriteToggle(inFavorite: Boolean) {
-//        _favorite.value = !inFavorite
-//    }
-//
-//    fun favorite(inFavorite: Boolean) {
-//        _favorite.value = inFavorite
-//    }
-//
-//    private fun textCartToggle(inCart: Boolean) {
-//        _addedToCart.value = !inCart
-//    }
-//
-//    fun textCart(inCart: Boolean) {
-//        _addedToCart.value = inCart
-//    }
-//===============================================================================================
+
 fun addOrDeleteFavorite(id: Int) {
     viewModelScope.launch {
         iconFavoriteToggle()
         try {
             val res = withContext(Dispatchers.IO){
-                novaUseCase.addOrDeleteFavorite(id, lang)
+                favoriteUseCase.addOrDeleteFavorite(id, lang)
 //                , authorization)
             }
             if (!res.status){
@@ -111,7 +59,7 @@ fun addOrDeleteFavorite(id: Int) {
             textCartToggle()
             try {
                 val res = withContext(Dispatchers.IO) {
-                    novaUseCase.addToCart(id, lang)
+                    cartUseCase.addToCart(id, lang)
                     //                        , authorization)
                 }
                 if (!res.status) {

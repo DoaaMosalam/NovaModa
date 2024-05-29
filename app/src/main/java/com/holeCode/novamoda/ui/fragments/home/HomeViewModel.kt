@@ -6,7 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doaamosallam.domain.model.products.BannerModel
 import com.doaamosallam.domain.model.products.ProductModel
+import com.doaamosallam.domain.usecase.FavoritesUseCase
 import com.doaamosallam.domain.usecase.NovaUseCase
+import com.doaamosallam.domain.usecase.ProductsNovaUseCase
+import com.holeCode.novamoda.common.authorization
 import com.holeCode.novamoda.common.lang
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val novaUseCase: NovaUseCase,
+    private val productsNovaUseCase: ProductsNovaUseCase,
+    private val favoriteUseCase: FavoritesUseCase
 ) : ViewModel() {
     private val _errorMessage = MutableSharedFlow<String>()
     val errorMessage: SharedFlow<String> get() = _errorMessage
@@ -38,7 +42,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val res = withContext(Dispatchers.IO) {
-                    novaUseCase.addOrDeleteFavorite(id, lang)
+                    favoriteUseCase.addOrDeleteFavorite(id, lang)
 //                        , authorization)
                 }
                 if (res.status) {
@@ -58,7 +62,8 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val data = withContext(Dispatchers.Main) {
-                    novaUseCase.getAllHomeData(lang)
+                    productsNovaUseCase.getAllProducts(lang)
+//                    , authorization)
                 }
                 _bannerList.emit(data.data.banners)
                 _productList.emit(data.data.products)
@@ -74,7 +79,7 @@ class HomeViewModel @Inject constructor(
             try {
                 viewModelScope.launch {
                     val result = withContext(Dispatchers.IO) {
-                        novaUseCase.searchProducts(text, lang)
+                        productsNovaUseCase.searchProducts(text, lang)
 //                        , authorization)
                     }
                     _productList.emit(result.data.data)

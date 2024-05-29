@@ -4,13 +4,12 @@ import android.app.Application
 import android.util.Log
 
 import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doaamosallam.domain.model.products.UserData
-import com.doaamosallam.domain.usecase.NovaUseCase
-import com.holeCode.novamoda.data.local.SharedPreferencesManager
+import com.doaamosallam.domain.usecase.AuthNovaUseCase
 import com.holeCode.novamoda.data.model.Resource
 import com.holeCode.novamoda.data.repository.auth.FirebaseAuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,11 +26,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val novaUseCase: NovaUseCase,
+    private val  authNovaUseCase: AuthNovaUseCase,
     private val authRepository: FirebaseAuthRepository,
-    private val sharedPreferencesManager: SharedPreferencesManager,
    private val  application: Application
-) : AndroidViewModel(application) {
+) : ViewModel() {
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
 
@@ -56,34 +54,23 @@ class LoginViewModel @Inject constructor(
     fun login() = viewModelScope.launch {
         val email = email.value.toString()
         val password = password.value.toString()
-
-        if (email.isEmpty() || password.isEmpty()) {
-            _errorMessage.value = "Email or password cannot be empty"
-            return@launch
-        }
         try {
             val result = withContext(Dispatchers.IO) {
-                novaUseCase.login(email, password, "en")
+                authNovaUseCase.login(email, password, "en")
             }
             if (result.status) {
                 _user.emit(result.data)
+                _navigateToHome.value = true
                 Log.d("Login", "Authentication successful for: $email $password")
-                // get user data to SharedPreferences
-                result.data.let { userData ->
-                  sharedPreferencesManager
-                        .getUser(application, email, password)
-                }
+
+            }else {
+                Log.d("Login", "Authentication failed for: $email $password")
+                _errorMessage.value = "Login failed: ${result.message}"
             }
-            Log.d("Login", "Authentication failed for: $email $password")
-            _errorMessage.value = "Login failed: ${result.message}"
-//            else {
-//                Log.d("Login", "Authentication failed for: $email $password")
-//                _errorMessage.value = "Login failed: ${result.message}"
-//
-//            }
+
         } catch (e: Exception) {
             _errorMessage.value = e.message ?: "An error occurred"
-            Toast.makeText(getApplication(), _errorMessage.value, Toast.LENGTH_SHORT).show()
+            Toast.makeText(application, _errorMessage.value, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -126,7 +113,7 @@ class LoginViewModel @Inject constructor(
         _navigateToForgetPassword.value=true
     }
     fun navigateToForgetPasswordDone() {
-        _navigateToRegister.value = false
+        _navigateToForgetPassword.value = false
     }
 
 }

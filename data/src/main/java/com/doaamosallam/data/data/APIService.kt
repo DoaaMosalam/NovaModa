@@ -39,7 +39,7 @@ interface APIService {
         @Header("lang") lang: String,
     ): UserModel
     @GET("home")
-    suspend fun getAllHomeData(
+    suspend fun getAllProducts(
         @Header("lang") lang:String,
 //        @Header("Authorization") authorization:String
     ):HomeData

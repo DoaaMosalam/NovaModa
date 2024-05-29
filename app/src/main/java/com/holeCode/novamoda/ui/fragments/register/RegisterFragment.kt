@@ -85,7 +85,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding,RegisterViewModel>
             viewModel.register()
         }
 //        navigateToHome()
-        setUpObserve()
+        setUpInitView()
         initListener()
         initViewModel()
     }
@@ -104,7 +104,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding,RegisterViewModel>
     }
 
     //=============================================================================
-    override fun setUpObserve() {
+    override fun setUpInitView() {
         viewModel.errorMessage.observe(viewLifecycleOwner){errorMessage->
             errorMessage?.let {
                 view?.showSnakeBarError(errorMessage)

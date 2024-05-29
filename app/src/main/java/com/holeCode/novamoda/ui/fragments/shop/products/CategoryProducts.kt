@@ -1,11 +1,7 @@
 package com.holeCode.novamoda.ui.fragments.shop.products
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -18,7 +14,6 @@ import com.holeCode.novamoda.databinding.FragmentCategoryProductsBinding
 import com.holeCode.novamoda.ui.fragments.shop.ShopViewModel
 import com.holeCode.novamoda.util.OnClickListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -32,13 +27,13 @@ class CategoryProducts : BaseFragment<FragmentCategoryProductsBinding,ShopViewMo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpObserve()
+        setUpInitView()
         fetchCategoryDetails()
     }
     private fun fetchCategoryDetails() {
         viewModel.getCategoryDetails(navArgs.categoryId)
     }
-    override fun setUpObserve() {
+    override fun setUpInitView() {
         bottomNav = requireActivity().findViewById(R.id.bottomNavigation)
 
 

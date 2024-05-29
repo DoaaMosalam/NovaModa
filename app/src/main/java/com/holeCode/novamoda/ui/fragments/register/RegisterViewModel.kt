@@ -2,12 +2,12 @@ package com.holeCode.novamoda.ui.fragments.register
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doaamosallam.domain.model.products.RegisterModel
+import com.doaamosallam.domain.usecase.AuthNovaUseCase
 import com.doaamosallam.domain.usecase.NovaUseCase
 import com.holeCode.novamoda.TransactionManager
 import com.holeCode.novamoda.common.lang
@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val novaUseCase: NovaUseCase,
+    private val authNovaUseCase: AuthNovaUseCase,
     private val application: Application
 ) : ViewModel() {
     val name = MutableLiveData<String>()
@@ -52,7 +52,7 @@ class RegisterViewModel @Inject constructor(
 
         try {
             val result = withContext(Dispatchers.IO){
-                novaUseCase.register(
+                authNovaUseCase.register(
                     RegisterModel(
                         name.value.toString(),
                         email.value.toString(),
@@ -67,8 +67,6 @@ class RegisterViewModel @Inject constructor(
                 SharedPreferencesManager.getInstance(application.baseContext)
                     .saveUser(application, name.value, email.value, phone.value, password.value)
 
-//                sharedPreferencesManager.saveUser(application, name.value, email.value, phone.value, password.value)
-
                 // Clear input fields
                 email.value = ""
                 name.value = ""
@@ -79,9 +77,6 @@ class RegisterViewModel @Inject constructor(
                 transactionManager.completeTransaction()
             }
             _errorMessage.value = "Register failed: ${result.message}"
-//            else{
-//                _errorMessage.value = "Register failed: ${result.message}"
-//            }
 
         }catch (e:Exception){
             _errorMessage.value = e.message ?: "An error occurred"

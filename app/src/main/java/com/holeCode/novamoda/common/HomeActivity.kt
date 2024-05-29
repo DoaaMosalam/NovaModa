@@ -29,6 +29,14 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(ActivityHomeBinding::infl
 //        //viewModel = ViewModelProvider(this)[HomeActivityViewModel::class.java]
 //        viewModel.setUser(user)
 
+
+        // احصل على المستخدم من الانتباه
+        val user = intent.getParcelableExtra<UserData>("User")
+        if (user != null) {
+            viewModel.setUser(user)
+        }
+
+
         val navController = findNavController(R.id.home_nav)
         binding.bottomNavigation.setupWithNavController(navController)
         // appear label when to click icon

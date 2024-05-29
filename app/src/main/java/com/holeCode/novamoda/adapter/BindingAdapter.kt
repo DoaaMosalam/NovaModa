@@ -123,7 +123,7 @@ fun bindButtonFavorite(imageButton: ImageButton, isFavorite: Boolean) {
 @BindingAdapter("bindButtonAddCart")
 fun bindButtonAddCart(button: Button, inCart: Boolean) {
     if (inCart)
-        button.text = button.context.getString(R.string.remove_from_cart)
+        button.text = button.context.getString(R.string.remove_from_bag)
     else
-        button.text = button.context.getString(R.string.add_to_cart)
+        button.text = button.context.getString(R.string.add_to_bag)
 }

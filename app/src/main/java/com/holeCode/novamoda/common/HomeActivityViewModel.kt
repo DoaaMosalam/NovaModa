@@ -10,7 +10,9 @@ import androidx.lifecycle.viewModelScope
 import com.doaamosallam.domain.model.products.CartModel
 import com.doaamosallam.domain.model.products.ProductModel
 import com.doaamosallam.domain.model.products.UserData
-import com.doaamosallam.domain.usecase.NovaUseCase
+import com.doaamosallam.domain.usecase.CartUseCase
+import com.doaamosallam.domain.usecase.FavoritesUseCase
+import com.doaamosallam.domain.usecase.ProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,7 +21,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeActivityViewModel @Inject constructor(
-    private val novaUseCase: NovaUseCase,
+    private val cartUseCase: CartUseCase,
+    private val favoriteUseCase: FavoritesUseCase,
+    private val profileUseCase: ProfileUseCase,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -57,7 +61,7 @@ class HomeActivityViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val res = withContext(Dispatchers.IO) {
-                    novaUseCase.addOrDeleteFavorite(id, _language.value ?: "en")
+                    favoriteUseCase.addOrDeleteFavorite(id, _language.value ?: "en")
 //                    , _user.value?.token ?: "")
                 }
                 Toast.makeText(getApplication(), res.message, Toast.LENGTH_SHORT).show()
@@ -72,7 +76,7 @@ class HomeActivityViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val res = withContext(Dispatchers.IO) {
-                    novaUseCase.getCartData(_language.value ?: "en")
+                    cartUseCase.getCartData(_language.value ?: "en")
 //                        , _user.value?.token ?: "")
                 }
                 if (res.status) {
@@ -98,7 +102,7 @@ class HomeActivityViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val res = withContext(Dispatchers.IO) {
-                    novaUseCase.logOut("SomeFcmToken", _language.value ?: "en")
+                    profileUseCase.logOut("SomeFcmToken", _language.value ?: "en")
 //                        , _user.value?.token ?: "")
                 }
                 if (res.status) {

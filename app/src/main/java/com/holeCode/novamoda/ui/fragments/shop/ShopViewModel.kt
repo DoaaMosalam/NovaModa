@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doaamosallam.domain.model.products.CategoryDetailsModel
 import com.doaamosallam.domain.model.products.CategoryModel
+import com.doaamosallam.domain.usecase.CategoryUseCase
+import com.doaamosallam.domain.usecase.FavoritesUseCase
 import com.doaamosallam.domain.usecase.NovaUseCase
 import com.holeCode.novamoda.common.lang
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +24,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ShopViewModel @Inject constructor(
-    private val novaUseCase: NovaUseCase
+    private val categoryUseCase: CategoryUseCase,
+    private val favoriteUseCase: FavoritesUseCase
 ):ViewModel(){
     private val _errorMessage = MutableSharedFlow<String>()
     val errorMessage:SharedFlow<String> get() = _errorMessage.asSharedFlow()
@@ -41,7 +44,7 @@ class ShopViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val res = withContext(Dispatchers.IO) {
-                    novaUseCase.getCategoryData(lang)
+                    categoryUseCase.getCategoryData(lang)
                 }
                 if (res.status) {
                     _categoriesItems.emit(res)
@@ -58,7 +61,7 @@ class ShopViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val res = withContext(Dispatchers.IO) {
-                    novaUseCase.getCategoryDetails(id, lang)
+                    categoryUseCase.getCategoryDetails(id, lang)
 //                    , authorization)
                 }
                 if (res.status) {
@@ -76,7 +79,7 @@ class ShopViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val res = withContext(Dispatchers.IO) {
-                    novaUseCase.addOrDeleteFavorite(id, lang)
+                    favoriteUseCase.addOrDeleteFavorite(id, lang)
 //                    , authorization)
                 }
                 if (res.status) {

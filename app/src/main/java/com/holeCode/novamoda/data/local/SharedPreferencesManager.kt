@@ -10,7 +10,6 @@ class SharedPreferencesManager(mCtx: Context) {
 
     companion object {
         private const val TOKEN = "TOKEN"
-        private const val TOKEN_VALUE = "TOKEN_VALUE"
         private const val IS_USER_REGISTER_IN = "isUserRegisterIn"
         private var instance: SharedPreferencesManager? = null
 

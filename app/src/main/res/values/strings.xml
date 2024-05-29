@@ -30,11 +30,11 @@
     <string name="nova_moda" translatable="false">\t Nova Moda</string>
     <string name="search_now">Search now</string>
     <string name="filter" translatable="false">filter</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="retry">Retry</string>
     <string name="loading">Loading</string>
-    <string name="add_to_cart">Add to Cart</string>
-    <string name="remove_from_cart">Remove from Cart</string>
+    <string name="add_to_bag">Add to Bag</string>
+    <string name="remove_from_bag">Remove from Bag</string>
     <string name="cancel">Cancel</string>
     <string name="what_are_you_search_products">What are you search products</string>
     <string name="qty">QTY</string>
@@ -57,5 +57,8 @@
     <string name="login_with_facebook">Login With Facebook</string>
     <string name="google_sign_in_failed_msg">Google sign in failed, please retry again later</string>
     <string name="generic_error_msg">Error, Please try again later.</string>
+    <string name="old_password">Old Password</string>
+    <string name="enter_current_password">Enter Current Password</string>
+
 
 </resources>

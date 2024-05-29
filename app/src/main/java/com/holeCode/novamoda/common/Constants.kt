@@ -30,28 +30,28 @@ fun saveLang(application: Application, lang: String) {
     editor.apply()
 }
 
-//fun saveMode(application: Application, mode: String) {
-//    val sharedPreferences =
-//        application.getSharedPreferences("MyShared", AppCompatActivity.MODE_PRIVATE)
-//    val editor = sharedPreferences.edit()
-//    editor.putString("mode", mode)
-//    editor.apply()
-//}
+fun saveMode(application: Application, mode: String) {
+    val sharedPreferences =
+        application.getSharedPreferences("MyShared", AppCompatActivity.MODE_PRIVATE)
+    val editor = sharedPreferences.edit()
+    editor.putString("mode", mode)
+    editor.apply()
+}
 
-//fun saveUser(
-//    application: Application,
-//    name: String?,
-//    email: String?,
-//    phone: String?,
-//    token: String?
-//) {
-//    // To store values in shared preferences:
-//    val sharedPreferences =
-//        application.getSharedPreferences("MyShared", Context.MODE_PRIVATE)
-//    val editor = sharedPreferences.edit()
-//    editor.putString("name", name)
-//    editor.putString("email", email)
-//    editor.putString("phone", phone)
-//    editor.putString("token", token)
-//    editor.apply()
-//}
+fun saveUser(
+    application: Application,
+    name: String?,
+    email: String?,
+    phone: String?,
+    token: String?
+) {
+    // To store values in shared preferences:
+    val sharedPreferences =
+        application.getSharedPreferences("MyShared", Context.MODE_PRIVATE)
+    val editor = sharedPreferences.edit()
+    editor.putString("name", name)
+    editor.putString("email", email)
+    editor.putString("phone", phone)
+    editor.putString("token", token)
+    editor.apply()
+}

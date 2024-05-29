@@ -32,6 +32,6 @@ abstract class BaseFragment<DB : ViewDataBinding,VM:ViewModel> : Fragment() {
      */
     @LayoutRes
     abstract fun getLayoutResID(): Int
-    abstract fun setUpObserve()
+    abstract fun setUpInitView()
 
 }

@@ -1,7 +1,6 @@
 package com.holeCode.novamoda.ui.fragments.product_details
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,13 +35,10 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding,Produc
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        setUpObserve()
-
+        setUpInitView()
 
     }
-    override fun setUpObserve() {
+    override fun setUpInitView() {
         val productModel = navArgs.product
        lifecycleScope.launch {
             viewModel.favorite(productModel.in_favorites)
@@ -82,16 +78,6 @@ class ProductDetailsFragment : BaseFragment<FragmentProductDetailsBinding,Produc
             binding.productModel = productModel
             }
         }
-//        viewModel.addedToCart.observe(viewLifecycleOwner) {
-//            productModel.in_cart = it
-//            binding.productModel = productModel
-////            sharedViewModel.getCartData()
-//        }
-//        viewModel.favorite.observe(viewLifecycleOwner) {
-//            productModel.in_favorites = it
-//            binding.productModel = productModel
-//        }
-
 
     }
 

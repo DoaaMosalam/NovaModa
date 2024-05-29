@@ -2,6 +2,7 @@ package com.holeCode.novamoda.ui.fragments.login
 
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -22,7 +23,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -35,6 +35,8 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.holeCode.novamoda.R
 import com.holeCode.novamoda.common.BaseFragment
+import com.holeCode.novamoda.common.HomeActivity
+import com.holeCode.novamoda.common.saveUser
 import com.holeCode.novamoda.data.model.Resource
 import com.holeCode.novamoda.databinding.FragmentLoginBinding
 import com.holeCode.novamoda.ui.fragments.forget_password.ForgetPasswordFragment
@@ -66,8 +68,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Text
         addTextWatcher()
         addFocusListener()
 
-
-        setUpObserve()
+        setUpInitView()
         initListener()
         initViewModel()
     }
@@ -100,7 +101,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Text
 //===============================================================================================
     /*This method call login from LoginViewModel with API*/
 
-    override fun setUpObserve() {
+    override fun setUpInitView() {
         viewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
             errorMessage?.let {
                 Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
@@ -119,10 +120,30 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Text
         }
 
         viewModel.navigateToHome.observe(viewLifecycleOwner) { navigate ->
-            if (navigate) {
-                navigateToHome()
-                viewModel.navigateToHomeDone()
+            lifecycleScope.launch {
+                viewModel.user.collect { user ->
+                    saveUser(
+                        requireActivity().application,
+                        user.name,
+                        user.email,
+                        user.phone,
+                        user.token
+                    )
+                    startActivity(
+                        Intent(
+                            requireActivity(),
+                            HomeActivity::class.java
+                        ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtra("User", user)
+                    )
+                    requireActivity().finish()
+                    viewModel.navigateToHomeDone()
+                }
             }
+
+//            if (navigate) {
+//                navigateToHome()
+//                viewModel.navigateToHomeDone()
+//            }
         }
         viewModel.navigateToRegister.observe(viewLifecycleOwner) {
             if (it) {
