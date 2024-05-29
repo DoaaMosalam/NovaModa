@@ -13,7 +13,7 @@
 
  <p  align="center">E-commerce App</p>
 
- <h2> Project Description </h2>
+ <h2> <img src="https://github.com/DoaaMosalam/NovaModa/assets/40686512/129937fc-54f2-408e-9c18-add959af7866" width="50" height="30" alt="Nova Moda"/> Project Description </h2>
   <p>
     *Overview:
   The E-Commerce Application is a dynamic and user-friendly platform designed to facilitate online shopping experiences.
