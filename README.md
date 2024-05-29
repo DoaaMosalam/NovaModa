@@ -1,11 +1,16 @@
 <html>
   <head> 
     <body>
-<h1 align="center"> Nova Moda  </h1>
+<h1> Nova Moda  </h1>
       <p align="center">
 <img src="https://github.com/DoaaMosalam/NovaModa/assets/40686512/071c7ea5-5a55-4294-a756-5d5d45c8f9ca" width="400" height="300" alt="Nova Moda"/>
 </p>
- 
+
+<h2 aligh="center"> BrainStorm</h2>
+	<p align="center">
+ <img src="https://github.com/DoaaMosalam/NovaModa/assets/40686512/d1e6a079-5282-4033-aad2-bc087d9bae96" width="600" height="600" alt="Nova Moda"/>
+</p>
+
  <p  align="center">E-commerce App</p>
 
  <h2> Project Description </h2>
