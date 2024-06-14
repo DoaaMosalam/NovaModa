@@ -53,6 +53,11 @@ This E-Commerce Application is a testament to our commitment to excellence in mo
         <p><a href="https://www.themoviedb.org/](https://en.wikipedia.org/wiki/SOLID">- SOLID Principles</a></p>   
 
    ## Preview
+   
+
+![Nova Moda video - Made with Clipchamp](https://github.com/DoaaMosalam/NovaModa/assets/40686512/6c6e9192-b85e-4101-aae7-62915f89fee0)
+
+
 <div align="center">
 	
 
