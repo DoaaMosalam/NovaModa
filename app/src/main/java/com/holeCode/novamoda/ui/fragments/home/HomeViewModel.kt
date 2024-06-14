@@ -7,9 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.doaamosallam.domain.model.products.BannerModel
 import com.doaamosallam.domain.model.products.ProductModel
 import com.doaamosallam.domain.usecase.FavoritesUseCase
-import com.doaamosallam.domain.usecase.NovaUseCase
 import com.doaamosallam.domain.usecase.ProductsNovaUseCase
-import com.holeCode.novamoda.common.authorization
 import com.holeCode.novamoda.common.lang
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

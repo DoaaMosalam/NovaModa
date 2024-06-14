@@ -41,8 +41,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             application.getSharedPreferences("MyShared", Context.MODE_PRIVATE)
         val mode = sharedPreferences.getString("mode", null)
         return if (mode == null) {
-            SharedPreferencesManager.getInstance(application.baseContext)
-                .saveMode(application,"light")
+//            SharedPreferencesManager.getInstance(application.baseContext)
+//                .saveMode(application,"light")
 
             saveMode(application, "light")
             "light"

@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.doaamosallam.domain.model.products.UserData
-import com.doaamosallam.domain.usecase.NovaUseCase
 import com.doaamosallam.domain.usecase.ProfileUseCase
 import com.holeCode.novamoda.common.lang
 import com.holeCode.novamoda.common.saveUser

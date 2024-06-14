@@ -30,9 +30,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>(ActivityHomeBinding::infl
 //        viewModel.setUser(user)
 
 
-        // احصل على المستخدم من الانتباه
+        // get user from authorization.
         val user = intent.getParcelableExtra<UserData>("User")
         if (user != null) {
+            Log.d("token", authorization)
             viewModel.setUser(user)
         }
 

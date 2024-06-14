@@ -21,7 +21,6 @@ class SliderAdapter(private val bannerList: List<BannerModel>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?): ViewHolder {
-        //LayoutInflater.from(parent!!.context).inflate(R.layout.)
         return ViewHolder(ItemSliderBinding.inflate(LayoutInflater.from(parent!!.context)))
     }
 

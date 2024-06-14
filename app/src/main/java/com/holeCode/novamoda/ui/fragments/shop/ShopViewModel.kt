@@ -1,17 +1,11 @@
 package com.holeCode.novamoda.ui.fragments.shop
 
-import android.app.Application
-import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doaamosallam.domain.model.products.CategoryDetailsModel
 import com.doaamosallam.domain.model.products.CategoryModel
 import com.doaamosallam.domain.usecase.CategoryUseCase
 import com.doaamosallam.domain.usecase.FavoritesUseCase
-import com.doaamosallam.domain.usecase.NovaUseCase
 import com.holeCode.novamoda.common.lang
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

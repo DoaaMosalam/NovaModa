@@ -1,18 +1,11 @@
 package com.holeCode.novamoda.ui.fragments.product_details
 
 import android.accounts.NetworkErrorException
-import android.app.Application
-import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doaamosallam.domain.usecase.CartUseCase
 import com.doaamosallam.domain.usecase.FavoritesUseCase
-import com.doaamosallam.domain.usecase.NovaUseCase
 import com.holeCode.novamoda.common.lang
-import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow

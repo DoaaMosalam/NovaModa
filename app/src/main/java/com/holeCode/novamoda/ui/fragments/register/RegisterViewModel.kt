@@ -8,10 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doaamosallam.domain.model.products.RegisterModel
 import com.doaamosallam.domain.usecase.AuthNovaUseCase
-import com.doaamosallam.domain.usecase.NovaUseCase
 import com.holeCode.novamoda.TransactionManager
 import com.holeCode.novamoda.common.lang
-import com.holeCode.novamoda.data.local.SharedPreferencesManager
 import com.holeCode.novamoda.data.model.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -64,8 +62,8 @@ class RegisterViewModel @Inject constructor(
             if (result.status){
                 Log.d("register", "Authentication Register Successful for:$name $phone $email $password")
                 // Save user data to SharedPreferences
-                SharedPreferencesManager.getInstance(application.baseContext)
-                    .saveUser(application, name.value, email.value, phone.value, password.value)
+//                SharedPreferencesManager.getInstance(application.baseContext)
+//                    .saveUser(application, name.value, email.value, phone.value, password.value)
 
                 // Clear input fields
                 email.value = ""

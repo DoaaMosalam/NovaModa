@@ -13,6 +13,7 @@ import com.doaamosallam.domain.model.products.UserData
 import com.doaamosallam.domain.usecase.CartUseCase
 import com.doaamosallam.domain.usecase.FavoritesUseCase
 import com.doaamosallam.domain.usecase.ProfileUseCase
+import com.holeCode.novamoda.data.repository.user.UserDataStoreRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,6 +25,7 @@ class HomeActivityViewModel @Inject constructor(
     private val cartUseCase: CartUseCase,
     private val favoriteUseCase: FavoritesUseCase,
     private val profileUseCase: ProfileUseCase,
+    private val userPreference: UserDataStoreRepositoryImpl,
     application: Application
 ) : AndroidViewModel(application) {
 
