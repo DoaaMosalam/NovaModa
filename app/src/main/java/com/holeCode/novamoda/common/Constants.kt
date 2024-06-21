@@ -19,9 +19,7 @@ fun setLocal(activity: Activity, lang: String) {
     val config = resources.configuration
     config.setLocale(locale)
     resources.updateConfiguration(config, resources.displayMetrics)
-
 }
-
 fun saveLang(application: Application, lang: String) {
     val sharedPreferences =
         application.getSharedPreferences("MyShared", AppCompatActivity.MODE_PRIVATE)
