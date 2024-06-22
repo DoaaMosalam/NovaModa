@@ -38,6 +38,41 @@ The primary objective of this project is to create a user-friendly, efficient, a
 
 This E-Commerce Application is a testament to our commitment to excellence in mobile app development and our dedication to delivering innovative solutions to the world of online retail.</p>
 
+  ## Project Structure
+<div align="center">
+ <img src="https://github.com/DoaaMosalam/Quotes/assets/40686512/93feb519-da35-4e90-b764-a049de6da98b" width="400" height="300" alt="Project Structure"/>
+</div>
+
+```groovy
+app/
+    src/
+        main/
+            java/
+                com/example/app/
+                    di/
+                    ui/
+                    viewmodel/
+                    MainActivity.kt
+data/
+    src/
+        main/
+            java/
+                com/example/data/
+                    remote/
+                    local/
+                        db/
+                        entities/
+                        dao/
+                    repository/
+domain/
+    src/
+        main/
+            java/
+                com/example/domain/
+                    model/
+                    repository/
+                    usecase/
+```
  <h2>Best practice<h2/>
        <p> -try to not taking any code as copy-paste here is like a helper to you.</p> 
        <p> -Please make sure to try it yourself firstly.</p>
