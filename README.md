@@ -14,12 +14,12 @@
  <p  align="center">E-commerce App</p>
 
  <h2> <img src="https://github.com/DoaaMosalam/NovaModa/assets/40686512/129937fc-54f2-408e-9c18-add959af7866" width="50" height="30" alt="Nova Moda"/> Project Description </h2>
-  <p>
-    *Overview:
+ 
+ ## Overview:
   The E-Commerce Application is a dynamic and user-friendly platform designed to facilitate online shopping experiences.
-    This project harnesses a range of cutting-edge technologies and follows best software engineering practices to create a seamless shopping environment.</p>
+    This project harnesses a range of cutting-edge technologies and follows best software engineering practices to create a seamless shopping environment.
 
-<p>* Key Features:
+ ## Key Features:
 
 <p> - Product Display: The application provides an extensive catalog of products, meticulously categorized and beautifully presented to users. 
 Products are showcased with detailed descriptions, images, prices, and customer reviews.</p>
@@ -32,11 +32,15 @@ adding them to their virtual shopping cart. The cart keeps track of selected ite
 
 <p>- Search and Filters: The application features robust search functionality and advanced filters, enabling customers to quickly find products based on their preferences, price range, brand, or category.</p>
 
-<p> * Project Goals:
+ ## Project Goals:
 
 The primary objective of this project is to create a user-friendly, efficient, and secure e-commerce application that offers customers a seamless shopping experience. By leveraging the latest technologies and best practices, we aim to provide a reliable platform for online shopping that meets the evolving needs and expectations of users.
 
 This E-Commerce Application is a testament to our commitment to excellence in mobile app development and our dedication to delivering innovative solutions to the world of online retail.</p>
+
+## UI $ UX Design Project:
+<img src="https://s3-alpha-sig.figma.com/img/dd12/358e/6d84e1ef370c43a7120e2d24c09261ba?Expires=1721001600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=EiwwKeVgB~4ilyA~hTHOfm7n-9Cj2ZueGfBRPOsDFZ0qqdm5gZAsOIov1wYd6UPTmX3I5IiNPkF5eA6vB~l0GK52C-b43pG-0NCMapJcDRBpj3GiH9EmE2whhTmvqm2yvERJ~v8bla~q1zhJ-v5vzk20oH80wWO5Hd3NlZfm9OOC~1LvN5~txqEexaG9KnyipMOL1CWwMXJ5YNUDpvPWypYefJ3fwP0ECJzhkuxu72qCgq51mMNDvpKZ7Kdk3S8iugwpVhOR7Qjr9AFz27UoPWfD5HQr4itSGqlzCxLFdLt0VltvXbgTMXciZ5RybjZSgRkQwrZuUjo1H~tCJ4EseQ__" alt="Nova Moda Design"/>
+<a href="https://www.figma.com/design/18h3eE3snzrefCutXazmnW/E-commerce-Application-by-Fively-%2F-Light-Version-(Copy)?node-id=28-9&t=dcSmLV6uAMME8Px6-0"> E-Commerce Application
 
   ## Project Structure
 <div align="center">
